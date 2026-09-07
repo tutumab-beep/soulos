@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Transformation #{{ transformation.id }} - SoulOS{% endblock %}
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<h1>Transformation #{{ transformation.id }}</h1>
+<p>Status: {{ transformation.status|upper }}</p>
+<p>Started: {{ transformation.started_at|date:"M d, Y H:i" }}</p>
+{% if transformation.finished_at %}
+    <p>Finished: {{ transformation.finished_at|date:"M d, Y H:i" }}</p>
+{% endif %}
+{% if transformation.tension %}
+    <div>
+        <h3>Tension Observer</h3>
+        <p>{{ transformation.tension.entry }}</p>
+        <p>Intensity: {{ transformation.tension.intensity }}/10</p>
+        <p>Trigger: {{ transformation.tension.trigger }}</p>
+    </div>
+{% endif %}
+{% if transformation.awareness %}
+    <div>
+        <h3>Awareness Lens</h3>
+        <p>{{ transformation.awareness.entry }}</p>
+        <p>Type: {{ transformation.awareness.awareness_type }}</p>
+    </div>
+{% endif %}
+{% if transformation.belief %}
+    <div>
+        <h3>Belief Anchor</h3>
+        <p>Limiting Belief: {{ transformation.belief.entry }}</p>
+        <p>Affirmation: {{ transformation.belief.custom_affirmation }}</p>
+        <p>Reframe: {{ transformation.belief.reframe }}</p>
+    </div>
+{% endif %}
+{% if transformation.thought %}
+    <div>
+        <h3>Thought Analyzer</h3>
+        <p>{{ transformation.thought.entry }}</p>
+        <p>Intensity: {{ transformation.thought.intensity }}/10</p>
+        <p>Coping: {{ transformation.thought.coping_strategy }}</p>
+    </div>
+{% endif %}
+{% if transformation.faith %}
+    <div>
+        <h3>Faith Cycle</h3>
+        <p>{{ transformation.faith.entry }}</p>
+        <p>Ritual: {{ transformation.faith.ritual }}</p>
+    </div>
+{% endif %}
+{% if transformation.celebration %}
+    <div>
+        <h3>Clarity Flow</h3>
+        <p>{{ transformation.celebration.entry }}</p>
+        <p>Gratitude: {{ transformation.celebration.clarity_notes }}</p>
+    </div>
+{% endif %}
+{% if transformation.status == 'active' %}
+    <a href="{% url 'core_healing_path:edit_transformation' transformation.id %}">Edit / Finish</a>
+{% endif %}
+{% endblock %}

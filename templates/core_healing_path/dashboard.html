@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Core Healing Path - SoulOS{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Core Healing Path</h1>
+    <p>Your journey to healing and transformation starts here.</p>
+    <a href="{% url 'core_healing_path:tension_observer' %}" class="btn btn-primary">Start Healing</a>
+</div>
+{% endblock %}

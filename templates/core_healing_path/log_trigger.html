@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Log Trigger - SoulOS{% endblock %}
+
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<div class="card">
+    <h1>⚡ Quick Trigger Log</h1>
+</div>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <input type="hidden" name="stage" value="tension_observer">
+
+        <div class="form-group">
+            <label for="id_entry">Belief / Thought:</label>
+            {{ form.entry }}
+            {{ form.entry.errors }}
+        </div>
+
+        <div class="form-group">
+            <label>Intensity: <span id="intensityValue">{{ form.intensity.value|default:"5" }}</span>/10</label>
+            {{ form.intensity }}
+            {{ form.intensity.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_trigger">Trigger Type:</label>
+            {{ form.trigger }}
+            {{ form.trigger.errors }}
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit-btn">Save & Go to Awareness Lens →</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('id_intensity');
+    const display = document.getElementById('intensityValue');
+    if (slider && display) {
+        slider.addEventListener('input', function() {
+            display.textContent = this.value;
+        });
+    }
+});
+</script>
+{% endblock %}

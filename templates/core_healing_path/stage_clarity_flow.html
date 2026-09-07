@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Clarity Flow - SoulOS{% endblock %}
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<h1>Clarity Flow</h1>
+<p>What breakthrough or insight have you gained?</p>
+<form method="post" action="{% url 'core_healing_path:log_celebration' %}">
+    {% csrf_token %}
+    <input type="hidden" name="stage" value="clarity_flow">
+    <label>Joy:</label>
+    <textarea name="joy" rows="4"></textarea>
+    <label>Gratitude:</label>
+    <textarea name="gratitude" rows="3"></textarea>
+    <button type="submit">Save & View Transformation Log →</button>
+</form>
+{% endblock %}

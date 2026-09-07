@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Welcome to SoulOS{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Welcome to SoulOS</h1>
+    <p>Your journey to healing and growth begins here.</p>
+    <p>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+        <a href="{% url 'signup' %}" class="btn btn-success">Sign Up</a>
+    </p>
+</div>
+{% endblock %}

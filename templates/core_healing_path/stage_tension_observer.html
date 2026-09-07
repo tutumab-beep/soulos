@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Tension Observer - SoulOS{% endblock %}
+
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<div class="card">
+    <h1>🔍 Tension Observer</h1>
+</div>
+
+<div class="card">
+    <h3>💡 Healing Prompt</h3>
+    <p>{{ healing_prompt }}</p>
+</div>
+
+<div class="card">
+    <form method="post" action="{% url 'core_healing_path:log_tension' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            <label for="id_entry">Your Observation:</label>
+            {{ form.entry }}
+            {{ form.entry.errors }}
+        </div>
+        <div class="form-group">
+            <label>Intensity: <span id="intensityValue">{{ form.intensity.value|default:"5" }}</span>/10</label>
+            {{ form.intensity }}
+            {{ form.intensity.errors }}
+        </div>
+        <div class="form-group">
+            <label for="id_trigger">Trigger:</label>
+            {{ form.trigger }}
+            {{ form.trigger.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary form-submit-btn">Log Tension & Continue to Awareness Lens →</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3>Recent Observations</h3>
+    {% for log in logs %}
+        <div class="form-group">
+            <p>{{ log.entry }}</p>
+            <p><strong>Intensity:</strong> <span>{{ log.intensity }}/10</span></p>
+            <p><strong>Trigger:</strong> <span>{{ log.get_trigger_display }}</span></p>
+            <small>{{ log.created_at|date:"M d, Y H:i" }}</small>
+            <a href="{% url 'core_healing_path:edit_tension' log.id %}">Edit</a>
+        </div>
+    {% empty %}
+        <p>No observations yet. Start by logging your first entry above.</p>
+    {% endfor %}
+</div>
+{% endblock %}

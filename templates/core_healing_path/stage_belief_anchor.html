@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Belief Anchor - SoulOS{% endblock %}
+
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<div class="card">
+    <h1>⚓ Belief Anchor</h1>
+</div>
+
+{% if logs %}
+<div class="card">
+    <h3>💡 Recent Affirmations</h3>
+    {% for log in logs %}
+        <div class="form-group">
+            <p><strong>Limiting Belief:</strong> {{ log.limiting_belief }}</p>
+            <p><strong>Affirmation:</strong> {{ log.custom_affirmation }}</p>
+            <p><strong>Reframe:</strong> {{ log.reframe }}</p>
+            <small>{{ log.created_at|date:"M d, Y H:i" }}</small>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="card">
+    <h3>🔨 Anchor a New Belief</h3>
+    <form method="post" action="{% url 'core_healing_path:log_belief_anchor' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <input type="hidden" name="stage" value="belief_anchor">
+
+        <div class="form-group">
+            <label for="id_limiting_belief">Limiting Belief:</label>
+            {{ form.limiting_belief }}
+            {{ form.limiting_belief.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_entry">Your Reflection:</label>
+            {{ form.entry }}
+            {{ form.entry.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_custom_affirmation">Custom Affirmation:</label>
+            {{ form.custom_affirmation }}
+            {{ form.custom_affirmation.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_reframe">Reframe:</label>
+            {{ form.reframe }}
+            {{ form.reframe.errors }}
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit-btn">Anchor Belief & Continue →</button>
+    </form>
+</div>
+{% endblock %}

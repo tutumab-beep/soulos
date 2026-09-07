@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Thought Analyzer - SoulOS{% endblock %}
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<h1>Thought Analyzer</h1>
+<p>What thought pattern do you notice?</p>
+<form method="post" action="{% url 'core_healing_path:log_thought' %}">
+    {% csrf_token %}
+    <input type="hidden" name="stage" value="thought_analyzer">
+    <label>Thought:</label>
+    <textarea name="thought" rows="4"></textarea>
+    <label>Intensity (1-10):</label>
+    <input type="number" name="intensity" min="1" max="10" value="5">
+    <label>Coping Strategy:</label>
+    <input type="text" name="coping_strategy">
+    <button type="submit">Save & Continue →</button>
+</form>
+{% endblock %}

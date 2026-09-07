@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Transformation Log - SoulOS{% endblock %}
+{% block content %}
+<h1>Transformation Log</h1>
+{% for t in transformations %}
+<div>
+    <p><strong>Transformation #{{ t.id }}</strong> - Started: {{ t.started_at|date:"M d, Y H:i" }} - Status: {{ t.status|upper }}</p>
+    <a href="{% url 'core_healing_path:view_transformation' t.id %}">View</a>
+    {% if t.status == 'active' %}
+        <a href="{% url 'core_healing_path:edit_transformation' t.id %}">Edit / Finish</a>
+    {% endif %}
+</div>
+<hr>
+{% empty %}
+<p>No transformations yet.</p>
+{% endfor %}
+{% endblock %}

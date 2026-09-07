@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up - SoulOS{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 2rem auto;">
+    <h1 style="text-align: center;">Sign Up for SoulOS</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success" style="width: 100%;">Sign Up</button>
+    </form>
+    <p style="text-align: center; margin-top: 1.5rem;">
+        Already have an account? <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+    </p>
+</div>
+{% endblock %}

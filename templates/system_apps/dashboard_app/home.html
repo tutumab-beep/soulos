@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard - SoulOS{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Dashboard</h1>
+    <p>Welcome to your SoulOS dashboard.</p>
+    <a href="{% url 'core_healing_path:dashboard' %}">Core Healing Path</a>
+</div>
+{% endblock %}

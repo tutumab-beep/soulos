@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SoulOS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/healing-styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="{% if user.is_authenticated %}{% url 'dashboard_app:home' %}{% else %}{% url 'index' %}{% endif %}" class="navbar-brand">SoulOS</a>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li><span>Logged in as {{ user.username }}</span></li>
+                        <li><a href="{% url 'profile_app:profile' %}">Profile</a></li>
+                    {% else %}
+                        
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Logout</a> |
+                <a href="{% url 'legal:privacy' %}">Privacy</a> |
+                <a href="{% url 'legal:terms' %}">Terms</a>
+            {% endif %}
+        </div>
+    </footer>
+</body>
+</html>

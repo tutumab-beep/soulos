@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Edit Transformation #{{ transformation.id }} - SoulOS{% endblock %}
+{% block content %}
+<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
+<h1>Edit Transformation #{{ transformation.id }}</h1>
+<p>Status: {{ transformation.status }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Mark as Finished</button>
+</form>
+{% endblock %}

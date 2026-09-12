@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}New SoulLog Entry{% endblock %}
+
+{% block content %}
+<div>
+    <h1>New SoulLog Entry</h1>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="content" rows="6" placeholder="Write freely..." required></textarea>
+        <input type="text" name="mood" placeholder="Mood (optional)">
+        <input type="text" name="tags" placeholder="Tags (optional)">
+        <input type="text" name="anchor" placeholder="Anchor (optional)">
+        <label>
+            <input type="checkbox" name="linked_to_ego_balance"> Link to Ego Balance Log
+        </label>
+        <label>
+            <input type="checkbox" name="linked_to_four_forces"> Link to Four Forces Alignment
+        </label>
+        <button type="submit">Save Entry</button>
+    </form>
+</div>
+{% endblock %}

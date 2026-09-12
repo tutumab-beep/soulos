@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Work Alignment - SoulOS{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Work Alignment Dashboard</h1>
+    <p>Week cycle: {{ week_start }} → {{ week_end }}</p>
+    <a href="{% url 'work_alignment:edit_entry' %}">Today's Entry</a> |
+    <a href="{% url 'work_alignment:entries' %}">All Entries</a> |
+    <a href="{% url 'work_alignment:weekly' %}">Weekly</a> |
+    <a href="{% url 'work_alignment:monthly' %}">Monthly</a>
+
+    <h2>Totals</h2>
+    <ul>
+        <li>Today: Gains {{ today_gains }} | Losses {{ today_losses }} | Net {{ today_net }}</li>
+        <li>Yesterday: Gains {{ yesterday_gains }} | Losses {{ yesterday_losses }} | Net {{ yesterday_net }}</li>
+        <li>This Week: Gains {{ week_gains }} | Losses {{ week_losses }} | Net {{ week_net }}</li>
+    </ul>
+
+    <h2>Indicators</h2>
+    <table border="1" cellpadding="4" cellspacing="0">
+        <thead>
+            <tr>
+                <th rowspan="2">Date</th>
+                <th rowspan="2">Facility</th>
+                <th rowspan="2">Indicator</th>
+                <th colspan="3">Previous day data</th>
+                <th colspan="3">Todays data</th>
+                <th colspan="3">Weekly data</th>
+            </tr>
+            <tr>
+                <th>Baseline</th>
+                <th>Current</th>
+                <th>Variance</th>
+                <th>Baseline</th>
+                <th>Current</th>
+                <th>Variance</th>
+                <th>Baseline</th>
+                <th>Current</th>
+                <th>Variance</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ today }}</td>
+                <td>{{ yesterday_facility|default:"" }}</td>
+                <td>{{ row.indicator }}</td>
+                <td>{{ row.baseline|default:"0" }}</td>
+                <td>{{ row.today_current|default:"0" }}</td>
+                <td>{{ row.today_variance|default:"0" }}</td>
+                <td>{{ row.baseline|default:"0" }}</td>
+                <td>{{ row.today_current|default:"0" }}</td>
+                <td>{{ row.today_variance|default:"0" }}</td>
+                <td>{{ row.baseline|default:"0" }}</td>
+                <td>{{ row.week_current|default:"0" }}</td>
+                <td>{{ row.week_variance|default:"0" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

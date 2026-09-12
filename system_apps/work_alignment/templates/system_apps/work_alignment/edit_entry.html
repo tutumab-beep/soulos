@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Work Alignment Entry{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Work Alignment Entry - {{ target_date }}</h1>
+    <p>Baseline from: {{ yesterday }}</p>
+
+    <form method="get" style="margin-bottom: 1rem;">
+        <label for="entry_date">Select Date:</label>
+        <input type="date" id="entry_date" name="entry_date" value="{{ target_date }}">
+        <button type="submit">Go</button>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="entry_date" value="{{ target_date }}">
+        <input type="text" name="facility" placeholder="Facility" value="{{ log.facility|default:'' }}">
+        <h3>Journal</h3>
+        <textarea name="activities" rows="4" placeholder="Activities">{{ log.activities|default:'' }}</textarea>
+        <textarea name="meetings" rows="4" placeholder="Meeting Discussions">{{ log.meetings|default:'' }}</textarea>
+        <textarea name="outcomes" rows="4" placeholder="Outcomes">{{ log.outcomes|default:'' }}</textarea>
+        <textarea name="challenges" rows="4" placeholder="Challenges">{{ log.challenges|default:'' }}</textarea>
+        <textarea name="solutions" rows="4" placeholder="Solutions">{{ log.solutions|default:'' }}</textarea>
+        <textarea name="daily_plan" rows="4" placeholder="Daily Plan">{{ log.daily_plan|default:'' }}</textarea>
+        <textarea name="achievements" rows="4" placeholder="Achievements">{{ log.achievements|default:'' }}</textarea>
+        <textarea name="failures" rows="4" placeholder="Failures">{{ log.failures|default:'' }}>
+        </textarea>
+        <h3>Numeric</h3>
+        <input type="number" name="gains" placeholder="Gains" value="{{ log.gains|default:0 }}">
+        <input type="number" name="losses" placeholder="Losses" value="{{ log.losses|default:0 }}">
+        <h3>Indicators</h3>
+        <table border="1" cellpadding="4" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Indicator</th>
+                    <th>Baseline</th>
+                    <th>Current</th>
+                    <th>Variance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for indicator in indicators %}
+                <tr>
+                    <td>{{ indicator.name }}</td>
+                    {% if indicator.name == "Tx Curr 28" %}
+                        <td>
+                            <input type="number" step="any" name="baseline_{{ indicator.name }}" value="{{ indicator.baseline|default:0|floatformat:0 }}" disabled class="baseline-input">
+                        </td>
+                        <td>
+                            <input type="number" step="any" name="current_{{ indicator.name }}" value="{{ indicator.current|default:0|floatformat:0 }}" disabled class="current-input">
+                        </td>
+                        <td class="variance">{{ indicator.variance|default:0|floatformat:0 }}</td>
+                    {% else %}
+                        <td>
+                            <input type="number" step="any" name="baseline_{{ indicator.name }}" value="{{ indicator.baseline|default:0|floatformat:0 }}" class="baseline-input">
+                        </td>
+                        <td>
+                            <input type="number" step="any" name="current_{{ indicator.name }}" value="{{ indicator.current|default:0|floatformat:0 }}" class="current-input">
+                        </td>
+                        <td class="variance">{{ indicator.variance|default:0|floatformat:0 }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save Entry</button>
+    </form>
+</div>
+<script>
+    document.querySelectorAll('.current-input').forEach(input => {
+        input.addEventListener('input', () => {
+            const row = input.closest('tr');
+            const baseline = parseFloat(row.querySelector('.baseline-input').value) || 0;
+            const current = parseFloat(input.value) || 0;
+            const variance = current - baseline;
+            row.querySelector('.variance').textContent = variance;
+        });
+    });
+    document.querySelectorAll('.baseline-input').forEach(input => {
+        input.addEventListener('input', () => {
+            const row = input.closest('tr');
+            const current = parseFloat(row.querySelector('.current-input').value) || 0;
+            const baseline = parseFloat(input.value) || 0;
+            const variance = current - baseline;
+            row.querySelector('.variance').textContent = variance;
+        });
+    });
+</script>
+{% endblock %}

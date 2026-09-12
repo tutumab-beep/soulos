@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit SoulLog Entry{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Edit SoulLog Entry</h1>
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="content" rows="6" placeholder="Write freely..." required>{{ entry.content }}</textarea>
+        <input type="text" name="mood" placeholder="Mood (optional)" value="{{ entry.mood }}">
+        <input type="text" name="tags" placeholder="Tags (optional)" value="{{ entry.tags }}">
+        <input type="text" name="anchor" placeholder="Anchor (optional)" value="{{ entry.anchor }}">
+        <label>
+            <input type="checkbox" name="linked_to_ego_balance" {% if entry.linked_to_ego_balance %}checked{% endif %}> Link to Ego Balance Log
+        </label>
+        <label>
+            <input type="checkbox" name="linked_to_four_forces" {% if entry.linked_to_four_forces %}checked{% endif %}> Link to Four Forces Alignment
+        </label>
+        <button type="submit">Update Entry</button>
+    </form>
+    <a href="{% url 'SoulLog:journal' %}">Back to Journal</a>
+</div>
+{% endblock %}

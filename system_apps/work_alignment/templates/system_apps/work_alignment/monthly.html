@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Work Alignment Monthly{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Monthly View: {{ month_start }} → {{ month_end }}</h1>
+    <a href="{% url 'work_alignment:edit_entry' %}">New Entry</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Gains</th>
+                <th>Losses</th>
+                <th>Net</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td><a href="{% url 'work_alignment:edit_entry_date' log.date %}">{{ log.date }}</a></td>
+                <td>{{ log.gains }}</td>
+                <td>{{ log.losses }}</td>
+                <td>{{ log.net }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

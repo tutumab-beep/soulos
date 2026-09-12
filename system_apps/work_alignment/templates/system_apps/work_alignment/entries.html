@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Work Alignment Entries{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Work Alignment Entries</h1>
+    <a href="{% url 'work_alignment:edit_entry' %}">New Entry</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Gains</th>
+                <th>Losses</th>
+                <th>Net</th>
+                <th>Activities</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.date }}</td>
+                <td>{{ log.gains }}</td>
+                <td>{{ log.losses }}</td>
+                <td>{{ log.gains|add:"-"|add:log.losses|floatformat:0 }}</td>
+                <td>{{ log.activities|truncatechars:50 }}</td>
+                <td>
+                    <a href="{% url 'work_alignment:edit_entry_date' log.date %}">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6">No entries yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -17,6 +17,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,4 +29,10 @@ urlpatterns = [
     path("core-healing-path/", include("Core_healing_path.urls")),
     path("profile/", include("system_apps.profile_app.urls")),
     path("legal/", include("system_apps.legal.urls")),
+    path("soullog/", include("SoulLog.urls")),
+    path("work-alignment/", include("system_apps.work_alignment.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

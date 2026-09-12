@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}SoulLog - SoulOS{% endblock %}
+
+{% block content %}
+<div>
+    <h1>SoulLog</h1>
+    <p>Free-flow journaling space.</p>
+    <a href="{% url 'SoulLog:add_entry' %}" class="btn">New Entry</a>
+
+    <form method="get" style="margin: 1rem 0;">
+        <label for="date-filter">Filter by date:</label>
+        <input type="date" id="date-filter" name="date" value="{{ selected_date|default:'' }}">
+        <button type="submit">Filter</button>
+        {% if selected_date %}
+            <a href="{% url 'SoulLog:journal' %}">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if entries %}
+        <div class="entries-list">
+            {% for entry in entries %}
+                <div class="entry-card">
+                    <p>{{ entry.content|linebreaks }}</p>
+                    <small>
+                        {{ entry.created_at|date:"M d, Y H:i" }}
+                        {% if entry.mood %} | Mood: {{ entry.mood }}{% endif %}
+                        {% if entry.anchor %} | Anchor: {{ entry.anchor }}{% endif %}
+                        {% if entry.tags %} | Tags: {{ entry.tags }}{% endif %}
+                    </small>
+                    <div class="entry-actions">
+                        <a href="{% url 'SoulLog:edit_entry' entry.id %}">Edit</a>
+                        <form method="post" action="{% url 'SoulLog:delete_entry' entry.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" onclick="return confirm('Delete this entry?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No entries found for the selected date.</p>
+    {% endif %}
+</div>
+{% endblock %}

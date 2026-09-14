@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Empathy - SoulOS{% endblock %}
+{% block content %}
+<div class="form-container">
+    <h1>Log Empathy Reflection</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.reflection.id_for_label }}" class="form-label">Reflection on Others' Pain</label>
+            {{ form.reflection }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.blessing_vision.id_for_label }}" class="form-label">Vision to Bless Others</label>
+            {{ form.blessing_vision }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.date.id_for_label }}" class="form-label">Date</label>
+            {{ form.date }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Entry</button>
+        {% if back_url %}
+            <a href="{{ back_url }}" class="btn btn-secondary">Cancel</a>
+        {% else %}
+            <a href="{% url 'profile_app:dashboard' %}" class="btn btn-secondary">Cancel</a>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

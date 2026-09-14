@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import journal, add_entry, edit_entry, delete_entry
 
-app_name = "SoulLog"
+app_name = "soullog"
 
 urlpatterns = [
     path("", journal, name="journal"),

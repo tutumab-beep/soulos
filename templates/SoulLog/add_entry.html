@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}New SoulLog Entry{% endblock %}
+{% block title %}New soullog Entry{% endblock %}
 
 {% block content %}
 <div>
-    <h1>New SoulLog Entry</h1>
+    <h1>New soullog Entry</h1>
     <form method="post">
         {% csrf_token %}
         <textarea name="content" rows="6" placeholder="Write freely..." required></textarea>

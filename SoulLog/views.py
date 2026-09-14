@@ -21,7 +21,7 @@ def journal(request):
             pass
     return render(
         request,
-        "SoulLog/journal.html",
+        "soullog/journal.html",
         {"entries": entries, "selected_date": selected_date},
     )
 
@@ -43,8 +43,8 @@ def add_entry(request):
             linked_to_ego_balance=linked_to_ego_balance,
             linked_to_four_forces=linked_to_four_forces,
         )
-        return redirect("SoulLog:journal")
-    return render(request, "SoulLog/add_entry.html")
+        return redirect("soullog:journal")
+    return render(request, "soullog/add_entry.html")
 
 
 @login_required
@@ -58,8 +58,8 @@ def edit_entry(request, entry_id):
         entry.linked_to_ego_balance = bool(request.POST.get("linked_to_ego_balance"))
         entry.linked_to_four_forces = bool(request.POST.get("linked_to_four_forces"))
         entry.save()
-        return redirect("SoulLog:journal")
-    return render(request, "SoulLog/edit_entry.html", {"entry": entry})
+        return redirect("soullog:journal")
+    return render(request, "soullog/edit_entry.html", {"entry": entry})
 
 
 @login_required
@@ -67,5 +67,5 @@ def delete_entry(request, entry_id):
     entry = get_object_or_404(SoulLog, id=entry_id)
     if request.method == "POST":
         entry.delete()
-        return redirect("SoulLog:journal")
-    return render(request, "SoulLog/delete_entry.html", {"entry": entry})
+        return redirect("soullog:journal")
+    return render(request, "soullog/delete_entry.html", {"entry": entry})

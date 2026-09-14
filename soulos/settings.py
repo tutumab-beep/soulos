@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-default-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "soulos.pythonanywhere.com",
@@ -49,9 +49,10 @@ INSTALLED_APPS = [
     "system_apps.dashboard_app",
     "system_apps.profile_app",
     "system_apps.legal",
-    "system_apps.work_alignment",
     "Core_healing_path",
-    "SoulLog",
+    "soullog",
+    "work_alignment",
+    "soulconnect",
 ]
 
 MIDDLEWARE = [

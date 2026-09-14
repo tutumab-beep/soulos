@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}SoulConnect - SoulOS{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>SoulConnect</h1>
+    <p>Welcome to SoulConnect. This is where you can connect with others on their healing journey.</p>
+    <a href="{% url 'profile_app:dashboard' %}" class="btn btn-secondary">Back to Profile</a>
+</div>
+{% endblock %}

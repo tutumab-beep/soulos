@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Profile - SoulOS{% endblock %}
 {% block content %}
-<div>
-    <h1>Profile</h1>
-    <p>Logged in as: {{ user.username }}</p>
-    <p>Email: {{ user.email }}</p>
-</div>
+<script>
+window.location.href = "{% url 'profile_app:dashboard' %}";
+</script>
+<meta http-equiv="refresh" content="0;url={% url 'profile_app:dashboard' %}">
+<p>Redirecting to your profile dashboard...</p>
+<a href="{% url 'profile_app:dashboard' %}">Click here if not redirected</a>
 {% endblock %}

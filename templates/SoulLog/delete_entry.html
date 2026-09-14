@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Delete SoulLog Entry{% endblock %}
+{% block title %}Delete soullog Entry{% endblock %}
 
 {% block content %}
 <div>
-    <h1>Delete SoulLog Entry</h1>
+    <h1>Delete soullog Entry</h1>
     <p>Are you sure you want to delete this entry?</p>
     <p>{{ entry.content|linebreaks }}</p>
     <small>{{ entry.created_at|date:"M d, Y H:i" }}</small>
@@ -13,6 +13,6 @@
         {% csrf_token %}
         <button type="submit">Yes, Delete</button>
     </form>
-    <a href="{% url 'SoulLog:journal' %}">Cancel</a>
+    <a href="{% url 'soullog:journal' %}">Cancel</a>
 </div>
 {% endblock %}

@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+{% block title %}Profile Dashboard - SoulOS{% endblock %}
+{% block content %}
+<div class="profile-dashboard">
+    <div class="profile-header">
+        <h1>SoulOS Profile</h1>
+        <a href="{% url 'profile_app:update_profile' %}" class="btn btn-primary">Edit Profile</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Identity</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="Avatar" class="avatar-img mb-3">
+                    {% else %}
+                        <div class="avatar-placeholder mb-3">
+                            <span>{{ user.username|first|upper }}</span>
+                        </div>
+                    {% endif %}
+                    <h4>{{ user.get_full_name|default:user.username }}</h4>
+                    <p class="text-muted">{{ profile.get_role_display }}</p>
+                    {% if profile.motto %}
+                        <p class="motto">"{{ profile.motto }}"</p>
+                    {% endif %}
+                    {% if profile.bio %}
+                        <p>{{ profile.bio }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Values Alignment</h3>
+                </div>
+                <div class="card-body">
+                    {% if profile.values_alignment %}
+                        <p>{{ profile.values_alignment|linebreaks }}</p>
+                    {% else %}
+                        <p class="text-muted">No values alignment set yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3>Daily Forces</h3>
+                    <a href="{% url 'profile_app:daily_force_create' %}" class="btn btn-sm btn-primary">Add Entry</a>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        {% for code, label in daily_force_stats.items %}
+                        <div class="col-md-2 text-center">
+                            <div class="force-stat">
+                                <span class="force-count">{{ label }}</span>
+                                <span class="force-label">{{ code|title }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if daily_forces %}
+                        <ul class="list-group">
+                            {% for force in daily_forces %}
+                            <li class="list-group-item">
+                                <strong>{{ force.get_force_type_display }}</strong>
+                                <span class="text-muted float-end">{{ force.date }}</span>
+                                <p>{{ force.entry|truncatechars:100 }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No daily force logs yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3>Rituals</h3>
+                            <a href="{% url 'profile_app:ritual_create' %}" class="btn btn-sm btn-primary">Add</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                {% for code, label in ritual_stats.items %}
+                                <div class="col-6 text-center">
+                                    <div class="ritual-stat">
+                                        <span class="ritual-count">{{ label }}</span>
+                                        <span class="ritual-label">{{ code|title|cut:"_" }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% if rituals %}
+                                <ul class="list-group">
+                                    {% for ritual in rituals %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ ritual.get_ritual_type_display }}
+                                        <span class="badge {% if ritual.completed %}bg-success{% else %}bg-warning{% endif %}">
+                                            {% if ritual.completed %}Completed{% else %}Missed{% endif %}
+                                        </span>
+                                        <small class="text-muted">{{ ritual.date }}</small>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No ritual logs yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3>Resilience</h3>
+                            <a href="{% url 'profile_app:resilience_create' %}" class="btn btn-sm btn-primary">Add</a>
+                        </div>
+                        <div class="card-body">
+                            {% if resilience_logs %}
+                                <ul class="list-group">
+                                    {% for log in resilience_logs %}
+                                    <li class="list-group-item">
+                                        <strong>{{ log.action }}</strong>
+                                        <small class="text-muted float-end">{{ log.date }}</small>
+                                        <p>{{ log.description|truncatechars:80 }}</p>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No resilience logs yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3>Faith</h3>
+                            <a href="{% url 'profile_app:faith_create' %}" class="btn btn-sm btn-primary">Add</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                {% for code, label in faith_stats.items %}
+                                <div class="col-4 text-center">
+                                    <div class="faith-stat">
+                                        <span class="faith-count">{{ label }}</span>
+                                        <span class="faith-label">{{ code|title|cut:"_" }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% if faith_logs %}
+                                <ul class="list-group">
+                                    {% for log in faith_logs %}
+                                    <li class="list-group-item">
+                                        <strong>{{ log.get_log_type_display }}</strong>
+                                        <small class="text-muted float-end">{{ log.date }}</small>
+                                        <p>{{ log.details|truncatechars:100 }}</p>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No faith logs yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3>Empathy</h3>
+                            <a href="{% url 'profile_app:empathy_create' %}" class="btn btn-sm btn-primary">Add</a>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-2">Total reflections: {{ empathy_stats }}</p>
+                            {% if empathy_logs %}
+                                <ul class="list-group">
+                                    {% for log in empathy_logs %}
+                                    <li class="list-group-item">
+                                        <strong>Reflection:</strong> {{ log.reflection|truncatechars:80 }}
+                                        <br>
+                                        <strong>Blessing Vision:</strong> {{ log.blessing_vision|truncatechars:80 }}
+                                        <br>
+                                        <small class="text-muted">{{ log.date }}</small>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No empathy logs yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3>Goals</h3>
+                            <a href="{% url 'profile_app:goal_create' %}" class="btn btn-sm btn-primary">Add Goal</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-4 text-center">
+                                    <div class="goal-stat">
+                                        <span class="goal-count">{{ goal_stats.active }}</span>
+                                        <span class="goal-label">Active</span>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <div class="goal-stat">
+                                        <span class="goal-count">{{ goal_stats.completed }}</span>
+                                        <span class="goal-label">Completed</span>
+                                    </div>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <div class="goal-stat">
+                                        <span class="goal-count">{{ goal_stats.paused }}</span>
+                                        <span class="goal-label">Paused</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if goals %}
+                                <ul class="list-group">
+                                    {% for goal in goals %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ goal.title }}</strong>
+                                            <span class="badge bg-secondary ms-2">{{ goal.get_category_display }}</span>
+                                            <span class="badge {% if goal.status == 'active' %}bg-primary{% elif goal.status == 'completed' %}bg-success{% else %}bg-warning{% endif %} ms-1">
+                                                {{ goal.get_status_display }}
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">{{ goal.target_date|default:"No deadline" }}</small>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No goals set yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h3>Progress Tracker</h3>
+                            <a href="{% url 'profile_app:progress_create' %}" class="btn btn-sm btn-primary">Log Progress</a>
+                        </div>
+                        <div class="card-body">
+                            {% if progress_logs %}
+                                <canvas id="progressChart" width="400" height="200"></canvas>
+                                <ul class="list-group mt-3">
+                                    {% for log in progress_logs %}
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>Awareness: <strong>{{ log.awareness_score }}</strong></span>
+                                        <span>Numeric: <strong>{{ log.numeric_log }}</strong></span>
+                                        <small class="text-muted">{{ log.date }}</small>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted">No progress logs yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Integration</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="{% url 'soullog:journal' %}" class="btn btn-outline-primary w-100 mb-2">SoulLog</a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{% url 'work_alignment:dashboard' %}" class="btn btn-outline-primary w-100 mb-2">Work Alignment</a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{% url 'core_healing_path:dashboard' %}" class="btn btn-outline-primary w-100 mb-2">Core Healing Path</a>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="{% url 'soulconnect:dashboard' %}" class="btn btn-outline-primary w-100 mb-2">SoulConnect</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if progress_logs %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('progressChart').getContext('2d');
+    var labels = {{ progress_chart_labels|safe }};
+    var awarenessScores = {{ progress_chart_awareness|safe }};
+    var numericLogs = {{ progress_chart_numeric|safe }};
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Awareness Score',
+                    data: awarenessScores,
+                    borderColor: '#5b9bd5',
+                    backgroundColor: 'rgba(91, 155, 213, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Numeric Growth',
+                    data: numericLogs,
+                    borderColor: '#4caf50',
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#b0b3b8' },
+                    grid: { color: '#3a3f4a' }
+                },
+                x: {
+                    ticks: { color: '#b0b3b8' },
+                    grid: { color: '#3a3f4a' }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: '#e4e6eb' }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

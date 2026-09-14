@@ -29,8 +29,9 @@ urlpatterns = [
     path("core-healing-path/", include("Core_healing_path.urls")),
     path("profile/", include("system_apps.profile_app.urls")),
     path("legal/", include("system_apps.legal.urls")),
-    path("soullog/", include("SoulLog.urls")),
-    path("work-alignment/", include("system_apps.work_alignment.urls")),
+    path("soullog/", include("soullog.urls")),
+    path("work-alignment/", include("work_alignment.urls")),
+    path("soulconnect/", include("soulconnect.urls")),
 ]
 
 if settings.DEBUG:

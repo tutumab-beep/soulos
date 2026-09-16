@@ -94,7 +94,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -149,7 +148,7 @@ In the **Web** tab → **Static files** section:
 
 | URL | Directory |
 |---|---|
-| `/static/` | `/home/SoulOS/soulos/staticfiles/` |
+| `/static/` | `/home/SoulOS/soulos/static/` |
 | `/media/` | `/home/SoulOS/soulos/media/` |
 
 ## 6. Database

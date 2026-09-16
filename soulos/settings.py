@@ -20,7 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-default-key")
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY", "unsafe-default-key-for-development-only"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -132,7 +134,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 

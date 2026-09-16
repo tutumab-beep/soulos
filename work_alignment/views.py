@@ -199,6 +199,7 @@ def edit_entry(request, entry_date=None):
             "solutions": request.POST.get("solutions", ""),
             "daily_plan": request.POST.get("daily_plan", ""),
             "achievements": request.POST.get("achievements", ""),
+            "failures": request.POST.get("failures", ""),
             "gains": int(request.POST.get("gains", 0)),
             "losses": int(request.POST.get("losses", 0)),
             "indicators": {

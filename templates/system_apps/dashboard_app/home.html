@@ -1,43 +1,14 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>SoulOS Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/healing-styles.css' %}">
-</head>
-<body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <a href="{% url 'index' %}" class="nav-home">Home</a>
-            <a href="{% url 'dashboard_app:home' %}" class="nav-dashboard">Dashboard</a>
-        </div>
-        <div class="nav-right">
-            <span class="nav-user">👤 {{ user.username }}</span>
-            <a href="{% url 'profile_app:dashboard' %}" class="nav-link">👤 Profile</a>
-            <a href="{% url 'logout' %}" class="nav-link">🚪 Logout</a>
-        </div>
-    </nav>
 
-    <div class="container">
-        <div class="card">
-            <h2>Dashboard</h2>
-            <p>Welcome to your SoulOS dashboard.</p>
-            <a href="{% url 'core_healing_path:dashboard' %}" class="btn btn-primary">Core Healing Path</a>
-            <a href="{% url 'soullog:journal' %}" class="btn btn-primary">SoulLog</a>
-            <a href="{% url 'work_alignment:dashboard' %}" class="btn btn-primary">Work Alignment</a>
-        </div>
+{% block title %}Dashboard - SoulOS{% endblock %}
 
-        <div class="card">
-            <h3>Quick Actions</h3>
-            <a href="{% url 'soullog:add_entry' %}" class="btn btn-secondary">Add Entry</a>
-            <a href="{% url 'work_alignment:entries' %}" class="btn btn-secondary">Analytics</a>
-            <a href="{% url 'profile_app:dashboard' %}" class="btn btn-secondary">Reminders</a>
-        </div>
-    </div>
-
-    <footer class="footer">
-        <p>2026 SoulOS | <a href="{% url 'legal:privacy' %}">Privacy</a> | <a href="{% url 'legal:terms' %}">Terms</a></p>
-    </footer>
-</body>
-</html>
+{% block content %}
+<div>
+    <h1>Dashboard</h1>
+    <p>Welcome to your SoulOS dashboard.</p>
+    <a href="{% url 'core_healing_path:dashboard' %}">Core Healing Path</a>
+    <a href="{% url 'soullog:journal' %}">SoulLog</a>
+    <a href="{% url 'work_alignment:dashboard' %}">Work Alignment</a>
+</div>
+{% endblock %}

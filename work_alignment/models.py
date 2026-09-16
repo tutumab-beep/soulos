@@ -13,6 +13,7 @@ class WorkLog(models.Model):
     solutions = models.TextField(blank=True)
     daily_plan = models.TextField(blank=True)
     achievements = models.TextField(blank=True)
+    failures = models.TextField(blank=True)
     gains = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

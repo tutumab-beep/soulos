@@ -14,9 +14,9 @@
                 <a href="{% if user.is_authenticated %}{% url 'dashboard_app:home' %}{% else %}{% url 'index' %}{% endif %}" class="navbar-brand">SoulOS</a>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
-                        <li><a href="javascript:history.back()">← Back</a></li>
-                        <li><span>👤 {{ user.username }}</span></li>
-                        <li><a href="{% url 'profile_app:dashboard' %}">👤 Profile</a></li>
+                        <li><a href="{% url 'dashboard_app:home' %}">Back</a></li>
+                        <li><span>Logged in as {{ user.username }}</span></li>
+                        <li><a href="{% url 'profile_app:dashboard' %}">Profile</a></li>
                     {% else %}
                         
                     {% endif %}
@@ -33,7 +33,7 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-            <a href="javascript:history.back()" class="btn back-btn">Back</a>
+            <a href="{% url 'dashboard_app:home' %}" class="btn back-btn">Back to Dashboard</a>
         {% endif %}
 
         {% block content %}{% endblock %}

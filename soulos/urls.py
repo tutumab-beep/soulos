@@ -32,6 +32,7 @@ urlpatterns = [
     path("soullog/", include("soullog.urls")),
     path("work-alignment/", include("work_alignment.urls")),
     path("soulconnect/", include("soulconnect.urls")),
+    path("alignment/", include("daily_alignment.urls")),
 ]
 
 if settings.DEBUG:

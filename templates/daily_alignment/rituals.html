@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Daily Foundations - SoulOS{% endblock %}
+
+{% block content %}
+<div class="rituals-page">
+    <h1>Daily Foundations</h1>
+    <p class="text-muted">Build your daily rituals for morning and evening</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <h2>Morning Rituals <span class="streak-badge">{{ morning_streak }} day streak</span></h2>
+                {% if morning_rituals %}
+                    <ul class="ritual-list">
+                        {% for ritual in morning_rituals %}
+                            {% with completion=ritual.completions.all|first %}
+                                <li class="ritual-item">
+                                    <input type="checkbox" class="ritual-checkbox" data-ritual-id="{{ ritual.id }}" {% if completion and completion.completed %}checked{% endif %}>
+                                    <span class="ritual-title">{{ ritual.title }}</span>
+                                    <form method="POST" action="{% url 'daily_alignment:rituals' %}" class="ritual-form-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="ritual_id" value="{{ ritual.id }}">
+                                        <input type="hidden" name="toggle_ritual" value="1">
+                                        <button type="submit" class="btn btn-sm btn-secondary">Toggle</button>
+                                    </form>
+                                    <form method="POST" action="{% url 'daily_alignment:rituals' %}" class="ritual-form-inline" onsubmit="return confirm('Delete this ritual?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="ritual_id" value="{{ ritual.id }}">
+                                        <input type="hidden" name="delete_ritual" value="1">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </li>
+                            {% endwith %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No morning rituals yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <h2>Evening Rituals <span class="streak-badge">{{ evening_streak }} day streak</span></h2>
+                {% if evening_rituals %}
+                    <ul class="ritual-list">
+                        {% for ritual in evening_rituals %}
+                            {% with completion=ritual.completions.all|first %}
+                                <li class="ritual-item">
+                                    <input type="checkbox" class="ritual-checkbox" data-ritual-id="{{ ritual.id }}" {% if completion and completion.completed %}checked{% endif %}>
+                                    <span class="ritual-title">{{ ritual.title }}</span>
+                                    <form method="POST" action="{% url 'daily_alignment:rituals' %}" class="ritual-form-inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="ritual_id" value="{{ ritual.id }}">
+                                        <input type="hidden" name="toggle_ritual" value="1">
+                                        <button type="submit" class="btn btn-sm btn-secondary">Toggle</button>
+                                    </form>
+                                    <form method="POST" action="{% url 'daily_alignment:rituals' %}" class="ritual-form-inline" onsubmit="return confirm('Delete this ritual?');">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="ritual_id" value="{{ ritual.id }}">
+                                        <input type="hidden" name="delete_ritual" value="1">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </li>
+                            {% endwith %}
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No evening rituals yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Create New Ritual</h2>
+        <form method="POST" action="{% url 'daily_alignment:rituals' %}">
+            {% csrf_token %}
+            <input type="hidden" name="create_ritual" value="1">
+            <div class="form-group">
+                <label for="id_title">Ritual Title</label>
+                <input type="text" name="title" id="id_title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="id_category">Category</label>
+                <select name="category" id="id_category" class="form-control" required>
+                    <option value="MORNING">Morning</option>
+                    <option value="EVENING">Evening</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Ritual</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

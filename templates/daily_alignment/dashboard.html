@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Daily Alignment - SoulOS{% endblock %}
+
+{% block content %}
+<div class="daily-alignment">
+    <h1>Daily Alignment</h1>
+    <p class="text-muted">Your daily operating system</p>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <h2>Today's Mantra</h2>
+                <form method="POST" action="{% url 'daily_alignment:save_mantra' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_mantra">Mantra</label>
+                        <textarea name="mantra" id="id_mantra" rows="2" class="form-control">{{ plan.mantra }}</textarea>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">Save Mantra</button>
+                        <a href="{% url 'daily_alignment:random_inspiration' %}" class="btn btn-secondary">Random Inspiration</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Daily Foundations</h2>
+                <a href="{% url 'daily_alignment:rituals' %}" class="btn btn-primary">Open Rituals</a>
+            </div>
+
+            <div class="card">
+                <h2>Daily Intention</h2>
+                <p class="text-muted">What kind of person will I be today?</p>
+                <form method="POST" action="{% url 'daily_alignment:save_mantra' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_intention">Intention</label>
+                        <textarea name="intention" id="id_intention" rows="3" class="form-control">{{ plan.intention }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Intention</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Today's Big 3</h2>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: {{ progress_percent }}%"></div>
+                </div>
+                <p class="text-center">{{ completed_priorities }}/3 Complete</p>
+                {% if priorities %}
+                    <ul class="task-list">
+                        {% for priority in priorities %}
+                            <li class="task-item">
+                                <input type="checkbox" {% if priority.completed %}checked{% endif %} onchange="window.location.href='{% url 'daily_alignment:toggle_priority' priority.id %}'">
+                                <span class="{% if priority.completed %}completed{% endif %}">{{ priority.title }}</span>
+                                <div class="task-actions">
+                                    <a href="{% url 'daily_alignment:edit_priority' priority.id %}" class="btn btn-sm btn-secondary">Edit</a>
+                                    <a href="{% url 'daily_alignment:delete_priority' priority.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if total_priorities < 3 %}
+                    <form method="POST" action="{% url 'daily_alignment:add_priority' %}" class="add-task-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input type="text" name="title" placeholder="Add a priority..." class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Priority</button>
+                    </form>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h2>Task Brain Dump</h2>
+                {% if tasks %}
+                    <ul class="task-list">
+                        {% for task in tasks %}
+                            <li class="task-item">
+                                <input type="checkbox" {% if task.completed %}checked{% endif %} onchange="window.location.href='{% url 'daily_alignment:toggle_task' task.id %}'">
+                                <span class="{% if task.completed %}completed{% endif %}">{{ task.title }}</span>
+                                <div class="task-actions">
+                                    <a href="{% url 'daily_alignment:edit_task' task.id %}" class="btn btn-sm btn-secondary">Edit</a>
+                                    <a href="{% url 'daily_alignment:delete_task' task.id %}" class="btn btn-sm btn-danger">Delete</a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <form method="POST" action="{% url 'daily_alignment:add_task' %}" class="add-task-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="title" placeholder="Add a task..." class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <h2>Energy Check</h2>
+                <form method="POST" action="{% url 'daily_alignment:save_mantra' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_energy_level">Energy Level</label>
+                        <select name="energy_level" id="id_energy_level" class="form-control" onchange="this.form.submit()">
+                            {% for value, label in form.energy_level.field.choices %}
+                                <option value="{{ value }}" {% if plan.energy_level == value %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+                <div class="energy-message">
+                    {{ energy_messages|default_if_none:"" }}
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Reminder Snapshot</h2>
+                {% if reminders %}
+                    <ul class="reminder-list">
+                        {% for reminder in reminders %}
+                            <li class="reminder-item">
+                                <span class="reminder-title">{{ reminder.reminder_text }}</span>
+                                <span class="badge {% if reminder.is_completed %}badge-success{% else %}badge-warning{% endif %}">
+                                    {% if reminder.is_completed %}Completed{% else %}Pending{% endif %}
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No reminders for today.</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h2>Evening Reflection</h2>
+                <a href="{% url 'daily_alignment:reflection' %}" class="btn btn-primary">Open Reflection</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

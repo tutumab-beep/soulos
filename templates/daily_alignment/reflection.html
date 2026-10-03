@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Evening Reflection - SoulOS{% endblock %}
+
+{% block content %}
+<div class="reflection-page">
+    <h1>Evening Reflection</h1>
+    <p class="text-muted">Take a moment to reflect on your day</p>
+
+    <div class="card">
+        <h2>Today's Reflection</h2>
+        <form method="POST" action="{% url 'daily_alignment:reflection' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_wins">Wins</label>
+                <textarea name="wins" id="id_wins" rows="4" class="form-control" placeholder="What went well today?">{{ reflection.wins }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="id_lessons">Lessons</label>
+                <textarea name="lessons" id="id_lessons" rows="4" class="form-control" placeholder="What did you learn today?">{{ reflection.lessons }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="id_gratitude">Gratitude</label>
+                <textarea name="gratitude" id="id_gratitude" rows="4" class="form-control" placeholder="What are you grateful for?">{{ reflection.gratitude }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Reflection</button>
+        </form>
+    </div>
+
+    {% if previous_reflections %}
+        <div class="card">
+            <h2>Previous Reflections</h2>
+            {% for ref in previous_reflections %}
+                <div class="reflection-item">
+                    <h3>{{ ref.date }}</h3>
+                    {% if ref.wins %}
+                        <div class="reflection-section">
+                            <strong>Wins:</strong>
+                            <p>{{ ref.wins }}</p>
+                        </div>
+                    {% endif %}
+                    {% if ref.lessons %}
+                        <div class="reflection-section">
+                            <strong>Lessons:</strong>
+                            <p>{{ ref.lessons }}</p>
+                        </div>
+                    {% endif %}
+                    {% if ref.gratitude %}
+                        <div class="reflection-section">
+                            <strong>Gratitude:</strong>
+                            <p>{{ ref.gratitude }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

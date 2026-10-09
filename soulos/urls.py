@@ -33,6 +33,7 @@ urlpatterns = [
     path("work-alignment/", include("work_alignment.urls")),
     path("soulconnect/", include("soulconnect.urls")),
     path("alignment/", include("daily_alignment.urls")),
+    path("settings/", include("system_apps.settings_app.urls")),
 ]
 
 if settings.DEBUG:

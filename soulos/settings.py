@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     "work_alignment",
     "soulconnect",
     "daily_alignment",
+    "system_apps.settings_app",
+
 ]
 
 MIDDLEWARE = [
@@ -138,6 +140,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
 
 
 LOGIN_REDIRECT_URL = "dashboard_app:home"

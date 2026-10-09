@@ -7,9 +7,10 @@
 <div>
     <h1>Dashboard</h1>
     <p>Welcome to your SoulOS dashboard.</p>
-    <a href="{% url 'core_healing_path:dashboard' %}">Core Healing Path</a>
-    <a href="{% url 'soullog:journal' %}">SoulLog</a>
-    <a href="{% url 'work_alignment:dashboard' %}">Work Alignment</a>
-    <a href="{% url 'daily_alignment:dashboard' %}">Daily Alignment</a>
+    <a href="{% url 'core_healing_path:dashboard' %}" class="btn btn-outline">Core Healing Path</a>
+    <a href="{% url 'soullog:journal' %}" class="btn btn-outline">SoulLog</a>
+    <a href="{% url 'work_alignment:dashboard' %}" class="btn btn-outline">Work Alignment</a>
+    <a href="{% url 'daily_alignment:dashboard' %}" class="btn btn-outline">Daily Alignment</a>
+    <a href="{% url 'settings_app:settings_dashboard' %}" class="btn btn-primary">Settings</a>
 </div>
 {% endblock %}

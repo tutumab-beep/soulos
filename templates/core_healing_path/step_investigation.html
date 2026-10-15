@@ -1,0 +1,60 @@
+{% extends "core_healing_path/journey_step.html" %}
+{% load static %}
+
+{% block step_fields %}
+<!-- Step 2: Investigation (Thought Analyzer) -->
+<div class="stack">
+    <div class="form-field">
+        <label for="id_thought" class="form-label required">The Thought</label>
+        <textarea name="thought" id="id_thought" class="form-textarea" rows="4"
+                  placeholder="What thought is driving this feeling? Write it exactly as it appears."
+                  required aria-describedby="id_thought_help">{{ form.thought.value|default:"" }}</textarea>
+        <div class="form-help" id="id_thought_help">Capture the exact thought. Example: "I'll never be good enough" or "Everything will go wrong."</div>
+        {% if form.thought.errors %}
+            <div class="form-error" id="id_thought_error" aria-live="polite">{{ form.thought.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-row">
+        <div class="form-field">
+            <label for="id_evidence_for" class="form-label">Evidence Supporting This Thought</label>
+            <textarea name="evidence_for" id="id_evidence_for" class="form-textarea" rows="3"
+                      placeholder="What facts support this thought?"
+                      aria-describedby="id_evidence_for_help">{{ form.evidence_for.value|default:"" }}</textarea>
+            <div class="form-help" id="id_evidence_for_help">What specific evidence makes this thought feel true?</div>
+        </div>
+
+        <div class="form-field">
+            <label for="id_evidence_against" class="form-label">Evidence Against This Thought</label>
+            <textarea name="evidence_against" id="id_evidence_against" class="form-textarea" rows="3"
+                      placeholder="What facts contradict this thought?"
+                      aria-describedby="id_evidence_against_help">{{ form.evidence_against.value|default:"" }}</textarea>
+            <div class="form-help" id="id_evidence_against_help">What evidence suggests this thought might not be entirely accurate?</div>
+        </div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_alternative" class="form-label">Alternative Perspective</label>
+        <textarea name="alternative" id="id_alternative" class="form-textarea" rows="3"
+                  placeholder="How else could you see this situation?"
+                  aria-describedby="id_alternative_help">{{ form.alternative.value|default:"" }}</textarea>
+        <div class="form-help" id="id_alternative_help">If a friend had this thought, what would you say? What's another way to view this?</div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_thinking_pattern" class="form-label">Thinking Pattern (Optional)</label>
+        <select name="thinking_pattern" id="id_thinking_pattern" class="form-select" aria-describedby="id_thinking_pattern_help">
+            <option value="">Select if applicable...</option>
+            <option value="all_or_nothing" {% if form.thinking_pattern.value == "all_or_nothing" %}selected{% endif %}>All-or-Nothing Thinking</option>
+            <option value="catastrophizing" {% if form.thinking_pattern.value == "catastrophizing" %}selected{% endif %}>Catastrophizing</option>
+            <option value="mind_reading" {% if form.thinking_pattern.value == "mind_reading" %}selected{% endif %}>Mind Reading</option>
+            <option value="personalization" {% if form.thinking_pattern.value == "personalization" %}selected{% endif %}>Personalization</option>
+            <option value="should_statements" {% if form.thinking_pattern.value == "should_statements" %}selected{% endif %}>Should Statements</option>
+            <option value="overgeneralization" {% if form.thinking_pattern.value == "overgeneralization" %}selected{% endif %}>Overgeneralization</option>
+            <option value="emotional_reasoning" {% if form.thinking_pattern.value == "emotional_reasoning" %}selected{% endif %}>Emotional Reasoning</option>
+            <option value="discounting_positive" {% if form.thinking_pattern.value == "discounting_positive" %}selected{% endif %}>Discounting the Positive</option>
+        </select>
+        <div class="form-help" id="id_thinking_pattern_help">Common thinking patterns that can distort reality. Select if one fits.</div>
+    </div>
+</div>
+{% endblock %}

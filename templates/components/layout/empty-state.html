@@ -1,0 +1,19 @@
+<div class="empty-state {% if class %}{{ class }}{% endif %}" {% if id %}id="{{ id }}"{% endif %}>
+    {% if icon %}
+        <div class="empty-state-icon" aria-hidden="true">
+            {{ icon }}
+        </div>
+    {% endif %}
+
+    {% if title %}
+        <h3 class="empty-state-title">{{ title }}</h3>
+    {% endif %}
+
+    {% if description %}
+        <p class="empty-state-description">{{ description }}</p>
+    {% endif %}
+
+    {% if action %}
+        <div class="empty-state-action">{{ action }}</div>
+    {% endif %}
+</div>

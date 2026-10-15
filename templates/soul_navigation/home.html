@@ -1,0 +1,158 @@
+{% extends "soul_navigation/base.html" %}
+{% load static %}
+
+{% block title %}Soul Navigation - SoulOS{% endblock %}
+
+{% block content %}
+<div class="sn-layout">
+  <header class="sn-header">
+    <div class="container">
+      <nav class="progress-stepper" aria-label="Navigation progress">
+        {% if progress_steps %}
+        {% for step in progress_steps %}
+        <div class="progress-step {% if step.active %}current{% elif step.completed %}completed{% endif %}" data-step="{{ step.number }}">
+          <div class="progress-step-circle" aria-hidden="true">
+            {% if step.completed %}
+              <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <path d="M20 6L9 17l-5-5"/>
+              </svg>
+            {% else %}
+              {{ step.number }}
+            {% endif %}
+          </div>
+          <span class="progress-step-label">{{ step.name }}</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </nav>
+
+      {% if progress_steps %}
+      <div class="journey-progress" role="progressbar" aria-valuenow="{{ progress_steps|length }}0" aria-valuemin="0" aria-valuemax="100" aria-label="Navigation progress">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ progress_steps|length }}0%"></div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="sn-main" role="main">
+    <div class="container">
+      <div class="sn-content">
+        <div class="sn-home">
+          <!-- Hero Section -->
+          <section class="sn-hero">
+            <div class="sn-hero-icon" aria-hidden="true">🧭</div>
+            <h1 class="sn-hero-title">Soul Navigation</h1>
+            <p class="sn-hero-subtitle">Your trusted guide from confusion to clarity</p>
+          </section>
+
+          <!-- Daily Check-in -->
+          <section class="sn-section sn-checkin-section">
+            <h2 class="sn-section-title">Daily Check-in</h2>
+            <p class="sn-section-subtitle">How are you right now?</p>
+            
+            {% if checkin %}
+            <div class="sn-checkin-complete">
+              <div class="sn-mood-badge sn-mood-{{ checkin.mood }}">
+                {% if checkin.mood == "great" %}😀
+                {% elif checkin.mood == "good" %}🙂
+                {% elif checkin.mood == "okay" %}😐
+                {% elif checkin.mood == "struggling" %}😔
+                {% elif checkin.mood == "difficult" %}😢
+                {% endif %}
+                <span>{{ checkin.get_mood_display }}</span>
+              </div>
+              <p class="sn-checkin-time">Checked in today</p>
+            </div>
+            {% else %}
+            <form method="post" action="{% url 'soul_navigation:daily_checkin' %}" class="sn-checkin-form">
+              {% csrf_token %}
+              <div class="sn-mood-options" role="radiogroup" aria-label="How are you feeling?">
+                <button type="submit" name="mood" value="great" class="sn-mood-btn sn-mood-great" role="radio" aria-label="Great">
+                  <span class="sn-mood-emoji">😀</span>
+                  <span class="sn-mood-label">Great</span>
+                </button>
+                <button type="submit" name="mood" value="good" class="sn-mood-btn sn-mood-good" role="radio" aria-label="Good">
+                  <span class="sn-mood-emoji">🙂</span>
+                  <span class="sn-mood-label">Good</span>
+                </button>
+                <button type="submit" name="mood" value="okay" class="sn-mood-btn sn-mood-okay" role="radio" aria-label="Okay">
+                  <span class="sn-mood-emoji">😐</span>
+                  <span class="sn-mood-label">Okay</span>
+                </button>
+                <button type="submit" name="mood" value="struggling" class="sn-mood-btn sn-mood-struggling" role="radio" aria-label="Struggling">
+                  <span class="sn-mood-emoji">😔</span>
+                  <span class="sn-mood-label">Struggling</span>
+                </button>
+                <button type="submit" name="mood" value="difficult" class="sn-mood-btn sn-mood-difficult" role="radio" aria-label="Difficult">
+                  <span class="sn-mood-emoji">😢</span>
+                  <span class="sn-mood-label">Difficult</span>
+                </button>
+              </div>
+            </form>
+            {% endif %}
+          </section>
+
+          <!-- Start Navigation Button -->
+          <section class="sn-section">
+            <a href="{% url 'soul_navigation:start' %}" class="btn btn-primary btn-lg btn-block">
+              <span class="icon icon-lg" aria-hidden="true">🧭</span>
+              <span>Start Navigation</span>
+            </a>
+            <p class="sn-btn-hint">Takes under 3 minutes • No typing required</p>
+          </section>
+
+          <!-- Recent Sessions -->
+          {% if recent_sessions %}
+          <section class="sn-section sn-history-section">
+            <div class="sn-section-header">
+              <h2 class="sn-section-title">Recent Journeys</h2>
+              <a href="{% url 'soul_navigation:history' %}" class="btn btn-ghost btn-sm">View all</a>
+            </div>
+            <div class="sn-session-list">
+              {% for session in recent_sessions %}
+              <a href="{% url 'soul_navigation:summary' session.id %}" class="sn-session-card">
+                <div class="sn-session-meta">
+                  <span class="sn-session-date">{{ session.created_at|date:"M d, Y" }}</span>
+                  <span class="sn-session-step">Completed</span>
+                </div>
+                <div class="sn-session-issues">
+                  {% for issue in session.observed_issues|slice:":3" %}
+                  <span class="sn-issue-chip">{{ issue|capfirst }}</span>
+                  {% endfor %}
+                  {% if session.observed_issues|length > 3 %}
+                  <span class="sn-issue-chip">+{{ session.observed_issues|length|add:"-3" }} more</span>
+                  {% endif %}
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+          </section>
+          {% endif %}
+
+          <!-- Mood Trend (if history exists) -->
+          {% if mood_history %}
+          <section class="sn-section sn-trend-section">
+            <h2 class="sn-section-title">Your Mood This Week</h2>
+            <div class="sn-trend-chart" role="img" aria-label="Mood trend over 7 days">
+              {% for checkin in mood_history %}
+              <div class="sn-trend-day sn-mood-{{ checkin.mood }}" title="{{ checkin.date|date:'M d' }}: {{ checkin.get_mood_display }}">
+                {% if checkin.mood == "great" %}😀
+                {% elif checkin.mood == "good" %}🙂
+                {% elif checkin.mood == "okay" %}😐
+                {% elif checkin.mood == "struggling" %}😔
+                {% elif checkin.mood == "difficult" %}😢
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+            <p class="sn-trend-note">Tap a day to see details</p>
+          </section>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

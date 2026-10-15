@@ -1,0 +1,45 @@
+{% extends "core_healing_path/journey_step.html" %}
+{% load static %}
+
+{% block step_fields %}
+<!-- Step 3: Reflection (Perspective Cycle) -->
+<div class="stack">
+    <div class="form-field">
+        <label for="id_what_matters" class="form-label required">What Matters Here?</label>
+        <textarea name="what_matters" id="id_what_matters" class="form-textarea" rows="3"
+                  placeholder="What values, principles, or people are at stake?"
+                  required aria-describedby="id_what_matters_help">{{ form.what_matters.value|default:"" }}</textarea>
+        <div class="form-help" id="id_what_matters_help">What do you care about in this situation? What values are being challenged?</div>
+        {% if form.what_matters.errors %}
+            <div class="form-error" id="id_what_matters_error" aria-live="polite">{{ form.what_matters.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_friend_advice" class="form-label">What Would You Tell a Friend?</label>
+        <textarea name="friend_advice" id="id_friend_advice" class="form-textarea" rows="3"
+                  placeholder="If a friend were in this situation, what would you say?"
+                  aria-describedby="id_friend_advice_help">{{ form.friend_advice.value|default:"" }}</textarea>
+        <div class="form-help" id="id_friend_advice_help">We're often kinder to others than ourselves. What compassionate advice would you give?</div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_intentional_response" class="form-label required">Your Intentional Response</label>
+        <textarea name="intentional_response" id="id_intentional_response" class="form-textarea" rows="3"
+                  placeholder="How do you choose to respond, aligned with what matters?"
+                  required aria-describedby="id_intentional_response_help">{{ form.intentional_response.value|default:"" }}</textarea>
+        <div class="form-help" id="id_intentional_response_help">Based on what matters, how do you want to respond? Not react - respond intentionally.</div>
+        {% if form.intentional_response.errors %}
+            <div class="form-error" id="id_intentional_response_error" aria-live="polite">{{ form.intentional_response.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_perspective_shift" class="form-label">Perspective Shift</label>
+        <textarea name="perspective_shift" id="id_perspective_shift" class="form-textarea" rows="3"
+                  placeholder="How has your view of this situation changed?"
+                  aria-describedby="id_perspective_shift_help">{{ form.perspective_shift.value|default:"" }}</textarea>
+        <div class="form-help" id="id_perspective_shift_help">Complete this: "I used to think... Now I see..."</div>
+    </div>
+</div>
+{% endblock %}

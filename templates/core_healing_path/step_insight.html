@@ -1,0 +1,42 @@
+{% extends "core_healing_path/journey_step.html" %}
+{% load static %}
+
+{% block step_fields %}
+<!-- Step 4: Insight (Clarity Flow) -->
+<div class="stack">
+    <div class="form-field">
+        <label for="id_key_insight" class="form-label required">Key Insight</label>
+        <textarea name="key_insight" id="id_key_insight" class="form-textarea" rows="3"
+                  placeholder="What have you realized?"
+                  required aria-describedby="id_key_insight_help">{{ form.key_insight.value|default:"" }}</textarea>
+        <div class="form-help" id="id_key_insight_help">What's the core understanding that emerged? One clear sentence if possible.</div>
+        {% if form.key_insight.errors %}
+            <div class="form-error" id="id_key_insight_error" aria-live="polite">{{ form.key_insight.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_lesson_learned" class="form-label">Lesson Learned</label>
+        <textarea name="lesson_learned" id="id_lesson_learned" class="form-textarea" rows="3"
+                  placeholder="What will you take forward?"
+                  aria-describedby="id_lesson_learned_help">{{ form.lesson_learned.value|default:"" }}</textarea>
+        <div class="form-help" id="id_lesson_learned_help">What practical lesson can you apply next time a similar situation arises?</div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_gratitude" class="form-label">Gratitude</label>
+        <textarea name="gratitude" id="id_gratitude" class="form-textarea" rows="2"
+                  placeholder="What can you appreciate in this moment?"
+                  aria-describedby="id_gratitude_help">{{ form.gratitude.value|default:"" }}</textarea>
+        <div class="form-help" id="id_gratitude_help">Even in difficulty, what can you appreciate? A strength, a support, a learning.</div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_new_perspective" class="form-label">New Perspective</label>
+        <textarea name="new_perspective" id="id_new_perspective" class="form-textarea" rows="3"
+                  placeholder='Complete this: "I used to think... Now I see..."'
+                  aria-describedby="id_new_perspective_help">{{ form.new_perspective.value|default:"" }}</textarea>
+        <div class="form-help" id="id_new_perspective_help">How has your understanding shifted? Frame as a before/after.</div>
+    </div>
+</div>
+{% endblock %}

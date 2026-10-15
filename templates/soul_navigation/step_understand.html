@@ -1,0 +1,136 @@
+{% extends "soul_navigation/base.html" %}
+{% load static %}
+
+{% block title %}Understand - Soul Navigation{% endblock %}
+
+{% block content %}
+<div class="sn-layout">
+  <header class="sn-progress-header">
+    <div class="container">
+      <div class="sn-progress-meta">
+        <div class="sn-step-indicator">Step {{ progress_steps.1.number|default:2 }} of 6</div>
+        <div class="sn-step-encouragement">You're gaining clarity.</div>
+      </div>
+      
+      <div class="sn-progress-bar-container">
+        <div class="sn-progress-track">
+          <div class="sn-progress-fill" style="width: 33.3%"></div>
+        </div>
+        <div class="sn-progress-text">33.3% complete</div>
+      </div>
+      
+      <nav class="sn-progress-steps" aria-label="Navigation progress">
+        {% for step in progress_steps %}
+        <div class="sn-progress-step {% if step.active %}current{% elif step.completed %}completed{% endif %}" data-step="{{ step.number }}">
+          <div class="sn-progress-step-circle" aria-hidden="true">
+            {% if step.completed %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            {% else %}
+            {{ step.number }}
+            {% endif %}
+          </div>
+          <span class="sn-progress-step-label">{{ step.name }}</span>
+        </div>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="sn-main" role="main">
+    <div class="container">
+      <div class="sn-guidance">
+        <p class="sn-guidance-text">Let's explore what may be contributing.</p>
+      </div>
+
+      <form method="post" class="sn-form" novalidate>
+        {% csrf_token %}
+        
+        <header class="sn-step-header">
+          <h1 class="sn-step-title">Understand</h1>
+          <p class="sn-step-subtitle">Why might you feel this way?</p>
+        </header>
+
+        <fieldset class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Choose what may be contributing</legend>
+
+          <div class="sn-group">
+            <h3 class="sn-group-title">People</h3>
+            <div class="sn-card-grid">
+              {% for value, label in choices %}
+                {% if value == "relationships" or value == "family" or value == "loneliness" %}
+                <label class="sn-card {% if value in session.influences %}selected{% endif %}" for="influence-{{ forloop.counter }}">
+                  <input type="checkbox" id="influence-{{ forloop.counter }}" name="influences" value="{{ value }}" {% if value in session.influences %}checked{% endif %}>
+                  <span class="sn-card-content">{{ label }}</span>
+                  <span class="sn-card-check" aria-hidden="true">✓</span>
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="sn-group">
+            <h3 class="sn-group-title">Life</h3>
+            <div class="sn-card-grid">
+              {% for value, label in choices %}
+                {% if value == "work" or value == "school" or value == "finances" or value == "pressure" or value == "expectations" or value == "environment" %}
+                <label class="sn-card {% if value in session.influences %}selected{% endif %}" for="influence-{{ forloop.counter }}">
+                  <input type="checkbox" id="influence-{{ forloop.counter }}" name="influences" value="{{ value }}" {% if value in session.influences %}checked{% endif %}>
+                  <span class="sn-card-content">{{ label }}</span>
+                  <span class="sn-card-check" aria-hidden="true">✓</span>
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="sn-group">
+            <h3 class="sn-group-title">Body</h3>
+            <div class="sn-card-grid">
+              {% for value, label in choices %}
+                {% if value == "health" or value == "sleep" %}
+                <label class="sn-card {% if value in session.influences %}selected{% endif %}" for="influence-{{ forloop.counter }}">
+                  <input type="checkbox" id="influence-{{ forloop.counter }}" name="influences" value="{{ value }}" {% if value in session.influences %}checked{% endif %}>
+                  <span class="sn-card-content">{{ label }}</span>
+                  <span class="sn-card-check" aria-hidden="true">✓</span>
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="sn-group">
+            <h3 class="sn-group-title">Mind</h3>
+            <div class="sn-card-grid">
+              {% for value, label in choices %}
+                {% if value == "past" or value == "uncertainty" or value == "habit" or value == "unknown" %}
+                <label class="sn-card {% if value in session.influences %}selected{% endif %}" for="influence-{{ forloop.counter }}">
+                  <input type="checkbox" id="influence-{{ forloop.counter }}" name="influences" value="{{ value }}" {% if value in session.influences %}checked{% endif %}>
+                  <span class="sn-card-content">{{ label }}</span>
+                  <span class="sn-card-check" aria-hidden="true">✓</span>
+                </label>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Anything else contributing? (optional)</legend>
+          <textarea id="other" name="other" class="sn-textarea" placeholder="Share more if you'd like...">{{ session.influences_other }}</textarea>
+        </div>
+
+        <div class="sn-actions">
+          <button type="submit" class="sn-btn">
+            <span>Continue</span>
+            <svg class="sn-btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+{% endblock %}

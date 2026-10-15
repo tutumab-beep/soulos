@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, Avg
 from django.utils import timezone
 from django.urls import reverse
+from django.core.paginator import Paginator
 from .models import (
     HealingLog,
     UserProfile,
@@ -504,13 +505,22 @@ def log_celebration(request):
 
 @login_required
 def transformation_log(request):
-    transformations = Transformation.objects.filter(user=request.user).order_by(
-        "-started_at"
-    )
+    transformations_queryset = Transformation.objects.filter(
+        user=request.user
+    ).order_by("-started_at")
+
+    paginator = Paginator(transformations_queryset, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         "core_healing_path/transformation_log.html",
-        {"transformations": transformations},
+        {
+            "transformations": page_obj.object_list,
+            "page_obj": page_obj,
+            "is_paginated": page_obj.has_other_pages(),
+        },
     )
 
 

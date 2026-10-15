@@ -1,0 +1,33 @@
+<nav class="progress-stepper {% if class %}{{ class }}{% endif %}" aria-label="{{ aria_label|default:'Progress Steps' }}" {% if journey_id %}data-journey-id="{{ journey_id }}"{% endif %}>
+    <ol class="progress-steps" role="list">
+        {% for step in steps %}
+            <li class="progress-step {% if step.completed %}completed{% elif step.current %}current{% endif %}"
+                data-step="{{ forloop.counter }}"
+                {% if step.url %}data-url="{{ step.url }}"{% endif %}
+                role="button"
+                tabindex="0"
+                aria-current="{% if step.current %}step{% elif step.completed %}true{% else %}false{% endif %}"
+                aria-label="{{ step.label }}: Step {{ forloop.counter }} of {{ steps|length }}">
+                <div class="progress-step-circle" aria-hidden="true">
+                    {% if step.completed %}
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                    {% elif step.icon %}
+                        {{ step.icon }}
+                    {% else %}
+                        {{ forloop.counter }}
+                    {% endif %}
+                </div>
+                <span class="progress-step-label">{{ step.label }}</span>
+            </li>
+        {% endfor %}
+    </ol>
+
+    {% if show_progress_bar %}
+        <div class="progress-bar mt-4" role="progressbar" aria-valuenow="{{ progress_percent }}" aria-valuemin="0" aria-valuemax="100" aria-label="Progress: {{ progress_percent }}% complete">
+            <div class="progress-fill" style="width: {{ progress_percent }}%"></div>
+        </div>
+        <p class="text-sm text-tertiary text-center mt-2">Step {{ current_step }} of {{ steps|length }} - {{ progress_percent }}% complete</p>
+    {% endif %}
+</nav>

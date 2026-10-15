@@ -1,0 +1,95 @@
+{% extends "core_healing_path/journey_step.html" %}
+{% load static %}
+
+{% block step_fields %}
+<!-- Journey Summary / Complete View -->
+<div class="stack-lg">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-lg font-semibold mb-4">Your Transformation Journey</h3>
+
+            <div class="journey-final-summary stack">
+                {% if journey_steps %}
+                    {% for step in journey_steps %}
+                        <article class="journey-final-step p-4 rounded-lg" style="background: var(--color-bg-secondary); border: 1px solid var(--color-border);">
+                            <header class="flex items-center gap-3 mb-3">
+                                <span class="badge badge-primary shrink-0">{{ forloop.counter }}</span>
+                                <div>
+                                    <p class="font-semibold">{{ step.step_title }}</p>
+                                    <p class="text-sm text-tertiary">{{ step.step_name }}</p>
+                                </div>
+                            </header>
+                            <div class="prose text-secondary">
+                                {% if step.data %}
+                                    {% if step.step_key == "awareness" %}
+                                        <p><strong>Situation:</strong> {{ step.data.situation|default:"—" }}</p>
+                                        <p><strong>Trigger:</strong> {{ step.data.trigger|default:"—" }}{% if step.data.custom_trigger %} ({{ step.data.custom_trigger }}){% endif %}</p>
+                                        <p><strong>Observation:</strong> {{ step.data.observation|default:"—" }}</p>
+                                        <p><strong>Intensity:</strong> {{ step.data.intensity|default:"—" }}/10</p>
+                                    {% elif step.step_key == "investigation" %}
+                                        <p><strong>Thought:</strong> {{ step.data.thought|default:"—" }}</p>
+                                        <p><strong>Evidence For:</strong> {{ step.data.evidence_for|default:"—" }}</p>
+                                        <p><strong>Evidence Against:</strong> {{ step.data.evidence_against|default:"—" }}</p>
+                                        <p><strong>Alternative:</strong> {{ step.data.alternative|default:"—" }}</p>
+                                        <p><strong>Pattern:</strong> {{ step.data.thinking_pattern|default:"—" }}</p>
+                                    {% elif step.step_key == "reflection" %}
+                                        <p><strong>What Matters:</strong> {{ step.data.what_matters|default:"—" }}</p>
+                                        <p><strong>Friend Advice:</strong> {{ step.data.friend_advice|default:"—" }}</p>
+                                        <p><strong>Intentional Response:</strong> {{ step.data.intentional_response|default:"—" }}</p>
+                                        <p><strong>Perspective Shift:</strong> {{ step.data.perspective_shift|default:"—" }}</p>
+                                    {% elif step.step_key == "insight" %}
+                                        <p><strong>Key Insight:</strong> {{ step.data.key_insight|default:"—" }}</p>
+                                        <p><strong>Lesson Learned:</strong> {{ step.data.lesson_learned|default:"—" }}</p>
+                                        <p><strong>Gratitude:</strong> {{ step.data.gratitude|default:"—" }}</p>
+                                        <p><strong>New Perspective:</strong> {{ step.data.new_perspective|default:"—" }}</p>
+                                    {% elif step.step_key == "integration" %}
+                                        <p><strong>Affirmation:</strong> {{ step.data.affirmation|default:"—" }}</p>
+                                        <p><strong>Action Commitment:</strong> {{ step.data.action_commitment|default:"—" }}</p>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="text-tertiary">No data recorded for this step.</p>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="journey-complete-actions flex flex-wrap gap-3">
+        <a href="{% url 'core_healing_path:dashboard' %}" class="btn btn-primary btn-lg flex-1 min-w-[200px]">
+            <svg class="icon icon-sm" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            Back to Dashboard
+        </a>
+        <a href="{% url 'core_healing_path:journeys' %}" class="btn btn-secondary btn-lg flex-1 min-w-[200px]">
+            View All Journeys
+        </a>
+        <button type="button" class="btn btn-outline btn-lg flex-1 min-w-[200px]" id="export-pdf">
+            <svg class="icon icon-sm" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export PDF
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/journey.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const exportBtn = document.getElementById('export-pdf');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function() {
+            window.print();
+        });
+    }
+});
+</script>
+{% endblock %}

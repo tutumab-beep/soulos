@@ -1,0 +1,99 @@
+{% extends "soul_navigation/base.html" %}
+{% load static %}
+
+{% block title %}Observe - Soul Navigation{% endblock %}
+
+{% block content %}
+<div class="sn-layout">
+  <header class="sn-progress-header">
+    <div class="container">
+      <div class="sn-progress-meta">
+        <div class="sn-step-indicator">Step {{ progress_steps.0.number|default:1 }} of 6</div>
+        <div class="sn-step-encouragement">You're gaining clarity.</div>
+      </div>
+      
+      <div class="sn-progress-bar-container">
+        <div class="sn-progress-track">
+          <div class="sn-progress-fill" style="width: {{ progress_steps|length|add:-1|default:0|floatformat:0|add:'0' }}0%"></div>
+        </div>
+        <div class="sn-progress-text">{{ progress_steps|length }}0% complete</div>
+      </div>
+      
+      <nav class="sn-progress-steps" aria-label="Navigation progress">
+        {% for step in progress_steps %}
+        <div class="sn-progress-step {% if step.active %}current{% elif step.completed %}completed{% endif %}" data-step="{{ step.number }}">
+          <div class="sn-progress-step-circle" aria-hidden="true">
+            {% if step.completed %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            {% else %}
+            {{ step.number }}
+            {% endif %}
+          </div>
+          <span class="sn-progress-step-label">{{ step.name }}</span>
+        </div>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="sn-main" role="main">
+    <div class="container">
+      <div class="sn-guidance">
+        <p class="sn-guidance-text">Let's start with what you're experiencing.</p>
+      </div>
+
+      <form method="post" class="sn-form" novalidate>
+        {% csrf_token %}
+        
+        <header class="sn-step-header">
+          <h1 class="sn-step-title">Observe</h1>
+          <p class="sn-step-subtitle">What are you feeling right now?</p>
+        </header>
+
+        <fieldset class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Choose what fits best</legend>
+          <div class="sn-card-grid">
+            {% for value, label in choices %}
+            <label class="sn-card {% if value in session.observed_issues %}selected{% endif %}" for="issue-{{ forloop.counter }}">
+              <input type="checkbox" id="issue-{{ forloop.counter }}" name="issues" value="{{ value }}" {% if value in session.observed_issues %}checked{% endif %} aria-label="{{ label|slice:'2:'|default:label }}">
+              <span class="sn-card-icon">{{ label|slice:":2" }}</span>
+              <span class="sn-card-content">{{ label|slice:"2:"|default:label }}</span>
+              <span class="sn-card-check" aria-hidden="true">✓</span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <div class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Tell us more if you'd like (optional)</legend>
+          <textarea id="other" name="other" class="sn-textarea" placeholder="Describe in your own words...">{{ session.observed_other }}</textarea>
+        </div>
+
+        <fieldset class="sn-fieldset">
+          <legend class="sn-fieldset-legend">How intense does this feel?</legend>
+          <div class="sn-card-grid-2">
+            {% for value, label in intensity_choices %}
+            <label class="sn-card {% if value == session.intensity %}selected{% endif %}" for="intensity-{{ forloop.counter }}">
+              <input type="radio" id="intensity-{{ forloop.counter }}" name="intensity" value="{{ value }}" {% if value == session.intensity %}checked{% endif %} aria-label="{{ label }}">
+              <span class="sn-card-content">{{ label }}</span>
+              <span class="sn-card-check" aria-hidden="true">✓</span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <div class="sn-actions">
+          <button type="submit" class="sn-btn">
+            <span>Continue</span>
+            <svg class="sn-btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+{% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator
 from datetime import date
 from .models import SoulLog
 
@@ -8,21 +9,31 @@ from .models import SoulLog
 @login_required
 def journal(request):
     selected_date = request.GET.get("date")
-    entries = SoulLog.objects.all().order_by("-created_at")
+    entries_queryset = SoulLog.objects.all().order_by("-created_at")
     if selected_date:
         try:
             year, month, day = selected_date.split("-")
-            entries = entries.filter(
+            entries_queryset = entries_queryset.filter(
                 created_at__year=year,
                 created_at__month=month,
                 created_at__day=day,
             )
         except (ValueError, TypeError):
             pass
+
+    paginator = Paginator(entries_queryset, 15)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         "soullog/journal.html",
-        {"entries": entries, "selected_date": selected_date},
+        {
+            "entries": page_obj.object_list,
+            "page_obj": page_obj,
+            "is_paginated": page_obj.has_other_pages(),
+            "selected_date": selected_date,
+        },
     )
 
 

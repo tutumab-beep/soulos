@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.utils import timezone
+from django.core.paginator import Paginator
 from datetime import date, timedelta, datetime
 from .models import WorkLog
 
@@ -274,15 +275,24 @@ def edit_entry(request, entry_date=None):
 
 @login_required
 def entries(request):
-    logs = (
+    logs_queryset = (
         WorkLog.objects.all()
         .only("date", "gains", "losses", "activities")
         .order_by("-date")
     )
+
+    paginator = Paginator(logs_queryset, 20)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         "work_alignment/entries.html",
-        {"logs": logs},
+        {
+            "logs": page_obj.object_list,
+            "page_obj": page_obj,
+            "is_paginated": page_obj.has_other_pages(),
+        },
     )
 
 

@@ -1,0 +1,85 @@
+{% extends "soul_navigation/base.html" %}
+{% load static %}
+
+{% block title %}Integrate - Soul Navigation{% endblock %}
+
+{% block content %}
+<div class="sn-layout">
+  <header class="sn-progress-header">
+    <div class="container">
+      <div class="sn-progress-meta">
+        <div class="sn-step-indicator">Step {{ progress_steps.5.number|default:6 }} of 6</div>
+        <div class="sn-step-encouragement">You're gaining clarity.</div>
+      </div>
+      
+      <div class="sn-progress-bar-container">
+        <div class="sn-progress-track">
+          <div class="sn-progress-fill" style="width: 100%"></div>
+        </div>
+        <div class="sn-progress-text">100% complete</div>
+      </div>
+      
+      <nav class="sn-progress-steps" aria-label="Navigation progress">
+        {% for step in progress_steps %}
+        <div class="sn-progress-step {% if step.active %}current{% elif step.completed %}completed{% endif %}" data-step="{{ step.number }}">
+          <div class="sn-progress-step-circle" aria-hidden="true">
+            {% if step.completed %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            {% else %}
+            {{ step.number }}
+            {% endif %}
+          </div>
+          <span class="sn-progress-step-label">{{ step.name }}</span>
+        </div>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="sn-main" role="main">
+    <div class="container">
+      <div class="sn-guidance">
+        <p class="sn-guidance-text">You've turned awareness into action.</p>
+      </div>
+
+      <form method="post" class="sn-form" novalidate>
+        {% csrf_token %}
+        
+        <header class="sn-step-header">
+          <h1 class="sn-step-title">Integrate</h1>
+          <p class="sn-step-subtitle">What are you taking with you?</p>
+        </header>
+
+        <fieldset class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Choose what feels true for you</legend>
+          <div class="sn-card-grid">
+            {% for value, label in choices %}
+            <label class="sn-card {% if value in session.reflection %}selected{% endif %}" for="reflection-{{ forloop.counter }}">
+              <input type="checkbox" id="reflection-{{ forloop.counter }}" name="reflection" value="{{ value }}" {% if value in session.reflection %}checked{% endif %}>
+              <span class="sn-card-content">{{ label }}</span>
+              <span class="sn-card-check" aria-hidden="true">✓</span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <div class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Add any final thoughts (optional)</legend>
+          <textarea id="other" name="other" class="sn-textarea" placeholder="Write anything you'd like to remember...">{{ session.reflection_other }}</textarea>
+        </div>
+
+        <div class="sn-actions">
+          <button type="submit" class="sn-btn">
+            <svg class="sn-btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            <span>Complete Journey</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+{% endblock %}

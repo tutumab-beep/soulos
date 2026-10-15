@@ -1,0 +1,102 @@
+{% extends "core_healing_path/journey_step.html" %}
+{% load static %}
+
+{% block step_fields %}
+<!-- Step 1: Awareness (Tension Observer) -->
+<div class="stack">
+    <div class="form-field">
+        <label for="id_situation" class="form-label required">Situation</label>
+        <textarea name="situation" id="id_situation" class="form-textarea" rows="4"
+                  placeholder="What happened? Describe the facts without judgment."
+                  required aria-describedby="id_situation_help">{{ form.situation.value|default:"" }}</textarea>
+        <div class="form-help" id="id_situation_help">Describe the situation factually - what, when, where, who.</div>
+        {% if form.situation.errors %}
+            <div class="form-error" id="id_situation_error" aria-live="polite">{{ form.situation.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_trigger" class="form-label">Trigger</label>
+        <div class="stack-sm">
+            <select name="trigger" id="id_trigger" class="form-select trigger-select" aria-describedby="id_trigger_help">
+                <option value="">Select a trigger...</option>
+                <option value="conflict" {% if form.trigger.value == "conflict" %}selected{% endif %}>Conflict</option>
+                <option value="fear" {% if form.trigger.value == "fear" %}selected{% endif %}>Fear</option>
+                <option value="self_doubt" {% if form.trigger.value == "self_doubt" %}selected{% endif %}>Self-Doubt</option>
+                <option value="change" {% if form.trigger.value == "change" %}selected{% endif %}>Change</option>
+                <option value="pressure" {% if form.trigger.value == "pressure" %}selected{% endif %}>Pressure</option>
+                <option value="rejection" {% if form.trigger.value == "rejection" %}selected{% endif %}>Rejection</option>
+                <option value="uncertainty" {% if form.trigger.value == "uncertainty" %}selected{% endif %}>Uncertainty</option>
+                <option value="other" {% if form.trigger.value == "other" %}selected{% endif %}>Other</option>
+            </select>
+            <input type="text" name="custom_trigger" id="id_custom_trigger" class="form-input custom-trigger"
+                   placeholder="Or describe your own trigger..."
+                   value="{{ form.custom_trigger.value|default:"" }}"
+                   {% if form.trigger.value != "other" %}hidden{% endif %}>
+        </div>
+        <div class="form-help" id="id_trigger_help">What category best describes what triggered this tension?</div>
+        {% if form.trigger.errors %}
+            <div class="form-error" id="id_trigger_error" aria-live="polite">{{ form.trigger.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_observation" class="form-label required">Observation</label>
+        <textarea name="observation" id="id_observation" class="form-textarea" rows="4"
+                  placeholder="What did you notice in your body, thoughts, emotions?"
+                  required aria-describedby="id_observation_help">{{ form.observation.value|default:"" }}</textarea>
+        <div class="form-help" id="id_observation_help">Notice without judging. What sensations, thoughts, or feelings arose?</div>
+        {% if form.observation.errors %}
+            <div class="form-error" id="id_observation_error" aria-live="polite">{{ form.observation.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_intensity" class="form-label required">Intensity <span id="id_intensity_value">{{ form.intensity.value|default:5 }}</span>/10</label>
+        <input type="range" name="intensity" id="id_intensity" class="form-slider"
+               min="1" max="10" value="{{ form.intensity.value|default:5 }}"
+               required aria-describedby="id_intensity_help">
+        <div class="form-help" id="id_intensity_help">How intense is this tension? 1 = barely noticeable, 10 = overwhelming</div>
+        {% if form.intensity.errors %}
+            <div class="form-error" id="id_intensity_error" aria-live="polite">{{ form.intensity.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_notes" class="form-label">Additional Notes</label>
+        <textarea name="notes" id="id_notes" class="form-textarea" rows="2"
+                  placeholder="Anything else you want to capture..."
+                  aria-describedby="id_notes_help">{{ form.notes.value|default:"" }}</textarea>
+        <div class="form-help" id="id_notes_help">Optional - any additional context.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const triggerSelect = document.getElementById('id_trigger');
+    const customTrigger = document.getElementById('id_custom_trigger');
+
+    if (triggerSelect && customTrigger) {
+        triggerSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                customTrigger.hidden = false;
+                customTrigger.focus();
+            } else {
+                customTrigger.hidden = true;
+            }
+        });
+    }
+
+    // Update intensity display
+    const intensitySlider = document.getElementById('id_intensity');
+    const intensityValue = document.getElementById('id_intensity_value');
+    if (intensitySlider && intensityValue) {
+        intensitySlider.addEventListener('input', function() {
+            intensityValue.textContent = this.value;
+        });
+    }
+});
+</script>
+{% endblock %}

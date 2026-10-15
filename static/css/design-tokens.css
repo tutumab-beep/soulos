@@ -1,0 +1,250 @@
+/* SoulOS Design System - VS Code / GitHub Copilot Style */
+:root {
+  /* VS Code Dark Theme (Default) */
+  --vscode-bg: #1e1e1e;
+  --vscode-bg-secondary: #252526;
+  --vscode-bg-tertiary: #2d2d2d;
+  --vscode-bg-hover: #2a2d2e;
+  --vscode-bg-active: #37373d;
+
+  --vscode-panel-bg: #1e1e1e;
+  --vscode-panel-border: #3c3c3c;
+  --vscode-side-bar-bg: #252526;
+  --vscode-side-bar-border: #3c3c3c;
+  --vscode-activity-bar-bg: #333333;
+  --vscode-activity-bar-border: #3c3c3c;
+  --vscode-status-bar-bg: #007acc;
+  --vscode-title-bar-bg: #3c3c3c;
+
+  --vscode-border: #3c3c3c;
+  --vscode-border-strong: #4c4c4c;
+  --vscode-border-focus: #007acc;
+
+  --vscode-primary: #007acc;
+  --vscode-primary-hover: #005f9e;
+  --vscode-primary-light: #007acc26;
+  --vscode-primary-glow: rgba(0, 122, 204, 0.3);
+
+  --vscode-success: #4ec9b0;
+  --vscode-success-hover: #3db8a0;
+  --vscode-success-light: #4ec9b026;
+
+  --vscode-warning: #dcdcaa;
+  --vscode-warning-hover: #cbcb9a;
+  --vscode-warning-light: #dcdcaa26;
+
+  --vscode-danger: #f44747;
+  --vscode-danger-hover: #e33636;
+  --vscode-danger-light: #f4474726;
+
+  --vscode-text-primary: #d4d4d4;
+  --vscode-text-secondary: #9cdcfe;
+  --vscode-text-tertiary: #858585;
+  --vscode-text-muted: #6a6a6a;
+  --vscode-text-inverse: #1e1e1e;
+  --vscode-text-link: #4fc1ff;
+
+  --vscode-accent-blue: #007acc;
+  --vscode-accent-green: #4ec9b0;
+  --vscode-accent-yellow: #dcdcaa;
+  --vscode-accent-orange: #ce9178;
+  --vscode-accent-purple: #c586c0;
+  --vscode-accent-red: #f44747;
+
+  /* Typography - VS Code uses system fonts */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+
+  --text-xs: 0.6875rem;    /* 11px */
+  --text-sm: 0.8125rem;    /* 13px */
+  --text-base: 0.875rem;   /* 14px - VS Code default */
+  --text-lg: 1rem;         /* 16px */
+  --text-xl: 1.125rem;     /* 18px */
+  --text-2xl: 1.25rem;     /* 20px */
+  --text-3xl: 1.5rem;      /* 24px */
+  --text-4xl: 2rem;        /* 32px */
+  --text-5xl: 3rem;        /* 48px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+
+  /* Spacing System (4px base) */
+  --space-0: 0;
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+
+  /* Border Radius - VS Code uses small radius */
+  --radius-none: 0;
+  --radius-sm: 0.1875rem;   /* 3px */
+  --radius-md: 0.25rem;     /* 4px */
+  --radius-lg: 0.375rem;    /* 6px */
+  --radius-xl: 0.5rem;      /* 8px */
+  --radius-2xl: 0.75rem;    /* 12px */
+  --radius-full: 9999px;
+
+  /* Shadows - Subtle, layered */
+  --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 16px 24px rgba(0, 0, 0, 0.35);
+  --shadow-2xl: 0 24px 48px rgba(0, 0, 0, 0.4);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-glow-primary: 0 0 0 1px var(--vscode-border-focus), 0 0 0 3px var(--vscode-primary-light);
+
+  /* Transitions */
+  --transition-fast: 80ms ease;
+  --transition-normal: 120ms ease;
+  --transition-slow: 200ms ease;
+
+  /* Z-Index Scale */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+
+  /* Layout */
+  --header-height: 35px;   /* VS Code title bar height */
+  --activity-bar-width: 48px;
+  --side-bar-width: 280px;
+  --panel-height: 200px;
+  --container-max: 100%;
+  --container-padding: 1rem;
+
+  /* Editor specific */
+  --editor-bg: #1e1e1e;
+  --editor-line-number: #858585;
+  --editor-line-highlight: #2a2d2e;
+  --editor-selection: #264f78;
+  --editor-cursor: #aeafad;
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 1px var(--vscode-border-focus), 0 0 0 3px var(--vscode-primary-light);
+}
+
+/* Light Theme - VS Code Light */
+[data-theme="light"] {
+  --vscode-bg: #ffffff;
+  --vscode-bg-secondary: #f3f3f3;
+  --vscode-bg-tertiary: #e8e8e8;
+  --vscode-bg-hover: #e8e8e8;
+  --vscode-bg-active: #dcdcdc;
+
+  --vscode-panel-bg: #ffffff;
+  --vscode-panel-border: #e0e0e0;
+  --vscode-side-bar-bg: #f3f3f3;
+  --vscode-side-bar-border: #e0e0e0;
+  --vscode-activity-bar-bg: #f3f3f3;
+  --vscode-activity-bar-border: #e0e0e0;
+  --vscode-status-bar-bg: #007acc;
+  --vscode-title-bar-bg: #e0e0e0;
+
+  --vscode-border: #e0e0e0;
+  --vscode-border-strong: #d0d0d0;
+  --vscode-border-focus: #007acc;
+
+  --vscode-primary: #007acc;
+  --vscode-primary-hover: #005f9e;
+  --vscode-primary-light: #007acc26;
+  --vscode-primary-glow: rgba(0, 122, 204, 0.2);
+
+  --vscode-success: #107c10;
+  --vscode-success-hover: #0e6c0e;
+  --vscode-success-light: #107c1026;
+
+  --vscode-warning: #986801;
+  --vscode-warning-hover: #885801;
+  --vscode-warning-light: #98680126;
+
+  --vscode-danger: #a1260d;
+  --vscode-danger-hover: #91160d;
+  --vscode-danger-light: #a1260d26;
+
+  --vscode-text-primary: #1e1e1e;
+  --vscode-text-secondary: #00188f;
+  --vscode-text-tertiary: #6a6a6a;
+  --vscode-text-muted: #9a9a9a;
+  --vscode-text-inverse: #ffffff;
+  --vscode-text-link: #0060bf;
+
+  --editor-bg: #ffffff;
+  --editor-line-number: #9a9a9a;
+  --editor-line-highlight: #e8e8e8;
+  --editor-selection: #add6ff;
+  --editor-cursor: #000000;
+
+  --focus-ring: 0 0 0 1px var(--vscode-border-focus), 0 0 0 3px var(--vscode-primary-light);
+}
+
+/* Semantic color aliases for backward compatibility */
+:root {
+  --color-bg-primary: var(--vscode-bg);
+  --color-bg-secondary: var(--vscode-bg-secondary);
+  --color-bg-tertiary: var(--vscode-bg-tertiary);
+  --color-bg-elevated: var(--vscode-bg-tertiary);
+  --color-bg-hover: var(--vscode-bg-hover);
+  --color-bg-active: var(--vscode-bg-active);
+
+  --color-surface: var(--vscode-panel-bg);
+  --color-surface-hover: var(--vscode-bg-hover);
+  --color-surface-pressed: var(--vscode-bg-active);
+
+  --color-border: var(--vscode-border);
+  --color-border-strong: var(--vscode-border-strong);
+  --color-border-focus: var(--vscode-border-focus);
+
+  --color-primary: var(--vscode-primary);
+  --color-primary-hover: var(--vscode-primary-hover);
+  --color-primary-light: var(--vscode-primary-light);
+  --color-primary-glow: var(--vscode-primary-glow);
+
+  --color-success: var(--vscode-success);
+  --color-success-hover: var(--vscode-success-hover);
+  --color-success-light: var(--vscode-success-light);
+  --color-success-glow: var(--vscode-success-light);
+
+  --color-warning: var(--vscode-warning);
+  --color-warning-hover: var(--vscode-warning-hover);
+  --color-warning-light: var(--vscode-warning-light);
+
+  --color-danger: var(--vscode-danger);
+  --color-danger-hover: var(--vscode-danger-hover);
+  --color-danger-light: var(--vscode-danger-light);
+
+  --color-text-primary: var(--vscode-text-primary);
+  --color-text-secondary: var(--vscode-text-secondary);
+  --color-text-tertiary: var(--vscode-text-tertiary);
+  --color-text-muted: var(--vscode-text-muted);
+  --color-text-inverse: var(--vscode-text-inverse);
+  --color-text-link: var(--vscode-text-link);
+
+  --color-accent-blue: var(--vscode-accent-blue);
+  --color-accent-green: var(--vscode-accent-green);
+  --color-accent-orange: var(--vscode-accent-orange);
+  --color-accent-purple: var(--vscode-accent-purple);
+
+  --glass-bg: var(--vscode-bg-secondary);
+  --glass-border: var(--vscode-border);
+  --glass-blur: blur(8px);
+}

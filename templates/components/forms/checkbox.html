@@ -1,0 +1,11 @@
+<div class="form-field">
+    <div class="form-checkbox">
+        <input type="checkbox" name="{{ widget.name }}" id="{{ widget.id_for_label }}"
+               {% for attr_name, attr_value in widget.attrs.items %}{{ attr_name }}="{{ attr_value }}" {% endfor %}
+               {% if widget.value %}checked{% endif %}>
+        <label for="{{ widget.id_for_label }}" class="form-label" style="margin-bottom: 0; cursor: pointer;">{{ widget.label }}</label>
+    </div>
+    {% if widget.help_text %}
+        <div class="form-help" id="{{ widget.id_for_label }}_help">{{ widget.help_text }}</div>
+    {% endif %}
+</div>

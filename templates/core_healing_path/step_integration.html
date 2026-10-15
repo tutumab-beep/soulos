@@ -1,0 +1,72 @@
+{% extends "core_healing_path/journey_step.html" %}
+{% load static %}
+
+{% block step_fields %}
+<!-- Step 5: Integration (Transformation Log) -->
+<div class="stack">
+    <div class="card" style="background: var(--color-bg-secondary);">
+        <div class="card-body">
+            <h3 class="text-lg font-semibold mb-4">Journey Summary</h3>
+            <div class="journey-summary stack-sm">
+                {% if journey_steps %}
+                    {% for step in journey_steps %}
+                        <div class="journey-summary-step p-3 rounded-lg" style="background: var(--color-surface); border: 1px solid var(--color-border);">
+                            <div class="flex items-start gap-3">
+                                <span class="badge badge-primary shrink-0">{{ forloop.counter }}</span>
+                                <div class="flex-1">
+                                    <p class="font-medium">{{ step.step_title }}</p>
+                                    <p class="text-sm text-secondary mt-1">
+                                        {% if step.data %}
+                                            {% if step.step_key == "awareness" %}
+                                                {{ step.data.observation|truncatewords:20 }}
+                                            {% elif step.step_key == "investigation" %}
+                                                {{ step.data.thought|truncatewords:20 }}
+                                            {% elif step.step_key == "reflection" %}
+                                                {{ step.data.intentional_response|truncatewords:20 }}
+                                            {% elif step.step_key == "insight" %}
+                                                {{ step.data.key_insight|truncatewords:20 }}
+                                            {% else %}
+                                                {{ step.data.affirmation|truncatewords:20|default:"Completed" }}
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-tertiary">No data recorded</span>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_affirmation" class="form-label">Personal Affirmation</label>
+        <textarea name="affirmation" id="id_affirmation" class="form-textarea" rows="3"
+                  placeholder="A statement to anchor this transformation..."
+                  aria-describedby="id_affirmation_help">{{ form.affirmation.value|default:"" }}</textarea>
+        <div class="form-help" id="id_affirmation_help">Write a personal affirmation that captures your new understanding. Example: "I am capable of handling challenges with clarity and calm."</div>
+    </div>
+
+    <div class="form-field">
+        <label for="id_action_commitment" class="form-label">One Small Action</label>
+        <input type="text" name="action_commitment" id="id_action_commitment" class="form-input"
+               placeholder="What will you do differently tomorrow?"
+               value="{{ form.action_commitment.value|default:"" }}"
+               aria-describedby="id_action_commitment_help">
+        <div class="form-help" id="id_action_commitment_help">One concrete, small action you'll take to integrate this insight.</div>
+    </div>
+
+    <div class="form-field">
+        <fieldset>
+            <legend class="form-label">Share this journey?</legend>
+            <div class="form-checkbox">
+                <input type="checkbox" name="allow_export" id="id_allow_export" checked>
+                <label for="id_allow_export" class="form-label" style="margin-bottom: 0;">Allow PDF export of this journey</label>
+            </div>
+            <div class="form-help">You can export a formatted PDF of this complete journey from the summary page.</div>
+        </fieldset>
+    </div>
+</div>
+{% endblock %}

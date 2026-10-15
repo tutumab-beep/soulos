@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ entry.trigger|truncatewords:8 }} - Ego Balance{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="flex items-center justify-between flex-wrap gap-4">
+        <div>
+            <a href="{% url 'ego_balance:list' %}" class="btn btn-ghost btn-sm mb-2">
+                Back to Entries
+            </a>
+            <h1 class="page-title">{{ entry.trigger|truncatewords:10 }}</h1>
+            <p class="page-subtitle">{{ entry.date_created|date:"F d, Y" }} · Urgency: {{ entry.urgency_level }}/10 · Growth: {{ entry.growth_score }}/10</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'ego_balance:edit' entry.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+            <a href="{% url 'ego_balance:delete' entry.pk %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+    </div>
+</div>
+
+<!-- Core Principle -->
+<div class="card mb-6" style="background: var(--color-primary-light); border-color: var(--color-primary);">
+    <div class="card-body text-center">
+        <p class="font-medium text-primary-accent">
+            "What I resist becomes urgent. What I allow loses urgency."
+        </p>
+    </div>
+</div>
+
+<div class="grid grid-2" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+    <!-- Guided Reflection Section -->
+    <section class="card">
+        <div class="card-header">
+            <h2 class="card-title">Guided Reflection</h2>
+        </div>
+        <div class="card-body">
+            <dl class="space-y-6">
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">1. Trigger</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.trigger }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">2. Fear Identified</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.fear_identified }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">3. Discomfort Felt</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.discomfort_felt }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">4. Urgency Level</dt>
+                    <dd class="flex items-center gap-3">
+                        <span class="badge badge-warning">{{ entry.urgency_level }}/10</span>
+                        <div class="progress-bar flex-1" style="height: 6px;">
+                            <div class="progress-fill" style="width: {{ entry.urgency_level }}0%; background: var(--color-warning);"></div>
+                        </div>
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">5. Automatic Reaction</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.automatic_reaction }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">6. Ego Story</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.ego_story }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">7. Balanced Understanding</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.balanced_understanding }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">8. Transformed Action</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.transformed_action }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">9. Lesson Learned</dt>
+                    <dd class="text-base whitespace-pre-wrap">{{ entry.lesson_learned }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-tertiary uppercase tracking-wide mb-1">Growth Score</dt>
+                    <dd class="flex items-center gap-3">
+                        <span class="badge badge-success">{{ entry.growth_score }}/10</span>
+                        <div class="progress-bar flex-1" style="height: 6px;">
+                            <div class="progress-fill" style="width: {{ entry.growth_score }}0%;"></div>
+                        </div>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </section>
+
+    <!-- Insight Engine Section -->
+    <section class="card">
+        <div class="card-header">
+            <h2 class="card-title">Insight Engine</h2>
+        </div>
+        <div class="card-body">
+            <div class="mb-6 p-4" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md); border-left: 3px solid var(--color-primary);">
+                <p class="font-medium text-primary-accent mb-3">Generated Insight Summary</p>
+                <pre class="whitespace-pre-wrap text-sm leading-relaxed">{{ insight }}</pre>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-sm font-medium text-tertiary uppercase tracking-wide mb-2">Key Insights</h3>
+                    <div class="grid grid-2" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3);">
+                        <div class="p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <p class="text-xs text-tertiary uppercase tracking-wide">Fear</p>
+                            <p class="font-medium">{{ entry.fear_identified|truncatewords:8 }}</p>
+                        </div>
+                        <div class="p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <p class="text-xs text-tertiary uppercase tracking-wide">Avoidance</p>
+                            <p class="font-medium">{{ entry.discomfort_felt|truncatewords:8 }}</p>
+                        </div>
+                        <div class="p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <p class="text-xs text-tertiary uppercase tracking-wide">Ego Reaction</p>
+                            <p class="font-medium">{{ entry.automatic_reaction|truncatewords:8 }}</p>
+                        </div>
+                        <div class="p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <p class="text-xs text-tertiary uppercase tracking-wide">Balanced Action</p>
+                            <p class="font-medium">{{ entry.transformed_action|truncatewords:8 }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-sm font-medium text-tertiary uppercase tracking-wide mb-2">Transformation Path</h3>
+                    <div class="stack-sm">
+                        <div class="flex items-center gap-3 p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--color-danger-light); color: var(--color-danger);">1</div>
+                            <div class="text-sm"><strong>Resisted:</strong> {{ entry.fear_identified|truncatewords:6 }}</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--color-warning-light); color: var(--color-warning);">2</div>
+                            <div class="text-sm"><strong>Created Urgency:</strong> Level {{ entry.urgency_level }}/10</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--color-primary-light); color: var(--color-primary);">3</div>
+                            <div class="text-sm"><strong>Ego Story:</strong> {{ entry.ego_story|truncatewords:6 }}</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--color-success-light); color: var(--color-success);">4</div>
+                            <div class="text-sm"><strong>Allowed & Transformed:</strong> {{ entry.transformed_action|truncatewords:6 }}</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3" style="background: var(--color-bg-tertiary); border-radius: var(--radius-md);">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background: var(--color-accent-purple); color: white;">5</div>
+                            <div class="text-sm"><strong>Growth:</strong> {{ entry.growth_score }}/10 - {{ entry.lesson_learned|truncatewords:6 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

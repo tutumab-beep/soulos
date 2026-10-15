@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{% if entry %}Edit{% else %}New{% endif %} Ego Balance Entry{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">{% if entry %}Edit{% else %}New{% endif %} Ego Balance Entry</h1>
+    <p class="page-subtitle">Follow the guided reflection to transform fear into balanced action.</p>
+</div>
+
+<!-- Core Principle Banner -->
+<div class="card mb-6" style="background: var(--color-primary-light); border-color: var(--color-primary);">
+    <div class="card-body text-center">
+        <p class="font-medium text-primary-accent">
+            "What I resist becomes urgent. What I allow loses urgency."
+        </p>
+    </div>
+</div>
+
+<form method="post" class="card" novalidate>
+    {% csrf_token %}
+    <div class="card-body">
+        {% for prompt in prompts %}
+        <div class="form-field mb-6">
+            <label for="{{ prompt.0 }}" class="form-label">{{ prompt.1 }}</label>
+            
+            {% if prompt.0 == 'urgency_level' or prompt.0 == 'growth_score' %}
+                {% with current_value=prompt.2|default:'' %}
+                <div class="form-field-slider">
+                    <input 
+                        type="range" 
+                        class="form-slider" 
+                        id="{{ prompt.0 }}" 
+                        name="{{ prompt.0 }}" 
+                        min="1" 
+                        max="10" 
+                        value="{{ current_value }}"
+                        required
+                    >
+                    <div class="flex justify-between text-sm text-tertiary mt-1">
+                        <span>Low</span>
+                        <span id="{{ prompt.0 }}-value" class="font-mono">{{ current_value }}</span>
+                        <span>High</span>
+                    </div>
+                </div>
+                {% endwith %}
+            {% else %}
+                {% with current_value=prompt.2|default:'' %}
+                <textarea 
+                    class="form-textarea" 
+                    id="{{ prompt.0 }}" 
+                    name="{{ prompt.0 }}" 
+                    rows="4" 
+                    placeholder="Reflect on this question..."
+                    required>{{ current_value }}</textarea>
+                {% endwith %}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="card-footer">
+        <a href="{% url 'ego_balance:list' %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">
+            {% if entry %}Update Entry{% else %}Create Entry{% endif %}
+        </button>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Update slider value displays
+    document.querySelectorAll('.form-slider').forEach(slider => {
+        const valueDisplay = document.getElementById(slider.id + '-value');
+        if (valueDisplay) {
+            slider.addEventListener('input', function() {
+                valueDisplay.textContent = this.value;
+            });
+        }
+    });
+});
+</script>
+{% endblock %}

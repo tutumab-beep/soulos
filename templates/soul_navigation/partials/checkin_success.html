@@ -1,0 +1,12 @@
+<div class="sn-checkin-complete" hx-swap-oob="true">
+    <div class="sn-mood-badge sn-mood-{{ checkin.mood }}">
+        {% if checkin.mood == "great" %}😀
+        {% elif checkin.mood == "good" %}🙂
+        {% elif checkin.mood == "okay" %}😐
+        {% elif checkin.mood == "struggling" %}😔
+        {% elif checkin.mood == "difficult" %}😢
+        {% endif %}
+        <span>{{ checkin.get_mood_display }}</span>
+    </div>
+    <p class="sn-checkin-time">Checked in today</p>
+</div>

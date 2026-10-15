@@ -1,0 +1,32 @@
+<article class="card {% if variant %}card--{{ variant }}{% endif %} {% if class %}{{ class }}{% endif %}">
+    {% if header %}
+        <header class="card-header {% if header_class %}{{ header_class }}{% endif %}">
+            {% if header_icon %}
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="icon icon-lg" style="color: var(--color-primary);" aria-hidden="true">{{ header_icon }}</span>
+                </div>
+            {% endif %}
+            {% if title %}
+                <h2 class="card-title {% if title_class %}{{ title_class }}{% endif %}">{{ title }}</h2>
+            {% endif %}
+            {% if subtitle %}
+                <p class="text-sm text-secondary mt-1">{{ subtitle }}</p>
+            {% endif %}
+            {% if header_actions %}
+                <div class="flex items-center gap-2 mt-3">
+                    {{ header_actions }}
+                </div>
+            {% endif %}
+        </header>
+    {% endif %}
+
+    <div class="card-body {% if body_class %}{{ body_class }}{% endif %}">
+        {{ body }}
+    </div>
+
+    {% if footer %}
+        <footer class="card-footer {% if footer_class %}{{ footer_class }}{% endif %}">
+            {{ footer }}
+        </footer>
+    {% endif %}
+</article>

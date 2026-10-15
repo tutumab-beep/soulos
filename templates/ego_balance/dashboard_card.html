@@ -1,0 +1,36 @@
+{% load static %}
+
+<div class="card">
+    <div class="card-header flex justify-between items-center">
+        <h2 class="card-title">Ego Balance</h2>
+        <a href="{% url 'ego_balance:list' %}" class="btn btn-ghost btn-sm">View All</a>
+    </div>
+    <div class="card-body">
+        <div class="grid grid-2 grid-4" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
+            <div class="text-center p-3">
+                <div class="stat-value text-2xl font-bold text-primary">{{ stats.total_entries }}</div>
+                <div class="stat-label text-xs text-tertiary">Total Entries</div>
+            </div>
+            <div class="text-center p-3">
+                <div class="stat-value text-2xl font-bold text-success">{{ stats.avg_growth_score }}</div>
+                <div class="stat-label text-xs text-tertiary">Avg Growth</div>
+            </div>
+            <div class="text-center p-3">
+                <div class="stat-value text-sm font-medium text-warning">{{ stats.most_common_fear|title }}</div>
+                <div class="stat-label text-xs text-tertiary">Top Fear</div>
+            </div>
+            <div class="text-center p-3">
+                <div class="stat-value text-sm font-medium text-warning">{{ stats.most_common_reaction|title }}</div>
+                <div class="stat-label text-xs text-tertiary">Top Reaction</div>
+            </div>
+        </div>
+        
+        {% if stats.total_entries > 0 %}
+        <div class="mt-4 pt-4 border-t" style="border-color: var(--color-border);">
+            <a href="{% url 'ego_balance:create' %}" class="btn btn-primary btn-sm w-full">
+                New Entry
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,184 @@
+/* Journey-specific styles */
+
+.journey-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.journey-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) 0;
+}
+
+.journey-progress {
+  margin-top: var(--space-4);
+}
+
+.journey-main {
+  flex: 1;
+  padding: var(--space-6) 0;
+}
+
+.journey-content {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.journey-step-header {
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+
+.journey-step-badge {
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+
+.journey-step-title {
+  font-size: var(--text-h2);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-2);
+  line-height: var(--line-height-tight);
+}
+
+.journey-step-prompt {
+  font-size: var(--text-body-lg);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: var(--line-height-relaxed);
+}
+
+.journey-form {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.journey-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 768px) {
+  .journey-form-actions {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.journey-summary {
+  margin-top: var(--space-2);
+}
+
+.journey-summary-step {
+  transition: all var(--transition-fast);
+}
+
+.journey-summary-step:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Step-specific styles */
+.trigger-select {
+  transition: border-color var(--transition-fast);
+}
+
+.custom-trigger {
+  transition: opacity var(--transition-fast), height var(--transition-fast);
+}
+
+.custom-trigger[hidden] {
+  display: none !important;
+}
+
+.form-slider {
+  accent-color: var(--color-primary);
+}
+
+/* Focus states for accessibility */
+.form-input:focus-visible,
+.form-textarea:focus-visible,
+.form-select:focus-visible,
+.form-slider:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-color: var(--color-border-focus);
+}
+
+/* Error states */
+.form-input[aria-invalid="true"],
+.form-textarea[aria-invalid="true"],
+.form-select[aria-invalid="true"] {
+  border-color: var(--color-border-error);
+}
+
+.form-input[aria-invalid="true"]:focus-visible,
+.form-textarea[aria-invalid="true"]:focus-visible,
+.form-select[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px rgb(220 38 38 / 0.2);
+}
+
+/* Mobile optimizations */
+@media (max-width: 639px) {
+  .journey-header {
+    padding: var(--space-3) 0;
+  }
+
+  .journey-step-title {
+    font-size: var(--text-h3);
+  }
+
+  .journey-form {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .progress-stepper {
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    scrollbar-width: thin;
+  }
+
+  .progress-step {
+    flex: 0 0 auto;
+    min-width: 80px;
+  }
+
+  .progress-step:not(:last-child)::after {
+    display: none;
+  }
+}
+
+/* Print styles for journey */
+@media print {
+  .journey-header {
+    position: static;
+    border-bottom: 2px solid #333;
+  }
+
+  .journey-form-actions {
+    display: none;
+  }
+
+  .journey-form {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    padding: 1rem;
+  }
+}

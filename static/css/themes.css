@@ -1,0 +1,158 @@
+/* Theme-specific overrides */
+
+/* Light mode (default) */
+:root {
+  /* Already defined in design-tokens.css */
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+  /* Already defined in design-tokens.css */
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .footer,
+  .btn,
+  .dropdown,
+  .modal-backdrop,
+  .modal,
+  .toast-container,
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+
+  .main {
+    padding: 0;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  .page-header {
+    border-bottom: 2px solid #333;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-stepper {
+    border-bottom: 2px solid #333;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-step-circle {
+    border-color: #333;
+  }
+
+  .progress-step.completed .progress-step-circle {
+    background: #333 !important;
+    border-color: #333 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: #000;
+    --color-border-strong: #000;
+    --color-text-secondary: #333;
+    --color-text-tertiary: #666;
+  }
+
+  [data-theme="dark"] {
+    --color-border: #fff;
+    --color-border-strong: #fff;
+    --color-text-secondary: #ccc;
+    --color-text-tertiary: #999;
+  }
+
+  .btn {
+    border-width: 2px;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    border-width: 2px;
+  }
+
+  .card {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus visible polyfill fallback */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+/* Forced colors mode (Windows High Contrast) */
+@media (forced-colors: active) {
+  .btn-primary {
+    border-color: currentColor;
+  }
+
+  .btn-secondary {
+    border-color: currentColor;
+  }
+
+  .card {
+    border-color: currentColor;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    border-color: currentColor;
+  }
+
+  .progress-step-circle {
+    border-color: currentColor;
+  }
+
+  .progress-step.completed .progress-step-circle {
+    background-color: CanvasText;
+    border-color: CanvasText;
+    color: Canvas;
+  }
+
+  .progress-step.current .progress-step-circle {
+    border-color: Highlight;
+  }
+}

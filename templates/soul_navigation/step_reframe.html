@@ -1,0 +1,105 @@
+{% extends "soul_navigation/base.html" %}
+{% load static %}
+
+{% block title %}Reframe - Soul Navigation{% endblock %}
+
+{% block content %}
+<div class="sn-layout">
+  <header class="sn-progress-header">
+    <div class="container">
+      <div class="sn-progress-meta">
+        <div class="sn-step-indicator">Step {{ progress_steps.3.number|default:4 }} of 6</div>
+        <div class="sn-step-encouragement">You're gaining clarity.</div>
+      </div>
+      
+      <div class="sn-progress-bar-container">
+        <div class="sn-progress-track">
+          <div class="sn-progress-fill" style="width: 66.7%"></div>
+        </div>
+        <div class="sn-progress-text">66.7% complete</div>
+      </div>
+      
+      <nav class="sn-progress-steps" aria-label="Navigation progress">
+        {% for step in progress_steps %}
+        <div class="sn-progress-step {% if step.active %}current{% elif step.completed %}completed{% endif %}" data-step="{{ step.number }}">
+          <div class="sn-progress-step-circle" aria-hidden="true">
+            {% if step.completed %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+            {% else %}
+            {{ step.number }}
+            {% endif %}
+          </div>
+          <span class="sn-progress-step-label">{{ step.name }}</span>
+        </div>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="sn-main" role="main">
+    <div class="container">
+      <div class="sn-guidance">
+        <p class="sn-guidance-text">There may be another way to see this.</p>
+      </div>
+
+      <form method="post" class="sn-form" novalidate>
+        {% csrf_token %}
+        
+        <header class="sn-step-header">
+          <h1 class="sn-step-title">Reframe</h1>
+          <p class="sn-step-subtitle">Choose a new view.</p>
+        </header>
+
+        <div class="sn-highlight-box">
+          <span class="sn-highlight-label">Which thought feels strongest right now?</span>
+          <p class="sn-highlight-text">"{{ primary_thought }}"</p>
+        </div>
+
+        <fieldset class="sn-fieldset">
+          <legend class="sn-fieldset-legend">Pick a perspective that feels helpful</legend>
+          <div class="sn-card-grid">
+            {% for key, data in reframes.items %}
+            <label class="sn-card sn-card-large {% if key == session.selected_reframe %}selected{% endif %}" for="reframe-{{ forloop.counter }}">
+              <input type="radio" id="reframe-{{ forloop.counter }}" name="reframe_type" value="{{ key }}" {% if key == session.selected_reframe %}checked{% endif %}>
+              <div class="sn-card-header" style="width: 100%; display: flex; align-items: center; gap: 1rem;">
+                <span class="sn-card-icon">
+                  {% if key == 'balanced' %}⚖{% elif key == 'compassionate' %}❤️{% elif key == 'practical' %}🔨{% else %}✨{% endif %}
+                </span>
+                <span class="sn-card-title">
+                  {% if key == 'balanced' %}Balanced View{% elif key == 'compassionate' %}Compassionate View{% elif key == 'practical' %}Practical View{% endif %}
+                </span>
+                <span class="sn-card-check" aria-hidden="true">✓</span>
+              </div>
+              <p class="sn-card-desc">{{ data.content }}</p>
+            </label>
+            {% endfor %}
+            
+            <label class="sn-card sn-card-large {% if session.selected_reframe == 'custom' %}selected{% endif %}" for="reframe-custom">
+              <input type="radio" id="reframe-custom" name="reframe_type" value="custom" {% if session.selected_reframe == 'custom' %}checked{% endif %}>
+              <div class="sn-card-header" style="width: 100%; display: flex; align-items: center; gap: 1rem;">
+                <span class="sn-card-icon">✏️</span>
+                <span class="sn-card-title">Create your own view</span>
+                <span class="sn-card-check" aria-hidden="true">✓</span>
+              </div>
+              <div class="sn-custom-field" style="width: 100%;">
+                <textarea name="custom_reframe" class="sn-textarea" placeholder="Write your own perspective...">{{ session.custom_reframe }}</textarea>
+              </div>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="sn-actions">
+          <button type="submit" class="sn-btn">
+            <span>Continue</span>
+            <svg class="sn-btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+{% endblock %}

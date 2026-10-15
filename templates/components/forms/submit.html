@@ -1,0 +1,9 @@
+<div class="form-field">
+    <button type="{{ widget.attrs.type|default:"submit" }}" name="{{ widget.name }}" id="{{ widget.id_for_label }}"
+            class="btn {% if 'btn-primary' in widget.attrs.class %}btn-primary{% elif 'btn-secondary' in widget.attrs.class %}btn-secondary{% elif 'btn-danger' in widget.attrs.class %}btn-danger{% elif 'btn-ghost' in widget.attrs.class %}btn-ghost{% else %}btn-primary{% endif %} {% if 'btn-sm' in widget.attrs.class %}btn-sm{% elif 'btn-lg' in widget.attrs.class %}btn-lg{% endif %} {% if 'btn-block' in widget.attrs.class %}btn-block{% endif %}"
+            {% for attr_name, attr_value in widget.attrs.items %}
+                {% if attr_name != 'class' and attr_name != 'type' %}{{ attr_name }}="{{ attr_value }}" {% endif %}
+            {% endfor %}>
+        {{ widget.value }}
+    </button>
+</div>

@@ -1,0 +1,14 @@
+<section class="section {% if class %}{{ class }}{% endif %}" {% if id %}id="{{ id }}"{% endif %} aria-labelledby="{% if id %}{{ id }}-title{% endif %}">
+    {% if title %}
+        <header class="section-header">
+            <h2 id="{% if id %}{{ id }}-title{% endif %}" class="section-title">{{ title }}</h2>
+            {% if action %}
+                <div class="section-action">{{ action }}</div>
+            {% endif %}
+        </header>
+    {% endif %}
+
+    <div class="section-body">
+        {{ body }}
+    </div>
+</section>

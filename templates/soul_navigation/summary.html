@@ -1,0 +1,153 @@
+{% extends "soul_navigation/base.html" %}
+{% load static %}
+
+{% block title %}Journey Summary - Soul Navigation{% endblock %}
+
+{% block content %}
+<div class="sn-layout">
+  <header class="sn-progress-header">
+    <div class="container">
+      <div class="sn-progress-meta">
+        <div class="sn-step-indicator">Complete</div>
+        <div class="sn-step-encouragement">You've turned awareness into action.</div>
+      </div>
+      
+      <div class="sn-progress-bar-container">
+        <div class="sn-progress-track">
+          <div class="sn-progress-fill" style="width: 100%"></div>
+        </div>
+        <div class="sn-progress-text">100% complete</div>
+      </div>
+      
+      <nav class="sn-progress-steps" aria-label="Navigation progress">
+        {% for step in progress_steps %}
+        <div class="sn-progress-step {% if step.completed %}completed{% endif %}" data-step="{{ step.number }}">
+          <div class="sn-progress-step-circle" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <path d="M20 6L9 17l-5-5"/>
+            </svg>
+          </div>
+          <span class="sn-progress-step-label">{{ step.name }}</span>
+        </div>
+        {% endfor %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="sn-main" role="main">
+    <div class="container">
+      <div class="sn-guidance">
+        <p class="sn-guidance-text">Thank you for taking this time for yourself.</p>
+      </div>
+
+      <div class="sn-form">
+        <header class="sn-step-header">
+          <h1 class="sn-step-title">Journey Complete</h1>
+          <p class="sn-step-subtitle">{{ session.created_at|date:"F d, Y" }}</p>
+        </header>
+
+        <div style="display: flex; flex-direction: column; gap: var(--sn-space-5); margin-bottom: var(--sn-space-8);">
+          <div>
+            <span class="sn-highlight-label">Feeling → Influence → Thought → Perspective → Action</span>
+          </div>
+
+          <div class="sn-highlight-box">
+            <span class="sn-highlight-label">Feeling</span>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--sn-space-2); margin-top: var(--sn-space-2);">
+              {% for issue in session.observed_issues %}
+              <span style="background: var(--sn-accent-light); color: var(--sn-text-primary); padding: 6px 12px; border-radius: 9999px; font-size: 0.875rem; border: 1px solid rgba(107, 155, 210, 0.3);">
+                {% if issue == "sadness" %}😔 Sad{% elif issue == "anger" %}😡 Angry{% elif issue == "stress" %}😰 Stress{% elif issue == "confused" %}🤔 Confused{% elif issue == "fear" %}😨 Fear{% elif issue == "overwhelmed" %}😵 Overwhelmed{% elif issue == "overthinking" %}🧠 Overthinking{% elif issue == "cant_focus" %}📚 Can't Focus{% elif issue == "procrastinating" %}⏳ Procrastinating{% elif issue == "relationship" %}💔 Relationship{% elif issue == "work" %}💼 Work{% elif issue == "goal" %}🎯 Goal{% elif issue == "tired" %}😴 Tired{% elif issue == "unmotivated" %}😐 Unmotivated{% elif issue == "growing" %}🌱 Growing{% else %}✨ Other{% endif %}
+              </span>
+              {% endfor %}
+            </div>
+            {% if session.observed_other %}
+            <p style="margin-top: var(--sn-space-3); font-size: 0.875rem; color: var(--sn-text-secondary); line-height: 1.6;">{{ session.observed_other }}</p>
+            {% endif %}
+            {% if session.intensity %}
+            <p style="margin-top: var(--sn-space-2); font-size: 0.8125rem; color: var(--sn-text-tertiary);">Intensity: {{ session.intensity|capfirst }}</p>
+            {% endif %}
+          </div>
+
+          <div class="sn-highlight-box">
+            <span class="sn-highlight-label">Influences</span>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--sn-space-2); margin-top: var(--sn-space-2);">
+              {% for inf in session.influences %}
+              <span style="background: var(--sn-accent-light); color: var(--sn-text-primary); padding: 6px 12px; border-radius: 9999px; font-size: 0.875rem; border: 1px solid rgba(107, 155, 210, 0.3);">{{ inf|capfirst }}</span>
+              {% endfor %}
+            </div>
+            {% if session.influences_other %}
+            <p style="margin-top: var(--sn-space-3); font-size: 0.875rem; color: var(--sn-text-secondary); line-height: 1.6;">{{ session.influences_other }}</p>
+            {% endif %}
+          </div>
+
+          <div class="sn-highlight-box">
+            <span class="sn-highlight-label">Thought</span>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--sn-space-2); margin-top: var(--sn-space-2);">
+              {% for thought in session.thoughts %}
+              <span style="background: var(--sn-accent-light); color: var(--sn-text-primary); padding: 6px 12px; border-radius: 9999px; font-size: 0.875rem; border: 1px solid rgba(107, 155, 210, 0.3);">{{ thought|capfirst }}</span>
+              {% endfor %}
+            </div>
+            {% if session.thoughts_other %}
+            <p style="margin-top: var(--sn-space-3); font-size: 0.875rem; color: var(--sn-text-secondary); line-height: 1.6;">{{ session.thoughts_other }}</p>
+            {% endif %}
+          </div>
+
+          <div class="sn-highlight-box">
+            <span class="sn-highlight-label">Perspective</span>
+            <p style="margin-top: var(--sn-space-2); font-size: 0.9375rem; color: var(--sn-text-primary); line-height: 1.7;">
+              {% if session.selected_reframe == 'custom' %}
+                {{ session.custom_reframe }}
+              {% elif session.selected_reframe == 'balanced' %}
+                ⚖ Balanced View
+              {% elif session.selected_reframe == 'compassionate' %}
+                ❤️ Compassionate View
+              {% elif session.selected_reframe == 'practical' %}
+                🔨 Practical View
+              {% else %}
+                {{ session.selected_reframe|capfirst }} View
+              {% endif %}
+            </p>
+          </div>
+
+          <div class="sn-highlight-box">
+            <span class="sn-highlight-label">Action</span>
+            <p style="margin-top: var(--sn-space-2); font-size: 0.9375rem; color: var(--sn-text-primary); line-height: 1.7; font-weight: 500;">
+              {% if session.selected_action == 'custom' %}
+                {{ session.custom_action }}
+              {% elif session.selected_action %}
+                {% for value, label in move_labels.items %}
+                  {% if value == session.selected_action %}{{ label }}{% endif %}
+                {% endfor %}
+              {% endif %}
+            </p>
+          </div>
+
+          <div class="sn-highlight-box">
+            <span class="sn-highlight-label">Reflection</span>
+            <div style="display: flex; flex-wrap: wrap; gap: var(--sn-space-2); margin-top: var(--sn-space-2);">
+              {% for refl in session.reflection %}
+              <span style="background: var(--sn-accent-light); color: var(--sn-text-primary); padding: 6px 12px; border-radius: 9999px; font-size: 0.875rem; border: 1px solid rgba(107, 155, 210, 0.3);">{{ refl|capfirst }}</span>
+              {% endfor %}
+            </div>
+            {% if session.reflection_other %}
+            <p style="margin-top: var(--sn-space-3); font-size: 0.875rem; color: var(--sn-text-secondary); line-height: 1.6;">{{ session.reflection_other }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--sn-space-3);">
+          <a href="{% url 'soul_navigation:home' %}" class="sn-btn" style="text-decoration: none; background: var(--sn-surface); color: var(--sn-text-primary); border: 2px solid var(--sn-border); box-shadow: var(--sn-shadow-sm);">
+            <span>Done</span>
+          </a>
+          <a href="{% url 'soul_navigation:export_session' session.id %}" class="sn-btn" style="text-decoration: none; background: var(--sn-surface); color: var(--sn-text-primary); border: 2px solid var(--sn-border); box-shadow: var(--sn-shadow-sm);">
+            <svg class="sn-btn-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M17 21v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"/>
+            </svg>
+            <span>Export</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+{% endblock %}

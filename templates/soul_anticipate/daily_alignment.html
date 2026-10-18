@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Daily Alignment - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="soul-anticipate-daily-alignment">
+    <header class="module-header">
+        <h1>Daily Alignment</h1>
+        <p class="module-description">Reflect on your progress toward your chosen future</p>
+    </header>
+
+    {% if active_direction %}
+    <div class="direction-context card">
+        <div class="direction-header">
+            <h2>{{ active_direction.title }}</h2>
+            <div class="direction-meta">
+                <span class="target-date">Target: {{ active_direction.target_date }}</span>
+                {% if active_direction.days_remaining is not None %}
+                <span class="days-remaining">{{ active_direction.days_remaining }} days remaining</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="direction-content">
+            <div class="direction-section">
+                <h3>Current Reality</h3>
+                <p>{{ active_direction.current_reality }}</p>
+            </div>
+            
+            <div class="direction-section">
+                <h3>Chosen Future</h3>
+                <p>{{ active_direction.chosen_future }}</p>
+            </div>
+            
+            <div class="direction-section">
+                <h3>Why It Matters</h3>
+                <p>{{ active_direction.why_important }}</p>
+            </div>
+        </div>
+    </div>
+
+    <form method="POST" class="alignment-form" id="alignment-form">
+        {% csrf_token %}
+        
+        <div class="form-field">
+            <label for="alignment_rating" class="form-label">
+                How aligned do you feel today with your chosen future?
+                <span class="required">*</span>
+            </label>
+            <div class="rating-scale">
+                {% for rating in rating_range %}
+                <div class="rating-option">
+                    <input type="radio" 
+                           id="rating_{{ rating }}" 
+                           name="alignment_rating" 
+                           value="{{ rating }}"
+                           {% if existing_alignment and existing_alignment.alignment_rating|stringformat:"s" == rating|stringformat:"s" %}checked{% endif %}
+                           class="form-radio-input">
+                    <label for="rating_{{ rating }}" class="form-radio-label">{{ rating }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="form-help">1 = Not aligned, 10 = Perfectly aligned</div>
+        </div>
+
+        <div class="form-field">
+            <label for="question_1" class="form-label">
+                What is one action you took today that moved you toward your future?
+                <span class="required">*</span>
+            </label>
+            <textarea id="question_1" 
+                      name="question_1" 
+                      rows="4" 
+                      class="form-textarea"
+                      {% if existing_alignment %}{{ existing_alignment.question_1|default:'' }}{% endif %}required>{{ existing_alignment.question_1|default:'' }}</textarea>
+        </div>
+
+        <div class="form-field">
+            <label for="question_2" class="form-label">
+                What is one challenge you faced today and how did you respond to it?
+                <span class="required">*</span>
+            </label>
+            <textarea id="question_2" 
+                      name="question_2" 
+                      rows="4" 
+                      class="form-textarea"
+                      {% if existing_alignment %}{{ existing_alignment.question_2|default:'' }}{% endif %}required>{{ existing_alignment.question_2|default:'' }}</textarea>
+        </div>
+
+        <div class="form-field">
+            <label for="question_3" class="form-label">
+                What are you grateful for today?
+            </label>
+            <textarea id="question_3" 
+                      name="question_3" 
+                      rows="3" 
+                      class="form-textarea"
+                      {% if existing_alignment %}{% if existing_alignment %}{{ existing_alignment.question_3|default:'' }}{% endif %}{% endif %}>{{ existing_alignment.question_3|default:'' }}</textarea>
+        </div>
+
+        <div class="form-field">
+            <label for="question_4" class="form-label">
+                What is one intention you have for tomorrow?
+            </label>
+            <textarea id="question_4" 
+                      name="question_4" 
+                      rows="3" 
+                      class="form-textarea"
+                      {% if existing_alignment %}{% if existing_alignment %}{{ existing_alignment.question_4|default:'' }}{% endif %}{% endif %}>{{ existing_alignment.question_4|default:'' }}</textarea>
+        </div>
+
+        <div class="form-field">
+            <button type="submit" class="btn btn-primary">Save Alignment</button>
+        </div>
+    </form>
+
+    {% else %}
+    <div class="no-direction">
+        <div class="no-direction-icon">→</div>
+        <h2>No current direction selected.</h2>
+        <p>Choose a future to move toward intentionally.</p>
+        <a href="{% url 'soul_anticipate:create_direction_start' %}" class="btn btn-primary">Create Direction</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('alignment-form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const ratingInputs = form.querySelectorAll('input[name="alignment_rating"]');
+            let isValid = false;
+            
+            ratingInputs.forEach(input => {
+                if (input.checked) {
+                    isValid = true;
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please select an alignment rating');
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

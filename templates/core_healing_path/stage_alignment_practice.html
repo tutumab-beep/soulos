@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Faith Cycle - SoulOS{% endblock %}
+{% block title %}Alignment Practice - SoulOS{% endblock %}
 {% block content %}
 <a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
-<h1>Faith Cycle</h1>
+<h1>Alignment Practice</h1>
 <p>What ritual will you practice today?</p>
-<form method="post" action="{% url 'core_healing_path:log_faith_cycle' %}">
+<form method="post" action="{% url 'core_healing_path:log_alignment_practice' %}">
     {% csrf_token %}
-    <input type="hidden" name="stage" value="faith_cycle">
+    <input type="hidden" name="stage" value="alignment_practice">
     <label>Ritual:</label>
     <input type="text" name="ritual">
     <label>Reflection:</label>

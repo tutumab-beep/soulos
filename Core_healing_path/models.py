@@ -2,13 +2,27 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+# Pattern theme constants for Pattern Intelligence
+PATTERN_THEMES = [
+    ("avoidance", "Avoidance"),
+    ("growth", "Growth"),
+    ("courage", "Courage"),
+    ("learning", "Learning"),
+    ("communication", "Communication"),
+    ("decision_making", "Decision making"),
+    ("discipline", "Discipline"),
+    ("responsibility", "Responsibility"),
+    ("adaptability", "Adaptability"),
+    ("confidence", "Confidence"),
+]
+
 
 STAGE_CHOICES = [
     ("tension_observer", "Tension Observer"),
     ("awareness_lens", "Awareness Lens"),
     ("belief_anchor", "Belief Anchor"),
     ("thought_analyzer", "Thought Analyzer"),
-    ("faith_cycle", "Faith Cycle"),
+    ("alignment_practice", "Alignment Practice"),
     ("clarity_flow", "Clarity Flow"),
 ]
 
@@ -66,6 +80,24 @@ INSIGHT_TYPE_CHOICES = [
     ("realization", "Realization"),
     ("lesson", "Lesson Learned"),
     ("perspective-shift", "Perspective Shift"),
+]
+
+TRANSFORMATION_TYPES = [
+    ("awareness", "Awareness"),
+    ("courage", "Courage"),
+    ("emotional_growth", "Emotional Growth"),
+    ("belief_shift", "Belief Shift"),
+    ("gratitude", "Gratitude"),
+    ("self_trust", "Self-Trust"),
+    ("acceptance", "Acceptance"),
+    ("action", "Action"),
+]
+
+TRANSFORMATION_STRENGTH = [
+    ("seed", "Seed"),
+    ("growing", "Growing"),
+    ("expanding", "Expanding"),
+    ("breakthrough", "Breakthrough"),
 ]
 
 
@@ -232,12 +264,12 @@ class Transformation(models.Model):
         blank=True,
         related_name="transformation_thought",
     )
-    faith = models.OneToOneField(
+    alignment_practice = models.OneToOneField(
         HealingLog,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="transformation_faith",
+        related_name="transformation_alignment_practice",
     )
     celebration = models.OneToOneField(
         HealingLog,
@@ -247,8 +279,237 @@ class Transformation(models.Model):
         related_name="transformation_celebration",
     )
 
+    # Automatic Transformation Engine fields
+    transformation_type = models.CharField(
+        max_length=20, choices=TRANSFORMATION_TYPES, blank=True
+    )
+    transformation_summary = models.TextField(blank=True)
+    transformation_score = models.PositiveSmallIntegerField(default=0)
+    transformation_strength = models.CharField(
+        max_length=20, choices=TRANSFORMATION_STRENGTH, blank=True
+    )
+    auto_analyzed_at = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         ordering = ["-started_at"]
 
     def __str__(self):
         return f"{self.user.username} - Transformation #{self.id} - {self.status}"
+
+    @property
+    def stages_completed(self):
+        """Count of completed stages in this transformation."""
+        count = 0
+        for field_name in [
+            "tension",
+            "awareness",
+            "belief",
+            "thought",
+            "alignment_practice",
+            "celebration",
+        ]:
+            if getattr(self, field_name):
+                count += 1
+        return count
+
+    @property
+    def has_auto_analysis(self):
+        """Check if automatic analysis has been performed."""
+        return bool(self.auto_analyzed_at)
+
+
+# --- Transformation Log Models ---
+
+
+class InsightCapture(models.Model):
+    """Step 2: Capture insights after a Core Healing Path session."""
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="insight_captures"
+    )
+    transformation = models.ForeignKey(
+        Transformation,
+        on_delete=models.CASCADE,
+        related_name="insights",
+        null=True,
+        blank=True,
+    )
+    what_became_clearer = models.TextField(blank=True, default="")
+    what_did_you_notice = models.TextField(blank=True, default="")
+    what_truth_stood_out = models.TextField(blank=True, default="")
+    what_surprised_you = models.TextField(blank=True, default="")
+    what_are_you_understanding_differently = models.TextField(blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return (
+            f"Insight - {self.user.username} - {self.created_at.strftime('%Y-%m-%d')}"
+        )
+
+
+class PatternDiscovery(models.Model):
+    """Step 3: Identify recurring patterns."""
+
+    PATTERN_CHOICES = [
+        ("yes", "Yes"),
+        ("no", "No"),
+        ("not_sure", "Not sure"),
+    ]
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="pattern_discoveries"
+    )
+    insight = models.ForeignKey(
+        InsightCapture,
+        on_delete=models.CASCADE,
+        related_name="patterns",
+        null=True,
+        blank=True,
+    )
+    transformation = models.ForeignKey(
+        Transformation,
+        on_delete=models.CASCADE,
+        related_name="patterns",
+        null=True,
+        blank=True,
+    )
+    experienced_before = models.CharField(
+        max_length=20, choices=PATTERN_CHOICES, default="not_sure"
+    )
+    repeats_in_life = models.CharField(
+        max_length=20, choices=PATTERN_CHOICES, default="not_sure"
+    )
+    pattern_description = models.TextField(blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return (
+            f"Pattern - {self.user.username} - {self.created_at.strftime('%Y-%m-%d')}"
+        )
+
+
+class ResponseChoice(models.Model):
+    """Step 4: Choose how to respond."""
+
+    RESPONSE_CHOICES = [
+        ("take_action", "Take action"),
+        ("communicate", "Communicate"),
+        ("learn_more", "Learn more"),
+        ("practice_patience", "Practice patience"),
+        ("rest", "Rest"),
+        ("seek_help", "Seek help"),
+        ("let_go", "Let go"),
+        ("try_again", "Try again"),
+    ]
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="response_choices"
+    )
+    pattern = models.ForeignKey(
+        PatternDiscovery,
+        on_delete=models.CASCADE,
+        related_name="responses",
+        null=True,
+        blank=True,
+    )
+    transformation = models.ForeignKey(
+        Transformation,
+        on_delete=models.CASCADE,
+        related_name="responses",
+        null=True,
+        blank=True,
+    )
+    selected_response = models.CharField(
+        max_length=50, choices=RESPONSE_CHOICES, blank=True, default=""
+    )
+    custom_response = models.TextField(blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return (
+            f"Response - {self.user.username} - {self.created_at.strftime('%Y-%m-%d')}"
+        )
+
+
+class NextStep(models.Model):
+    """Step 5: One small next step."""
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="next_steps")
+    response = models.ForeignKey(
+        ResponseChoice,
+        on_delete=models.CASCADE,
+        related_name="next_steps",
+        null=True,
+        blank=True,
+    )
+    transformation = models.ForeignKey(
+        Transformation,
+        on_delete=models.CASCADE,
+        related_name="next_steps",
+        null=True,
+        blank=True,
+    )
+    step_description = models.CharField(max_length=255)
+    is_completed = models.BooleanField(default=False)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Step - {self.user.username} - {self.step_description}"
+
+
+class GrowthEntry(models.Model):
+    """Step 6: Transformation Summary - saved permanently."""
+
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="growth_entries"
+    )
+    transformation = models.ForeignKey(
+        Transformation,
+        on_delete=models.CASCADE,
+        related_name="growth_entries",
+        null=True,
+        blank=True,
+    )
+    insight = models.ForeignKey(
+        InsightCapture,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="growth_entries",
+    )
+    next_step = models.ForeignKey(
+        NextStep,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="growth_entries",
+    )
+
+    what_i_noticed = models.TextField(blank=True, default="")
+    what_i_understand = models.TextField(blank=True, default="")
+    my_next_step = models.CharField(max_length=255, blank=True, default="")
+
+    # Pattern intelligence fields
+    theme = models.CharField(max_length=50, blank=True, default="")
+    theme_label = models.CharField(max_length=100, blank=True, default="")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Growth - {self.user.username} - {self.created_at.strftime('%Y-%m-%d')}"

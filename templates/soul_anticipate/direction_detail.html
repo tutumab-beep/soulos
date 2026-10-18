@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ direction.title }} - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="direction-detail-page">
+    <header class="page-header">
+        <h1>{{ direction.title }}</h1>
+        <a href="{% url 'soul_anticipate:dashboard' %}" class="btn btn-sm btn-outline">← Back to Dashboard</a>
+    </header>
+
+    {% if direction.is_active %}
+    <div class="status-indicator status-active">
+        <span class="status-dot"></span>
+        <span>Active Direction</span>
+    </div>
+    {% else %}
+    <div class="status-indicator status-archived">
+        <span class="status-dot"></span>
+        <span>Archived Direction</span>
+    </div>
+    {% endif %}
+
+    <div class="direction-content">
+        <div class="direction-section">
+            <h2>Current Reality</h2>
+            <p>{{ direction.current_reality }}</p>
+        </div>
+        
+        <div class="direction-section">
+            <h2>Chosen Future</h2>
+            <p>{{ direction.chosen_future }}</p>
+        </div>
+        
+        <div class="direction-section">
+            <h2>Why It Matters</h2>
+            <p>{{ direction.why_important }}</p>
+        </div>
+        
+        <div class="direction-meta">
+            <div class="meta-item">
+                <span class="meta-label">Target Date:</span>
+                <span class="meta-value">{{ direction.target_date }}</span>
+            </div>
+            {% if direction.days_remaining is not None %}
+            <div class="meta-item">
+                <span class="meta-label">Days Remaining:</span>
+                <span class="meta-value">{{ direction.days_remaining }}</span>
+            </div>
+            {% endif %}
+            <div class="meta-item">
+                <span class="meta-label">Created:</span>
+                <span class="meta-value">{{ direction.created_at|date:"M d, Y" }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-tabs">
+        <button class="tab-btn {% if not tab or tab == 'alignments' %}active{% endif %}" 
+                onclick="showTab('alignments')">
+            Alignment History
+        </button>
+        <button class="tab-btn {% if tab == 'milestones' %}active{% endif %}" 
+                onclick="showTab('milestones')">
+            Milestones
+        </button>
+    </div>
+
+    <div id="alignments-tab" class="tab-content {% if not tab or tab == 'alignments' %}active{% endif %}">
+        {% if direction.alignment_entries.exists %}
+        <h3>Alignment History</h3>
+        <div class="alignment-entries">
+            {% for alignment in direction.alignment_entries.all %}
+            <div class="alignment-entry">
+                <div class="entry-header">
+                    <span class="entry-date">{{ alignment.entry_date }}</span>
+                    <span class="entry-score">Score: {{ alignment.alignment_rating }}/10</span>
+                </div>
+                <div class="entry-questions">
+                    <p><strong>What moved you forward:</strong> {{ alignment.question_1 }}</p>
+                    <p><strong>What challenged you:</strong> {{ alignment.question_2 }}</p>
+                    <p><strong>What you learned:</strong> {{ alignment.question_3 }}</p>
+                    <p><strong>Next action:</strong> {{ alignment.question_4 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-data">No alignment entries yet. Start your daily alignment practice!</p>
+        {% endif %}
+    </div>
+
+    <div id="milestones-tab" class="tab-content {% if tab == 'milestones' %}active{% endif %}">
+        {% if direction.milestones.exists %}
+        <h3>Milestones</h3>
+        <div class="milestones-list">
+            {% for milestone in direction.milestones.all %}
+            <div class="milestone-item">
+                <div class="milestone-header">
+                    <h4>{{ milestone.title }}</h4>
+                    <span class="milestone-status {% if milestone.completed %}completed{% else %}pending{% endif %}">
+                        {% if milestone.completed %}Completed{% else %}Pending{% endif %}
+                    </span>
+                </div>
+                {% if milestone.description %}
+                <p class="milestone-description">{{ milestone.description }}</p>
+                {% endif %}
+                <div class="milestone-meta">
+                    <span class="meta-label">Created:</span>
+                    <span class="meta-value">{{ milestone.created_at|date:"M d, Y" }}</span>
+                    {% if milestone.completed_date %}
+                    <span class="meta-label">Completed:</span>
+                    <span class="meta-value">{{ milestone.completed_date|date:"M d, Y" }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="no-data">No milestones yet. Create milestones to track your progress!</p>
+        {% endif %}
+    </div>
+
+    {% if direction.is_active %}
+    <div class="direction-actions">
+        <a href="{% url 'soul_anticipate:edit_direction' direction.id %}" class="btn btn-outline">Edit Direction</a>
+        <a href="{% url 'soul_anticipate:daily_alignment' %}" class="btn btn-primary">Daily Alignment</a>
+        <a href="{% url 'soul_anticipate:milestones' %}" class="btn btn-outline">Manage Milestones</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Remove active class from all buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(tabName + '-tab').classList.add('active');
+    
+    // Add active class to clicked button
+    event.target.classList.add('active');
+}
+</script>
+{% endblock %}

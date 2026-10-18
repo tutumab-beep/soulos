@@ -40,16 +40,16 @@
 
   <main class="sn-main" role="main">
     <div class="container">
-      <div class="sn-guidance">
-        <p class="sn-guidance-text">There may be another way to see this.</p>
-      </div>
+       <div class="sn-guidance">
+         <p class="sn-guidance-text">Let's explore different perspectives.</p>
+       </div>
 
       <form method="post" class="sn-form" novalidate>
         {% csrf_token %}
         
         <header class="sn-step-header">
-          <h1 class="sn-step-title">Reframe</h1>
-          <p class="sn-step-subtitle">Choose a new view.</p>
+         <h1 class="sn-step-title">Reframe</h1>
+           <p class="sn-step-subtitle">Is there another way to see this?</p>
         </header>
 
         <div class="sn-highlight-box">
@@ -58,7 +58,7 @@
         </div>
 
         <fieldset class="sn-fieldset">
-          <legend class="sn-fieldset-legend">Pick a perspective that feels helpful</legend>
+           <legend class="sn-fieldset-legend">Which perspective feels most helpful?</legend>
           <div class="sn-card-grid">
             {% for key, data in reframes.items %}
             <label class="sn-card sn-card-large {% if key == session.selected_reframe %}selected{% endif %}" for="reframe-{{ forloop.counter }}">

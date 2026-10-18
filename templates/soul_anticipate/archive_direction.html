@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Archive Direction - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="archive-direction-page">
+    <header class="page-header">
+        <h1>Archive Direction</h1>
+        <a href="{% url 'soul_anticipate:direction_detail' direction.id %}" class="btn btn-sm btn-outline">← Back to Direction</a>
+    </header>
+
+    <div class="archive-warning">
+        <h2>Archive This Direction?</h2>
+        <p><strong>{{ direction.title }}</strong></p>
+        <p>{{ direction.short_description }}</p>
+    </div>
+
+    <div class="archive-info">
+        <h3>Direction Details</h3>
+        <p><strong>Current Reality:</strong> {{ direction.current_reality }}</p>
+        <p><strong>Chosen Future:</strong> {{ direction.chosen_future }}</p>
+        <p><strong>Why It Matters:</strong> {{ direction.why_important }}</p>
+        <p><strong>Target Date:</strong> {{ direction.target_date }}</p>
+        <p><strong>Created:</strong> {{ direction.created_at|date:"M d, Y" }}</p>
+    </div>
+
+    <p class="archive-note">Archiving this direction will move it to your history but keep all your alignment data and milestones intact. You can still view it, but it won't appear as your active direction.</p>
+
+    <form method="POST" class="archive-form">
+        {% csrf_token %}
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Archive Direction</button>
+            <a href="{% url 'soul_anticipate:direction_detail' direction.id %}" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

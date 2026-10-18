@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ step_title }} - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="wizard-container">
+    <header class="wizard-header">
+        <h1>{{ step_title }}</h1>
+        <p class="wizard-description">{{ step_description }}</p>
+    </header>
+
+    {% if is_declaration_step %}
+    <div class="declaration-preview">
+        <h3>Your Declaration</h3>
+        <pre style="white-space: pre-wrap; background: var(--color-bg-secondary); padding: 1.5rem; border-radius: 8px;">{{ declaration }}</pre>
+    </div>
+    {% endif %}
+
+    <form method="POST" class="wizard-form">
+        {% csrf_token %}
+        
+        {% if not is_declaration_step %}
+        <div class="wizard-form-content">
+            {% if step == 1 %}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="{{ form_data.title }}" required maxlength="200">
+                <small class="form-text">Give your direction a clear, inspiring name</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="short_description">Short Description</label>
+                <textarea id="short_description" name="short_description" value="{{ form_data.short_description }}" required maxlength="500" rows="3">{{ form_data.short_description }}</textarea>
+                <small class="form-text">Briefly describe your direction in one or two sentences</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="current_reality">Current Reality</label>
+                <textarea id="current_reality" name="current_reality" value="{{ form_data.current_reality }}" required rows="6">{{ form_data.current_reality }}</textarea>
+                <small class="form-text">Describe your current situation honestly and clearly</small>
+            </div>
+            {% elif step == 2 %}
+            <div class="form-group">
+                <label for="chosen_future">Chosen Future</label>
+                <textarea id="chosen_future" name="chosen_future" value="{{ form_data.chosen_future }}" required rows="6">{{ form_data.chosen_future }}</textarea>
+                <small class="form-text">Describe the future you want to create</small>
+            </div>
+            {% elif step == 3 %}
+            <div class="form-group">
+                <label for="why_important">Why It Matters</label>
+                <textarea id="why_important" name="why_important" value="{{ form_data.why_important }}" required rows="6">{{ form_data.why_important }}</textarea>
+                <small class="form-text">Connect with your deeper motivation</small>
+            </div>
+            {% elif step == 4 %}
+            <div class="form-group">
+                <label for="target_date">Target Date</label>
+                <input type="date" id="target_date" name="target_date" value="{{ form_data.target_date }}" required>
+                <small class="form-text">Set a meaningful target date for your direction</small>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="wizard-navigation">
+            {% if prev_url %}
+            <a href="{% url prev_url %}" class="btn btn-outline">← Previous Step</a>
+            {% endif %}
+            
+            {% if next_url %}
+            <button type="submit" class="btn btn-primary">Next Step →</button>
+            {% else %}
+            <button type="submit" class="btn btn-success">Create Direction</button>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add any step-specific JavaScript enhancements here
+    const form = document.querySelector('.wizard-form');
+    if (form) {
+        // Auto-focus first input
+        const firstInput = form.querySelector('input, textarea');
+        if (firstInput) {
+            firstInput.focus();
+        }
+    }
+});
+</script>
+{% endblock %}

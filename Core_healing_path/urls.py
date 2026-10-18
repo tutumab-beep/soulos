@@ -30,10 +30,10 @@ urlpatterns = [
         name="thought_analyzer",
     ),
     path(
-        "stage/faith-cycle/",
+        "stage/alignment-practice/",
         views.stage_view,
-        {"stage_key": "faith_cycle"},
-        name="faith_cycle",
+        {"stage_key": "alignment_practice"},
+        name="alignment_practice",
     ),
     path(
         "stage/clarity-flow/",
@@ -57,7 +57,11 @@ urlpatterns = [
     path("log-awareness/", views.log_awareness, name="log_awareness"),
     path("log-belief-anchor/", views.log_belief_anchor, name="log_belief_anchor"),
     path("log-thought/", views.log_thought, name="log_thought"),
-    path("log-faith-cycle/", views.log_faith_cycle, name="log_faith_cycle"),
+    path(
+        "log-alignment-practice/",
+        views.log_alignment_practice,
+        name="log_alignment_practice",
+    ),
     path("log-celebration/", views.log_celebration, name="log_celebration"),
     path(
         "transformation-log/",
@@ -73,9 +77,9 @@ urlpatterns = [
     ),
     path("edit-thought/<int:entry_id>/", views.edit_thought, name="edit_thought"),
     path(
-        "edit-faith-cycle/<int:entry_id>/",
-        views.edit_faith_cycle,
-        name="edit_faith_cycle",
+        "edit-alignment-practice/<int:entry_id>/",
+        views.edit_alignment_practice,
+        name="edit_alignment_practice",
     ),
     path(
         "edit-celebration/<int:entry_id>/",

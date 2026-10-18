@@ -1,4 +1,4 @@
-/* Responsive utilities and mobile-first breakpoints */
+/* Responsive utilities and mobile-first breakpoints - Built with SoulOS Design System */
 
 /* Breakpoints:
    sm: 640px
@@ -88,7 +88,7 @@
   display: inline-flex;
 }
 
-@media (min-width: 768px) {
+@via (min-width: 768px) {
   .md\:flex { display: flex; }
   .md\:inline-flex { display: inline-flex; }
   .md\:hidden { display: none; }
@@ -108,12 +108,17 @@
   .p-responsive { padding: var(--space-8); }
 }
 
+/* Responsive margin */
 .m-responsive {
   margin: var(--space-4);
 }
 
 @media (min-width: 768px) {
   .m-responsive { margin: var(--space-6); }
+}
+
+@media (min-width: 1024px) {
+  .m-responsive { margin: var(--space-8); }
 }
 
 /* Responsive text alignment */
@@ -175,7 +180,7 @@
   display: none;
 }
 
-@media (min-width: 768px) {
+@via (min-width: 768px) {
   .navbar-nav {
     display: flex;
   }

@@ -168,7 +168,7 @@ class ThoughtAnalyzerForm(forms.ModelForm):
         }
 
 
-class FaithCycleForm(forms.ModelForm):
+class AlignmentPracticeForm(forms.ModelForm):
     ritual = forms.CharField(
         label="Ritual",
         max_length=100,

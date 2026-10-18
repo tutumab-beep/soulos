@@ -12,7 +12,6 @@ import json
 # Step data constants
 OBSERVE_CHOICES = [
     ("fear", "😨 Fear"),
-    ("anger", "😡 Anger"),
     ("sadness", "😔 Sadness"),
     ("stress", "😞 Stress"),
     ("overwhelmed", "😵 Overwhelmed"),
@@ -26,6 +25,21 @@ OBSERVE_CHOICES = [
     ("tired", "😴 Tired"),
     ("unmotivated", "😐 Unmotivated"),
     ("growing", "🌱 Growing"),
+    ("happy", "😊 Happy"),
+    ("calm", "😌 Calm"),
+    ("focused", "🎯 Focused"),
+    ("inspired", "💡 Inspired"),
+    ("excited", "🤩 Excited"),
+    ("grateful", "🙏 Grateful"),
+    ("proud", "😌 Proud"),
+    ("hopeful", "🌟 Hopeful"),
+    ("confident", "💪 Confident"),
+    ("connected", "🤝 Connected"),
+    ("creative", "🎨 Creative"),
+    ("curious", "🔍 Curious"),
+    ("energized", "⚡ Energized"),
+    ("peaceful", "🕊️ Peaceful"),
+    ("accomplished", "🏆 Accomplished"),
     ("other", "✨ Other"),
 ]
 
@@ -53,9 +67,25 @@ UNDERSTAND_CHOICES = [
     ("habit", "Habit"),
     ("environment", "Environment"),
     ("unknown", "Unknown"),
+    # Positive contributors
+    ("achievement", "Achievement"),
+    ("progress", "Progress"),
+    ("learning", "Learning"),
+    ("creativity", "Creativity"),
+    ("purpose", "Purpose"),
+    ("exercise", "Exercise"),
+    ("momentum", "Momentum"),
+    ("support", "Support"),
+    ("friendship", "Friendship"),
+    ("nature", "Nature"),
+    ("success", "Success"),
+    ("personal_growth", "Personal Growth"),
+    ("meaningful_work", "Meaningful Work"),
+    ("alignment", "Alignment"),
 ]
 
 EXAMINE_CHOICES = [
+    # Difficult thoughts (keeping existing)
     ("not_enough", "I am not enough."),
     ("will_fail", "I will fail."),
     ("nobody_understands", "Nobody understands me."),
@@ -67,6 +97,17 @@ EXAMINE_CHOICES = [
     ("cant_focus", "I can't focus."),
     ("behind", "I am behind."),
     ("mistake", "I made a mistake."),
+    # Empowering thoughts (new additions)
+    ("making_progress", "I am making progress"),
+    ("handled_well", "I handled this well"),
+    ("can_learn", "I can learn this"),
+    ("becoming_capable", "I am becoming more capable"),
+    ("growing", "I am growing"),
+    ("can_keep_going", "I can keep going"),
+    ("solved_important", "I solved something important"),
+    ("aligned", "I am aligned"),
+    ("have_options", "I have options"),
+    ("meaningful_step", "This is a meaningful step"),
     ("other", "Other"),
 ]
 
@@ -74,10 +115,15 @@ REFRAME_TYPES = [
     ("balanced", "✅ Balanced View"),
     ("compassionate", "✅ Compassionate View"),
     ("practical", "✅ Practical View"),
+    # Growth reframe modes
+    ("strengths", "💪 Strengths Focus"),
+    ("lesson", "📚 Lesson Learned"),
+    ("repeat_success", "🔁 Repeat Success"),
     ("custom", "Create my own perspective"),
 ]
 
 MOVE_CHOICES = [
+    # Recovery actions (keeping existing)
     ("water", "💧 Drink water"),
     ("walk", "🚶 Take a walk"),
     ("study_10", "📚 Study for 10 minutes"),
@@ -92,10 +138,24 @@ MOVE_CHOICES = [
     ("reflect", "🙏 Reflect quietly"),
     ("exercise", "💪 Exercise"),
     ("read", "📖 Read something useful"),
+    # Growth actions (new additions)
+    ("learn_something", "📖 Learn something"),
+    ("build_something", "🔨 Build something"),
+    ("work_goal", "🎯 Work on a goal"),
+    ("journal_success", "📓 Journal a success"),
+    ("capture_idea", "💡 Capture an idea"),
+    ("teach_someone", "👨‍🏫 Teach someone"),
+    ("help_someone", "� Help someone"),
+    ("practice_skill", "🎯 Practice a skill"),
+    ("create_something", "🎨 Create something"),
+    ("plan_tomorrow", "📅 Plan tomorrow"),
+    ("celebrate_progress", "🎉 Celebrate progress"),
+    ("review_accomplishments", "🏆 Review accomplishments"),
     ("custom", "Create my own step"),
 ]
 
 INTEGRATE_CHOICES = [
+    # Keeping existing
     ("calmer", "I feel calmer."),
     ("understand_more", "I understand more."),
     ("have_plan", "I have a plan."),
@@ -103,6 +163,15 @@ INTEGRATE_CHOICES = [
     ("took_action", "I took action."),
     ("need_time", "I need more time."),
     ("still_struggling", "I am still struggling."),
+    # Adding positive integration options
+    ("discovered_strength", "I discovered a strength"),
+    ("gained_confidence", "I gained confidence"),
+    ("made_progress", "I made progress"),
+    ("enjoyed_today", "I enjoyed today"),
+    ("continue_momentum", "I want to continue this momentum"),
+    ("feel_aligned", "I feel aligned"),
+    ("found_meaning", "I found meaning"),
+    ("built_consistency", "I built consistency"),
 ]
 
 
@@ -148,7 +217,7 @@ def get_progress_context(current_step):
 
 @login_required
 def home(request):
-    """Soul Navigation home page with daily check-in"""
+    """Soul Navigation home page - Daily Awareness tool"""
     # Get or create today's check-in
     today = timezone.now().date()
     checkin = DailyMoodCheckin.objects.filter(user=request.user, date=today).first()
@@ -177,7 +246,7 @@ def home(request):
 
 @login_required
 def start_navigation(request):
-    """Start a new navigation session"""
+    """Start a new awareness session"""
     # Delete any incomplete session
     NavigationSession.objects.filter(user=request.user, completed=False).delete()
 
@@ -188,7 +257,7 @@ def start_navigation(request):
 
 @login_required
 def step_observe(request, session_id=None):
-    """Step 1: Observe - What is happening right now?"""
+    """Step 1: Observe - Capture current experience"""
     session = get_session(request, session_id)
 
     if request.method == "POST":
@@ -214,7 +283,7 @@ def step_observe(request, session_id=None):
 
 @login_required
 def step_understand(request, session_id=None):
-    """Step 2: Understand - What may be influencing this?"""
+    """Step 2: Understand - What seems to be influencing this experience?"""
     session = get_session(request, session_id)
 
     # Ensure step 1 is complete
@@ -241,7 +310,7 @@ def step_understand(request, session_id=None):
 
 @login_required
 def step_examine(request, session_id=None):
-    """Step 3: Examine - What thoughts are showing up?"""
+    """Step 3: Examine - What thoughts are most present right now?"""
     session = get_session(request, session_id)
 
     if not session.influences:
@@ -304,7 +373,7 @@ def step_reframe(request, session_id=None):
 
 @login_required
 def step_move(request, session_id=None):
-    """Step 5: Move - What is the most useful action right now?"""
+    """Step 5: Move - Small intentional action creates momentum."""
     session = get_session(request, session_id)
 
     if not session.selected_reframe:
@@ -330,7 +399,7 @@ def step_move(request, session_id=None):
 
 @login_required
 def step_integrate(request, session_id=None):
-    """Step 6: Integrate - What are you taking with you?"""
+    """Step 6: Integrate - What are you taking with you from this session?"""
     session = get_session(request, session_id)
 
     if not session.selected_action:
@@ -466,25 +535,63 @@ def history(request):
 
 
 def generate_reframes(thought_key, issue_key, session):
-    """Generate three perspective reframes based on user's inputs"""
+    """Generate perspective reframes based on user's inputs"""
     thought = dict(EXAMINE_CHOICES).get(thought_key, "this thought")
     issue = dict(OBSERVE_CHOICES).get(issue_key, "this situation")
 
-    reframes = {
-        "balanced": {
-            "label": "✅ Balanced View",
-            "description": "A grounded, realistic perspective",
-            "content": f'"{thought}" is a thought, not a fact. {issue} is challenging, and you\'re doing your best to navigate it. This feeling will pass.',
-        },
-        "compassionate": {
-            "label": "✅ Compassionate View",
-            "description": "Kindness toward yourself",
-            "content": f"It makes sense you'd think \"{thought}\" when facing {issue}. You're human, and this is hard. Be gentle with yourself right now.",
-        },
-        "practical": {
-            "label": "✅ Practical View",
-            "description": "Action-oriented perspective",
-            "content": f"\"{thought}\" feels true but isn't the whole story. What's one small thing you can do right now about {issue}? Just one step.",
-        },
-    }
+    # Determine if the thought is positive or negative
+    positive_thoughts = [
+        "making_progress",
+        "handled_well",
+        "can_learn",
+        "becoming_capable",
+        "growing",
+        "can_keep_going",
+        "solved_important",
+        "aligned",
+        "have_options",
+        "meaningful_step",
+    ]
+
+    is_positive = thought_key in positive_thoughts
+
+    if is_positive:
+        # Growth/reflective reframes for positive states
+        reframes = {
+            "strengths": {
+                "label": "💪 Strengths Focus",
+                "description": "What strength helped create this?",
+                "content": f"This experience of '{thought}' shows your strength in handling {issue}. What personal quality or skill made this possible?",
+            },
+            "lesson": {
+                "label": "📚 Lesson Learned",
+                "description": "What can you repeat tomorrow?",
+                "content": f"What did you learn from this experience of '{thought}' with {issue} that you'd like to continue or repeat?",
+            },
+            "repeat_success": {
+                "label": "🔁 Repeat Success",
+                "description": "What lesson should be kept?",
+                "content": f"How can you build on this moment of '{thought}' related to {issue} to create more experiences like this?",
+            },
+        }
+    else:
+        # Original reframes for difficult states
+        reframes = {
+            "balanced": {
+                "label": "✅ Balanced View",
+                "description": "A grounded, realistic perspective",
+                "content": f'"{thought}" is a thought, not a fact. {issue} is challenging, and you\'re doing your best to navigate it. This feeling will pass.',
+            },
+            "compassionate": {
+                "label": "✅ Compassionate View",
+                "description": "Kindness toward yourself",
+                "content": f"It makes sense you'd think \"{thought}\" when facing {issue}. You're human, and this is hard. Be gentle with yourself right now.",
+            },
+            "practical": {
+                "label": "✅ Practical View",
+                "description": "Action-oriented perspective",
+                "content": f"\"{thought}\" feels true but isn't the whole story. What's one small thing you can do right now about {issue}? Just one step.",
+            },
+        }
+
     return reframes

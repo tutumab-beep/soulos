@@ -40,20 +40,20 @@
 
   <main class="sn-main" role="main">
     <div class="container">
-      <div class="sn-guidance">
-        <p class="sn-guidance-text">Small actions create momentum.</p>
-      </div>
+       <div class="sn-guidance">
+         <p class="sn-guidance-text">Let's choose a small, intentional next step.</p>
+       </div>
 
       <form method="post" class="sn-form" novalidate>
         {% csrf_token %}
         
         <header class="sn-step-header">
-          <h1 class="sn-step-title">Move</h1>
-          <p class="sn-step-subtitle">Small action > Perfect plan</p>
+         <h1 class="sn-step-title">Move</h1>
+           <p class="sn-step-subtitle">Small intentional action creates momentum.</p>
         </header>
 
         <fieldset class="sn-fieldset">
-          <legend class="sn-fieldset-legend">What will help right now?</legend>
+           <legend class="sn-fieldset-legend">What small step feels right?</legend>
           <div class="sn-card-grid">
             {% for value, label in choices %}
             <label class="sn-card {% if value == session.selected_action %}selected{% endif %}" for="action-{{ forloop.counter }}">

@@ -1,4 +1,4 @@
-/* Base Styles - Reset & Foundation (VS Code Style) */
+/* Base Styles - Reset & Foundation (GitHub Copilot Style) */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -6,11 +6,13 @@
 }
 
 html {
-  font-size: 14px;  /* VS Code default */
+  font-size: 14px;  /* GitHub Copilot default */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   height: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -23,6 +25,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* Prevent text size adjustment on iOS */
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Skip link for accessibility */
@@ -34,7 +38,7 @@ body {
   color: var(--color-text-inverse);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
-  z-index: var(--z-tooltip);
+  z-index: var(--z-index-tooltip);
   font-weight: var(--font-weight-medium);
   font-size: var(--text-sm);
   transition: top var(--transition-fast);
@@ -52,7 +56,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-primary-hover);
+  color: var(--color-primary);
   text-decoration: underline;
 }
 
@@ -88,7 +92,7 @@ input, textarea, select {
 /* Container */
 .container {
   width: 100%;
-  max-width: var(--container-max);
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 var(--container-padding);
 }
@@ -106,18 +110,14 @@ input, textarea, select {
   border: 0;
 }
 
-/* Focus Visible - VS Code style */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
+/* Focus Visible - GitHub Copilot style */
 :focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
   border-radius: var(--radius-sm);
 }
 
-/* Scrollbar - VS Code style */
+/* Scrollbar - GitHub Copilot style */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -150,20 +150,6 @@ input, textarea, select {
   scrollbar-color: #424242 transparent;
 }
 
-/* VS Code specific utility classes */
-.monospace {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-}
-
-.tab-label {
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--color-text-tertiary);
-}
-
 /* Title bar / header styles */
 .title-bar {
   height: var(--header-height);
@@ -175,6 +161,7 @@ input, textarea, select {
   gap: var(--space-4);
 }
 
+/* Activity bar */
 .activity-bar {
   width: var(--activity-bar-width);
   background: var(--vscode-activity-bar-bg);
@@ -186,6 +173,7 @@ input, textarea, select {
   gap: var(--space-2);
 }
 
+/* Activity bar item */
 .activity-bar-item {
   width: 32px;
   height: 32px;
@@ -219,6 +207,7 @@ input, textarea, select {
   padding: 0 var(--space-3);
 }
 
+/* Status bar item */
 .status-bar-item {
   display: flex;
   align-items: center;
@@ -403,7 +392,7 @@ input, textarea, select {
 }
 
 .notification-error {
-  border-left: 3px solid var(--color-danger);
+  border-left: 3px solid var(--color-error);
 }
 
 @keyframes slideIn {
@@ -429,7 +418,7 @@ input, textarea, select {
   border: 1px solid var(--vscode-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
-  z-index: var(--z-popover);
+  z-index: var(--z-index-popover);
   overflow: hidden;
 }
 

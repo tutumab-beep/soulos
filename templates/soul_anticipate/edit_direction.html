@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Edit Direction - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="edit-direction-page">
+    <header class="page-header">
+        <h1>Edit Direction</h1>
+        <a href="{% url 'soul_anticipate:direction_detail' direction.id %}" class="btn btn-sm btn-outline">← Back to Direction</a>
+    </header>
+
+    <form method="POST" class="edit-form">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3>Direction Details</h3>
+            
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" value="{{ direction.title }}" required maxlength="200">
+            </div>
+            
+            <div class="form-group">
+                <label for="short_description">Short Description</label>
+                <textarea id="short_description" name="short_description" required maxlength="500" rows="3">{{ direction.short_description }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="current_reality">Current Reality</label>
+                <textarea id="current_reality" name="current_reality" required rows="6">{{ direction.current_reality }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="chosen_future">Chosen Future</label>
+                <textarea id="chosen_future" name="chosen_future" required rows="6">{{ direction.chosen_future }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="why_important">Why It Matters</label>
+                <textarea id="why_important" name="why_important" required rows="6">{{ direction.why_important }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="target_date">Target Date</label>
+                <input type="date" id="target_date" name="target_date" value="{{ direction.target_date }}" required>
+            </div>
+            
+            <div class="form-group form-checkbox">
+                <input type="checkbox" id="is_active" name="is_active" {% if direction.is_active %}checked{% endif %}>
+                <label for="is_active">Set as Active Direction</label>
+                <small class="form-text">Note: Only one direction can be active at a time. Selecting this will deactivate your current active direction.</small>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update Direction</button>
+            <a href="{% url 'soul_anticipate:direction_detail' direction.id %}" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

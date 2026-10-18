@@ -36,9 +36,9 @@
 
   <main class="sn-main" role="main">
     <div class="container">
-      <div class="sn-guidance">
-        <p class="sn-guidance-text">Thank you for taking this time for yourself.</p>
-      </div>
+         <div class="sn-guidance">
+           <p class="sn-guidance-text">Thank you for practicing daily awareness.</p>
+         </div>
 
       <div class="sn-form">
         <header class="sn-step-header">
@@ -47,9 +47,9 @@
         </header>
 
         <div style="display: flex; flex-direction: column; gap: var(--sn-space-5); margin-bottom: var(--sn-space-8);">
-          <div>
-            <span class="sn-highlight-label">Feeling → Influence → Thought → Perspective → Action</span>
-          </div>
+           <div>
+             <span class="sn-highlight-label">Awareness → Influences → Thoughts → Perspective → Action → Integration</span>
+           </div>
 
           <div class="sn-highlight-box">
             <span class="sn-highlight-label">Feeling</span>
@@ -133,9 +133,40 @@
             <p style="margin-top: var(--sn-space-3); font-size: 0.875rem; color: var(--sn-text-secondary); line-height: 1.6;">{{ session.reflection_other }}</p>
             {% endif %}
           </div>
-        </div>
+         </div>
 
-        <div style="display: flex; flex-direction: column; gap: var(--sn-space-3);">
+         <!-- Positive Highlights Section -->
+         <div style="display: flex; flex-direction: column; gap: var(--sn-space-6); margin-top: var(--sn-space-8); padding-top: var(--sn-space-6); border-top: 1px solid var(--sn-border-light);">
+            <div class="sn-highlight-box">
+              <span class="sn-highlight-label">Strengths noticed:</span>
+              <p style="margin-top: var(--sn-space-2); font-size: 0.9375rem; color: var(--sn-text-primary); line-height: 1.7;">
+                {% if session.selected_reframe == 'strengths' %}{{ session.ai_reframes.strengths.content|default:"You showed resilience and self-awareness in this session." }}{% else %}You demonstrated honesty and self-reflection by taking this awareness session.{% endif %}
+              </p>
+            </div>
+           
+           <div class="sn-highlight-box">
+             <span class="sn-highlight-label">Lessons learned:</span>
+             <p style="margin-top: var(--sn-space-2); font-size: 0.9375rem; color: var(--sn-text-primary); line-height: 1.7;">
+                {% if session.selected_reframe == 'lesson' %}{{ session.ai_reframes.lesson.content|default:"Each experience teaches us something valuable about ourselves." }}{% else %}You gained insight into what influences your experience and how you respond to it.{% endif %}
+             </p>
+           </div>
+           
+           <div class="sn-highlight-box">
+             <span class="sn-highlight-label">Momentum gained:</span>
+             <p style="margin-top: var(--sn-space-2); font-size: 0.9375rem; color: var(--sn-text-primary); line-height: 1.7;">
+                {% if session.selected_action|default:"" == "celebrate_progress" or session.selected_action|default:"" == "journal_success" or session.selected_action|default:"" == "work_goal" %}You've created forward momentum by choosing intentional action.{% else %}Every awareness session builds your capacity for self-understanding and growth.{% endif %}
+             </p>
+           </div>
+           
+           <div class="sn-highlight-box">
+             <span class="sn-highlight-label">Next step:</span>
+             <p style="margin-top: var(--sn-space-2); font-size: 0.9375rem; color: var(--sn-text-primary); line-height: 1.7;">
+                {% if session.selected_action %}{% for value, label in move_labels.items %}{% if value == session.selected_action %}Continue building on this momentum by: {{ label|lower }}{% endif %}{% endfor %}{% else %}Consider what small action would help you continue this awareness practice tomorrow.{% endif %}
+             </p>
+           </div>
+         </div>
+
+         <div style="display: flex; flex-direction: column; gap: var(--sn-space-3);">
           <a href="{% url 'soul_navigation:home' %}" class="sn-btn" style="text-decoration: none; background: var(--sn-surface); color: var(--sn-text-primary); border: 2px solid var(--sn-border); box-shadow: var(--sn-shadow-sm);">
             <span>Done</span>
           </a>

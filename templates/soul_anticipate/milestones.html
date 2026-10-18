@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Milestones - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="milestones-page">
+    <header class="page-header">
+        <h1>Milestones</h1>
+        <a href="{% url 'soul_anticipate:dashboard' %}" class="btn btn-sm btn-outline">← Back to Dashboard</a>
+    </header>
+
+    {% if active_direction %}
+    <div class="direction-context">
+        <h2>Milestones for: {{ active_direction.title }}</h2>
+        <p class="direction-description">{{ active_direction.short_description }}</p>
+    </div>
+
+    {% if milestones %}
+    <div class="milestones-stats">
+        <div class="stat-item">
+            <h4>Total Milestones</h4>
+            <p class="stat-value">{{ milestones.count }}</p>
+        </div>
+        <div class="stat-item">
+            <h4>Completed</h4>
+            <p class="stat-value">{{ milestones.filter(completed=True).count }}</p>
+        </div>
+        <div class="stat-item">
+            <h4>Remaining</h4>
+            <p class="stat-value">{{ milestones.filter(completed=False).count }}</p>
+        </div>
+    </div>
+
+    <div class="milestones-grid">
+        {% for milestone in milestones %}
+        <div class="milestone-card">
+            <div class="milestone-header">
+                <h3>{{ milestone.title }}</h3>
+                <span class="milestone-status {% if milestone.completed %}completed{% else %}pending{% endif %}">
+                    {% if milestone.completed %}Completed{% else %}Pending{% endif %}
+                </span>
+            </div>
+            
+            {% if milestone.description %}
+            <div class="milestone-description">
+                <p>{{ milestone.description }}</p>
+            </div>
+            {% endif %}
+            
+            <div class="milestone-meta">
+                <span class="meta-label">Created:</span>
+                <span class="meta-value">{{ milestone.created_at|date:"M d, Y" }}</span>
+                {% if milestone.completed_date %}
+                <span class="meta-label">Completed:</span>
+                <span class="meta-value">{{ milestone.completed_date|date:"M d, Y" }}</span>
+                {% endif %}
+            </div>
+            
+            {% if not milestone.completed %}
+            <div class="milestone-actions">
+                <a href="{% url 'soul_anticipate:toggle_milestone' milestone.id %}" 
+                   class="btn btn-sm btn-outline"
+                   hx-post="{% url 'soul_anticipate:toggle_milestone' milestone.id %}"
+                   hx-trigger="click"
+                   hx-swap="outerHTML">
+                    Mark as Complete
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="milestones-actions">
+        <a href="{% url 'soul_anticipate:create_milestone' %}" class="btn btn-primary">Create New Milestone</a>
+    </div>
+    {% else %}
+    <div class="no-milestones">
+        <h3>No milestones yet</h3>
+        <p>Create milestones to mark significant achievements along your path to your chosen future.</p>
+        <a href="{% url 'soul_anticipate:create_milestone' %}" class="btn btn-primary">Create First Milestone</a>
+    </div>
+    {% endif %}
+    
+    {% else %}
+    <div class="no-direction">
+        <h2>No active direction</h2>
+        <p>Please create or select a future direction to view milestones.</p>
+        <a href="{% url 'soul_anticipate:create_direction' %}" class="btn btn-primary">Create Direction</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

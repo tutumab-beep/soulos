@@ -1,45 +1,235 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Transformation Log - SoulOS{% endblock %}
+
 {% block content %}
-<h1>Transformation Log</h1>
-{% for t in transformations %}
-<div>
-    <p><strong>Transformation #{{ t.id }}</strong> - Started: {{ t.started_at|date:"M d, Y H:i" }} - Status: {{ t.status|upper }}</p>
-    <a href="{% url 'core_healing_path:view_transformation' t.id %}">View</a>
-    {% if t.status == 'active' %}
-        <a href="{% url 'core_healing_path:edit_transformation' t.id %}">Edit / Finish</a>
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-primary mb-2">Transformation Log</h1>
+        <p class="text-secondary">Your journey of growth, revealed.</p>
+    </div>
+
+    <!-- Empty State -->
+    {% if not transformations %}
+    <div class="empty-state text-center py-16">
+        <div class="empty-state-icon text-6xl mb-4" aria-hidden="true">🌱</div>
+        <h3 class="empty-state-title text-xl font-semibold mb-2">
+            Transformation begins with awareness.
+        </h3>
+        <p class="empty-state-description text-secondary mb-6 max-w-md mx-auto">
+            Complete a SoulOS reflection to discover your growth.
+        </p>
+        <p class="text-tertiary text-sm max-w-md mx-auto">
+            You may have transformed more than you realize. Complete a reflection journey to reveal it.
+        </p>
+        <div class="empty-state-action mt-6">
+            <a href="{% url 'core_healing_path:tension_observer' %}" class="btn btn-primary btn-lg">
+                Start a Reflection Journey
+            </a>
+        </div>
+    </div>
+    {% else %}
+    <!-- Transformation Timeline -->
+    <div class="space-y-6" id="transformation-timeline">
+        {% for t in transformations %}
+        <article class="transformation-card card relative" data-transformation-id="{{ t.id }}">
+            <!-- Timeline connector -->
+            <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-border" style="z-index: 0;"></div>
+
+            <div class="relative flex gap-4" style="z-index: 1;">
+                <!-- Timeline dot + strength indicator -->
+                <div class="flex flex-col items-center shrink-0">
+                    <div class="timeline-dot w-3 h-3 rounded-full border-4 border-primary bg-background"
+                         style="background: var(--color-bg);"
+                         title="{{ t.get_transformation_strength_display }}"></div>
+                    {% if t.transformation_strength %}
+                    <span class="text-xs text-tertiary mt-1 text-center whitespace-nowrap">
+                        {{ t.get_transformation_strength_display }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <!-- Card content -->
+                <div class="flex-1 min-w-0 p-4">
+                    <!-- Header row -->
+                    <div class="flex flex-wrap items-start justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            {% if t.transformation_type %}
+                            <span class="badge badge-primary">
+                                {{ t.get_transformation_type_display }}
+                            </span>
+                            {% endif %}
+                            <span class="badge badge-outline">
+                                {{ t.stages_completed }}/6 stages
+                            </span>
+                            {% if t.transformation_score %}
+                            <span class="badge badge-secondary">
+                                Score: {{ t.transformation_score }}/100
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-2 text-tertiary text-sm">
+                            <time datetime="{{ t.started_at|date:'c' }}">
+                                {{ t.started_at|date:"M d, Y" }}
+                            </time>
+                            {% if t.finished_at %}
+                            <span>→</span>
+                            <time datetime="{{ t.finished_at|date:'c' }}">
+                                {{ t.finished_at|date:"M d, Y" }}
+                            </time>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Trigger & Tension -->
+                    {% if t.tension %}
+                    <div class="mb-3 p-3 rounded-lg" style="background: var(--color-bg-secondary);">
+                        <div class="flex flex-wrap items-center gap-3 text-sm">
+                            <span class="font-medium text-primary">Trigger:</span>
+                            <span>{{ t.tension.trigger|default:"—" }}</span>
+                            <span class="font-medium text-primary">Intensity:</span>
+                            <span>{{ t.tension.intensity }}/10</span>
+                            {% if t.tension.emotion %}
+                            <span class="font-medium text-primary">Emotion:</span>
+                            <span>{{ t.tension.emotion }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="mt-2 text-secondary text-sm">{{ t.tension.entry|truncatewords:30 }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Transformation Summary -->
+                    {% if t.transformation_summary %}
+                    <div class="transformation-summary mb-3 p-3 rounded-lg border-l-4 border-primary"
+                         style="background: var(--color-bg-secondary);">
+                        <p class="text-sm text-secondary whitespace-pre-wrap">{{ t.transformation_summary }}</p>
+                    </div>
+                    {% elif t.status == "finished" and not t.has_auto_analysis %}
+                    <div class="mb-3 p-3 rounded-lg border-l-4 border-warning"
+                         style="background: var(--color-bg-secondary);">
+                        <p class="text-sm text-secondary">
+                            <span class="font-medium">Analysis pending.</span>
+                            Complete the journey or click "Analyze" to reveal your transformation.
+                        </p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Action buttons -->
+                    <div class="flex flex-wrap gap-2">
+                        <a href="{% url 'core_healing_path:view_transformation' t.id %}"
+                           class="btn btn-secondary btn-sm">
+                            View Details
+                        </a>
+                        {% if t.status == "active" %}
+                        <a href="{% url 'core_healing_path:edit_transformation' t.id %}"
+                           class="btn btn-primary btn-sm">
+                            Continue Journey
+                        </a>
+                        {% elif t.status == "finished" %}
+                        <form method="post" action="{% url 'core_healing_path:edit_transformation' t.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="reanalyze"
+                                    class="btn btn-outline btn-sm">
+                                Re-Analyze
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav class="pagination mt-8 flex items-center justify-center gap-2" aria-label="Transformation log pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary btn-sm" rel="prev">
+            Previous
+        </a>
+        {% else %}
+        <span class="btn btn-secondary btn-sm opacity-50 cursor-not-allowed" aria-disabled="true">
+            Previous
+        </span>
+        {% endif %}
+
+        <span class="pagination-info text-sm text-tertiary px-2">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary btn-sm" rel="next">
+            Next
+        </a>
+        {% else %}
+        <span class="btn btn-secondary btn-sm opacity-50 cursor-not-allowed" aria-disabled="true">
+            Next
+        </span>
+        {% endif %}
+    </nav>
+    {% endif %}
     {% endif %}
 </div>
-<hr>
-{% empty %}
-<p>No transformations yet.</p>
-{% endfor %}
 
-{% if is_paginated %}
-<nav class="pagination mt-4 flex items-center justify-center gap-2" aria-label="Transformation log pagination">
-    {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary btn-sm" rel="prev">
-        Previous
-    </a>
-    {% else %}
-    <span class="btn btn-secondary btn-sm opacity-50 cursor-not-allowed" aria-disabled="true">
-        Previous
-    </span>
-    {% endif %}
+<style>
+/* Timeline styles */
+.transformation-card {
+    position: relative;
+}
 
-    <span class="pagination-info text-sm text-tertiary px-2">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-    </span>
+.transformation-card:last-child .timeline-dot::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 24px;
+    background: var(--color-border);
+}
 
-    {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-secondary btn-sm" rel="next">
-        Next
-    </a>
-    {% else %}
-    <span class="btn btn-secondary btn-sm opacity-50 cursor-not-allowed" aria-disabled="true">
-        Next
-    </span>
-    {% endif %}
-</nav>
-{% endif %}
+.timeline-dot {
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.transformation-card:hover .timeline-dot {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 4px var(--color-primary-alpha-20, rgba(var(--color-primary-rgb), 0.2));
+}
+
+.transformation-summary {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Strength color coding */
+.timeline-dot[data-strength="seed"] { border-color: var(--color-muted); }
+.timeline-dot[data-strength="growing"] { border-color: var(--color-info); }
+.timeline-dot[data-strength="expanding"] { border-color: var(--color-primary); }
+.timeline-dot[data-strength="breakthrough"] { border-color: var(--color-warning); box-shadow: 0 0 0 4px var(--color-warning-alpha-20, rgba(255, 193, 7, 0.2)); }
+</style>
+
+<script>
+// Add strength data attribute for CSS styling
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.transformation-card').forEach(card => {
+        const strength = card.querySelector('.timeline-dot');
+        const badge = card.querySelector('.badge-secondary');
+        if (strength && badge) {
+            const text = badge.textContent.toLowerCase();
+            if (text.includes('breakthrough')) strength.dataset.strength = 'breakthrough';
+            else if (text.includes('expanding')) strength.dataset.strength = 'expanding';
+            else if (text.includes('growing')) strength.dataset.strength = 'growing';
+            else strength.dataset.strength = 'seed';
+        }
+    });
+});
+</script>
 {% endblock %}

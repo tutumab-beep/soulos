@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="soul-anticipate-dashboard">
+    <header class="module-header">
+        <h1>Soul Anticipate</h1>
+        <p class="module-description">Become intentional about the future you are creating.</p>
+    </header>
+
+    {% if active_direction %}
+    <div class="current-direction-card">
+        <div class="direction-header">
+            <h2>{{ active_direction.title }}</h2>
+            <div class="direction-meta">
+                <span class="target-date">Target: {{ active_direction.target_date }}</span>
+                {% if active_direction.days_remaining is not None %}
+                <span class="days-remaining">{{ active_direction.days_remaining }} days remaining</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="direction-content">
+            <div class="direction-section">
+                <h3>Current Reality</h3>
+                <p>{{ active_direction.current_reality }}</p>
+            </div>
+            
+            <div class="direction-section">
+                <h3>Chosen Future</h3>
+                <p>{{ active_direction.chosen_future }}</p>
+            </div>
+            
+            <div class="direction-section">
+                <h3>Why It Matters</h3>
+                <p>{{ active_direction.why_important }}</p>
+            </div>
+        </div>
+        
+        <div direction-stats>
+            <div class="stat-item">
+                <h4>Alignment Streak</h4>
+                <p class="stat-value">{{ alignment_streak }} days</p>
+            </div>
+            <div class="stat-item">
+                <h4>Average Score</h4>
+                <p class="stat-value">{{ avg_alignment_score }}/10</p>
+            </div>
+        </div>
+        
+        <div class="direction-actions">
+            <a href="{% url 'soul_anticipate:direction_detail' active_direction.id %}" class="btn btn-primary">View Future Direction</a>
+            <a href="{% url 'soul_anticipate:daily_alignment' %}" class="btn btn-secondary">Daily Alignment</a>
+        </div>
+    </div>
+    
+    {% else %}
+    <div class="no-direction">
+        <div class="no-direction-icon">→</div>
+        <h2>No current direction selected.</h2>
+        <p>Choose a future to move toward intentionally.</p>
+            <a href="{% url 'soul_anticipate:create_direction_start' %}" class="btn btn-primary">Create Direction</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

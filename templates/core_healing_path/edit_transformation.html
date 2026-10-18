@@ -1,11 +1,67 @@
 {% extends "base.html" %}
 {% block title %}Edit Transformation #{{ transformation.id }} - SoulOS{% endblock %}
 {% block content %}
-<a href="{% url 'core_healing_path:transformation_log' %}">← Back to Transformation Log</a>
-<h1>Edit Transformation #{{ transformation.id }}</h1>
-<p>Status: {{ transformation.status }}</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Mark as Finished</button>
-</form>
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+    <a href="{% url 'core_healing_path:transformation_log' %}" class="btn btn-secondary btn-sm mb-6">← Back to Transformation Log</a>
+
+    <h1 class="text-2xl font-bold mb-4">Transformation #{{ transformation.id }}</h1>
+
+    <div class="card mb-6">
+        <div class="card-body">
+            <p class="text-secondary mb-4">Status: <strong>{{ transformation.status|upper }}</strong></p>
+
+            {% if transformation.transformation_summary %}
+            <div class="mb-4 p-4 rounded-lg" style="background: var(--color-bg-secondary); border-left: 4px solid var(--color-primary);">
+                <h3 class="font-semibold mb-2">Current Analysis</h3>
+                <p class="text-secondary whitespace-pre-wrap">{{ transformation.transformation_summary }}</p>
+                <div class="flex flex-wrap gap-2 mt-2 text-sm">
+                    {% if transformation.transformation_type %}
+                    <span class="badge badge-primary">{{ transformation.get_transformation_type_display }}</span>
+                    {% endif %}
+                    {% if transformation.transformation_strength %}
+                    <span class="badge badge-secondary">{{ transformation.get_transformation_strength_display }}</span>
+                    {% endif %}
+                    {% if transformation.transformation_score %}
+                    <span class="badge badge-outline">Score: {{ transformation.transformation_score }}/100</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" class="flex flex-wrap gap-3">
+                {% csrf_token %}
+                {% if transformation.status == "active" %}
+                <button type="submit" class="btn btn-primary">Mark as Finished</button>
+                {% endif %}
+                {% if transformation.status == "finished" and transformation.stages_completed >= 3 %}
+                <button type="submit" name="action" value="reanalyze" class="btn btn-outline">
+                    Re-Analyze Transformation
+                </button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick view of stages -->
+    <div class="space-y-3">
+        {% if transformation.tension %}
+        <div class="card"><div class="card-body"><strong>Tension Observer:</strong> {{ transformation.tension.entry|truncatewords:20 }}</div></div>
+        {% endif %}
+        {% if transformation.awareness %}
+        <div class="card"><div class="card-body"><strong>Awareness Lens:</strong> {{ transformation.awareness.entry|truncatewords:20 }}</div></div>
+        {% endif %}
+        {% if transformation.belief %}
+        <div class="card"><div class="card-body"><strong>Belief Anchor:</strong> {{ transformation.belief.reframe|default:transformation.belief.entry|truncatewords:20 }}</div></div>
+        {% endif %}
+        {% if transformation.thought %}
+        <div class="card"><div class="card-body"><strong>Thought Analyzer:</strong> {{ transformation.thought.entry|truncatewords:20 }}</div></div>
+        {% endif %}
+        {% if transformation.alignment_practice %}
+        <div class="card"><div class="card-body"><strong>Alignment Practice:</strong> {{ transformation.alignment_practice.entry|truncatewords:20 }}</div></div>
+        {% endif %}
+        {% if transformation.celebration %}
+        <div class="card"><div class="card-body"><strong>Clarity Flow:</strong> {{ transformation.celebration.entry|truncatewords:20 }}</div></div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

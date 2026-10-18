@@ -36,16 +36,16 @@
     <div class="container">
       <div class="sn-content">
         <div class="sn-history">
-          <header class="sn-history-header">
-            <h1 class="sn-history-title">Your Journeys</h1>
-            <a href="{% url 'soul_navigation:start' %}" class="btn btn-primary">
-              <svg class="icon icon-sm" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <path d="M22 4L12 14.01l-3-3"/>
-              </svg>
-              <span>New Journey</span>
-            </a>
-          </header>
+           <header class="sn-history-header">
+             <h1 class="sn-history-title">Your Awareness Sessions</h1>
+             <a href="{% url 'soul_navigation:start' %}" class="btn btn-primary">
+               <svg class="icon icon-sm" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                 <path d="M22 4L12 14.01l-3-3"/>
+               </svg>
+               <span>New Awareness Session</span>
+             </a>
+           </header>
 
           {% if page_obj %}
           <div class="sn-session-list">
@@ -69,15 +69,15 @@
               </div>
             </a>
             {% empty %}
-            <div class="sn-empty-state">
-              <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <path d="M22 4L12 14.01l-3-3"/>
-              </svg>
-              <h2 class="empty-state-title">No Journeys Yet</h2>
-              <p class="empty-state-description">Your navigation history will appear here once you complete a journey.</p>
-              <a href="{% url 'soul_navigation:start' %}" class="btn btn-primary">Start Your First Journey</a>
-            </div>
+             <div class="sn-empty-state">
+               <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                 <path d="M22 4L12 14.01l-3-3"/>
+               </svg>
+               <h2 class="empty-state-title">No Awareness Sessions Yet</h2>
+               <p class="empty-state-description">Your awareness history will appear here once you complete a session.</p>
+               <a href="{% url 'soul_navigation:start' %}" class="btn btn-primary">Start Your First Awareness Session</a>
+             </div>
             {% endfor %}
           </div>
 

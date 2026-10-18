@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "soulos.pythonanywhere.com",
@@ -53,11 +53,12 @@ INSTALLED_APPS = [
     "system_apps.legal",
     "Core_healing_path",
     "soullog",
+    "soul_navigation",
     "work_alignment",
     "soulconnect",
     "daily_alignment",
     "system_apps.settings_app",
-
+    "soul_anticipate",
 ]
 
 MIDDLEWARE = [
@@ -140,7 +141,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-
 
 
 LOGIN_REDIRECT_URL = "dashboard_app:home"

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Future Direction - Soul Anticipate - SoulOS{% endblock %}
+
+{% block content %}
+<div class="create-direction-wizard">
+    <header class="wizard-header">
+        <h1>Create Your Future Direction</h1>
+        <p class="wizard-description">Move through these steps to define your intentional future path.</p>
+    </header>
+    
+    <div class="wizard-intro">
+        <p>The creation process is broken down into 5 simple steps:</p>
+        <ol>
+            <li><strong>Current Reality</strong>: What is true right now?</li>
+            <li><strong>Chosen Future</strong>: What future are you intentionally moving toward?</li>
+            <li><strong>Why It Matters</strong>: Why is this important to you?</li>
+            <li><strong>Target Date</strong>: When do you aim to achieve this future?</li>
+            <li><strong>Declaration</strong>: Review your intention and make it official.</li>
+        </ol>
+        <p>Take your time with each step. Your answers will be saved as you progress.</p>
+    </div>
+    
+    <div class="wizard-actions">
+        <a href="{% url 'soul_anticipate:create_direction_start' %}" class="btn btn-primary btn-lg">
+            Start Creating Your Direction
+        </a>
+    </div>
+</div>
+{% endblock %}

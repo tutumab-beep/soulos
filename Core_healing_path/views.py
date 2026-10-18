@@ -14,13 +14,20 @@ from .models import (
     TransformationJourney,
     JourneyStage,
     Transformation,
+    InsightCapture,
+    PatternDiscovery,
+    ResponseChoice,
+    NextStep,
+    GrowthEntry,
+    PATTERN_THEMES,
 )
+from .transformation_engine import analyze_transformation
 from .forms import (
     TensionObserverForm,
     AwarenessLensForm,
     BeliefAnchorForm,
     ThoughtAnalyzerForm,
-    FaithCycleForm,
+    AlignmentPracticeForm,
     ClarityFlowForm,
 )
 
@@ -88,7 +95,7 @@ FORM_MAP = {
     "awareness_lens": AwarenessLensForm,
     "belief_anchor": BeliefAnchorForm,
     "thought_analyzer": ThoughtAnalyzerForm,
-    "faith_cycle": FaithCycleForm,
+    "alignment_practice": AlignmentPracticeForm,
     "clarity_flow": ClarityFlowForm,
 }
 
@@ -97,7 +104,7 @@ STAGE_URL_MAP = {
     "awareness_lens": "core_healing_path:awareness_lens",
     "belief_anchor": "core_healing_path:belief_anchor",
     "thought_analyzer": "core_healing_path:thought_analyzer",
-    "faith_cycle": "core_healing_path:faith_cycle",
+    "alignment_practice": "core_healing_path:alignment_practice",
     "clarity_flow": "core_healing_path:clarity_flow",
 }
 
@@ -106,7 +113,7 @@ HEALING_PROMPTS = {
     "awareness_lens": "Is this a thought or an emotion? What evidence supports or contradicts it?",
     "belief_anchor": "What positive belief can replace this thought? Who supports this belief?",
     "thought_analyzer": "What patterns do you notice? How intense is this thought on a scale of 1-10?",
-    "faith_cycle": "What are you grateful for today? What ritual can bring you peace?",
+    "alignment_practice": "What are you grateful for today? What ritual can bring you peace?",
     "clarity_flow": "What insight have you gained? How does this change your perspective?",
 }
 
@@ -459,16 +466,16 @@ def log_thought(request):
         if transformation:
             transformation.thought = log
             transformation.save()
-        return redirect("core_healing_path:faith_cycle")
+        return redirect("core_healing_path:alignment_practice")
     return render(request, "core_healing_path/stage_thought_analyzer.html")
 
 
 @login_required
-def log_faith_cycle(request):
+def log_alignment_practice(request):
     if request.method == "POST":
         log = HealingLog.objects.create(
             user=request.user,
-            stage="faith_cycle",
+            stage="alignment_practice",
             entry=request.POST.get("reflection", ""),
             ritual=request.POST.get("ritual", ""),
         )
@@ -476,10 +483,10 @@ def log_faith_cycle(request):
             user=request.user, status="active"
         ).first()
         if transformation:
-            transformation.faith = log
+            transformation.alignment_practice = log
             transformation.save()
         return redirect("core_healing_path:clarity_flow")
-    return render(request, "core_healing_path/stage_faith_cycle.html")
+    return render(request, "core_healing_path/stage_alignment_practice.html")
 
 
 @login_required
@@ -499,6 +506,10 @@ def log_celebration(request):
             transformation.status = "finished"
             transformation.finished_at = timezone.now()
             transformation.save()
+
+            # Trigger automatic transformation analysis
+            if transformation.stages_completed >= 3:
+                analyze_transformation(transformation)
         return redirect("core_healing_path:transformation_log")
     return render(request, "core_healing_path/stage_clarity_flow.html")
 
@@ -508,6 +519,13 @@ def transformation_log(request):
     transformations_queryset = Transformation.objects.filter(
         user=request.user
     ).order_by("-started_at")
+
+    # Trigger on-demand analysis for finished transformations without analysis
+    for t in transformations_queryset.filter(
+        status="finished", auto_analyzed_at__isnull=True
+    ):
+        if t.stages_completed >= 3:
+            analyze_transformation(t)
 
     paginator = Paginator(transformations_queryset, 15)
     page_number = request.GET.get("page")
@@ -574,9 +592,12 @@ def edit_thought(request, entry_id):
 
 
 @login_required
-def edit_faith_cycle(request, entry_id):
+def edit_alignment_practice(request, entry_id):
     return view_entry(
-        request, entry_id, "faith_cycle", "core_healing_path/stage_faith_cycle.html"
+        request,
+        entry_id,
+        "alignment_practice",
+        "core_healing_path/stage_alignment_practice.html",
     )
 
 
@@ -592,10 +613,33 @@ def view_transformation(request, transformation_id):
     transformation = get_object_or_404(
         Transformation, id=transformation_id, user=request.user
     )
+
+    # Prepare reflection summary data
+    reflection_summary = None
+    if transformation.status == "finished":
+        tension = transformation.tension
+        awareness = transformation.awareness
+        belief = transformation.belief
+        thought = transformation.thought
+        faith = transformation.faith
+        celebration = transformation.celebration
+
+        reflection_summary = {
+            "trigger": tension.trigger if tension else "—",
+            "intensity": tension.intensity if tension else "—",
+            "clarity_insight": celebration.entry if celebration else "—",
+            "reframe": belief.reframe if belief else "—",
+            "generated_summary": transformation.transformation_summary or "—",
+            "type": transformation.get_transformation_type_display()
+            if transformation.transformation_type
+            else "—",
+            "timestamp": transformation.finished_at or transformation.started_at,
+        }
+
     return render(
         request,
         "core_healing_path/view_transformation.html",
-        {"transformation": transformation},
+        {"transformation": transformation, "reflection_summary": reflection_summary},
     )
 
 
@@ -605,9 +649,14 @@ def edit_transformation(request, transformation_id):
         Transformation, id=transformation_id, user=request.user
     )
     if request.method == "POST":
-        transformation.finished_at = timezone.now()
-        transformation.status = "finished"
-        transformation.save()
+        # Check if user wants to re-analyze
+        if request.POST.get("action") == "reanalyze":
+            if transformation.stages_completed >= 3:
+                analyze_transformation(transformation)
+        else:
+            transformation.finished_at = timezone.now()
+            transformation.status = "finished"
+            transformation.save()
         return redirect("core_healing_path:transformation_log")
     return render(
         request,

@@ -1,81 +1,154 @@
-/* SoulOS Design System - VS Code / GitHub Copilot Style */
+/* SoulOS Design System - GitHub Copilot Inspired */
+/* Clean, modern, intelligent interface inspired by GitHub Copilot */
+
 :root {
-  /* VS Code Dark Theme (Default) */
-  --vscode-bg: #1e1e1e;
-  --vscode-bg-secondary: #252526;
-  --vscode-bg-tertiary: #2d2d2d;
-  --vscode-bg-hover: #2a2d2e;
-  --vscode-bg-active: #37373d;
-
-  --vscode-panel-bg: #1e1e1e;
-  --vscode-panel-border: #3c3c3c;
-  --vscode-side-bar-bg: #252526;
-  --vscode-side-bar-border: #3c3c3c;
-  --vscode-activity-bar-bg: #333333;
-  --vscode-activity-bar-border: #3c3c3c;
-  --vscode-status-bar-bg: #007acc;
-  --vscode-title-bar-bg: #3c3c3c;
-
-  --vscode-border: #3c3c3c;
-  --vscode-border-strong: #4c4c4c;
-  --vscode-border-focus: #007acc;
-
-  --vscode-primary: #007acc;
-  --vscode-primary-hover: #005f9e;
-  --vscode-primary-light: #007acc26;
-  --vscode-primary-glow: rgba(0, 122, 204, 0.3);
-
-  --vscode-success: #4ec9b0;
-  --vscode-success-hover: #3db8a0;
-  --vscode-success-light: #4ec9b026;
-
-  --vscode-warning: #dcdcaa;
-  --vscode-warning-hover: #cbcb9a;
-  --vscode-warning-light: #dcdcaa26;
-
-  --vscode-danger: #f44747;
-  --vscode-danger-hover: #e33636;
-  --vscode-danger-light: #f4474726;
-
-  --vscode-text-primary: #d4d4d4;
-  --vscode-text-secondary: #9cdcfe;
-  --vscode-text-tertiary: #858585;
-  --vscode-text-muted: #6a6a6a;
-  --vscode-text-inverse: #1e1e1e;
-  --vscode-text-link: #4fc1ff;
-
-  --vscode-accent-blue: #007acc;
-  --vscode-accent-green: #4ec9b0;
-  --vscode-accent-yellow: #dcdcaa;
-  --vscode-accent-orange: #ce9178;
-  --vscode-accent-purple: #c586c0;
-  --vscode-accent-red: #f44747;
-
-  /* Typography - VS Code uses system fonts */
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
-  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
-
+  /* ============================================================
+     1. CORE COLORS - GitHub Copilot/VS Code Inspired
+     ============================================================ */
+  
+  /* Dark Theme (Default) - Copilot Style */
+  --color-bg: #000000;              /* Pure black background */
+  --color-bg-surface: #0d0d0d;      /* Surface layer */
+  --color-bg-muted: #111111;        /* Muted surface */
+  --color-bg-soft: #1a1a1a;         /* Soft surface for hover */
+  --color-bg-accent: #242424;       /* Accent surface */
+  
+  /* Panel and Sidebar */
+  --color-panel-bg: #000000;
+  --color-panel-border: #2a2a2a;
+  --color-sidebar-bg: #0d0d0d;
+  --color-sidebar-border: #2a2a2a;
+  
+  /* Activity Bar */
+  --color-activity-bar-bg: #0d0d0d;
+  --color-activity-bar-border: #2a2a2a;
+  
+  /* Status Bar - Copilot's signature blue */
+  --color-status-bar-bg: #007acc;   /* Copilot Blue */
+  --color-title-bar-bg: #0d0d0d;
+  
+  /* Borders */
+  --color-border: #2a2a2a;
+  --color-border-focus: #007acc;    /* Copilot Blue */
+  --color-border-input: #3a3a3a;
+  
+  /* ============================================================
+     2. PRIMARY COLORS - Copilot Blue with SoulOS Touch
+     ============================================================ */
+  
+  --color-primary: #007acc;         /* GitHub Copilot Blue */
+  --color-primary-hover: #005a9e;
+  --color-primary-active: #004c8d;
+  --color-primary-light: rgba(0, 122, 204, 0.1);
+  --color-primary-glow: rgba(0, 122, 204, 0.3);
+  
+  /* SoulOS Intelligence Accent - Subtle variation */
+  --color-intelligence: #007acc;
+  --color-intelligence-soft: rgba(0, 122, 204, 0.1);
+  
+  /* ============================================================
+     3. SEMANTIC COLORS - GitHub Style
+     ============================================================ */
+  
+  --color-success: #6a9955;         /* GitHub Green */
+  --color-success-hover: #5c8046;
+  --color-success-light: rgba(106, 153, 85, 0.15);
+  
+  --color-warning: #d7ba7d;         /* GitHub Yellow/Orange */
+  --color-warning-hover: #c49a63;
+  --color-warning-light: rgba(215, 186, 125, 0.15);
+  
+  --color-error: #f44747;           /* GitHub Red */
+  --color-error-hover: #d13b3b;
+  --color-error-light: rgba(244, 71, 71, 0.15);
+  
+  --color-info: #4fc1ff;            /* GitHub Blue */
+  --color-info-hover: #3da8e6;
+  --color-info-light: rgba(79, 193, 255, 0.15);
+  
+  /* ============================================================
+     4. TEXT COLORS - GitHub Style
+     ============================================================ */
+  
+  --color-text-primary: #f1f1f1;    /* Primary text */
+  --color-text-secondary: #9cdcfe;  /* Secondary text (like VS Code) */
+  --color-text-tertiary: #858585;   /* Tertiary text */
+  --color-text-muted: #6a6a6a;      /* Muted text */
+  --color-text-inverse: #ffffff;    /* Inverse text */
+  --color-text-link: #4fc1ff;       /* Link color */
+  
+  /* ============================================================
+     5. CLASSIC VSCODE ACCENTS - Maintained for familiarity
+     ============================================================ */
+  
+  --color-accent-blue: #007acc;
+  --color-accent-green: #6a9955;
+  --color-accent-yellow: #d7ba7d;
+  --color-accent-orange: #f44747;
+  --color-accent-purple: #c586c0;
+  
+  /* ============================================================
+     6. SOULOS MODULE ACCENTS - Subtle, Professional Overlay
+     ============================================================ */
+  
+  /* These are designed to work WITH the Copilot style, not against it */
+  
+  /* Soul Healing Path - Soft blue overlay */
+  --color-module-healing-path: rgba(0, 122, 204, 0.2);
+  --color-module-healing-path-bg: rgba(0, 122, 204, 0.05);
+  
+  /* Soul Anticipate - Soft purple overlay */
+  --color-module-anticipate: rgba(197, 134, 192, 0.2);
+  --color-module-anticipate-bg: rgba(197, 134, 192, 0.05);
+  
+  /* Soul Alignment - Soft green overlay */
+  --color-module-alignment: rgba(106, 153, 85, 0.2);
+  --color-module-alignment-bg: rgba(106, 153, 85, 0.05);
+  
+  /* SoulLog - Soft amber overlay */
+  --color-module-soullog: rgba(215, 186, 125, 0.2);
+  --color-module-soullog-bg: rgba(215, 186, 125, 0.05);
+  
+  /* Shadow Observer - Soft orange overlay */
+  --color-module-shadow-observer: rgba(244, 71, 71, 0.2);
+  --color-module-shadow-observer-bg: rgba(244, 71, 71, 0.05);
+  
+  /* SoulConnect - Soft cyan overlay */
+  --color-module-soulconnect: rgba(79, 193, 255, 0.2);
+  --color-module-soulconnect-bg: rgba(79, 193, 255, 0.05);
+  
+  /* ============================================================
+     7. TYPOGRAPHY - GitHub Copilot Style
+     ============================================================ */
+  
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  
   --text-xs: 0.6875rem;    /* 11px */
   --text-sm: 0.8125rem;    /* 13px */
-  --text-base: 0.875rem;   /* 14px - VS Code default */
+  --text-base: 0.875rem;   /* 14px */
   --text-lg: 1rem;         /* 16px */
   --text-xl: 1.125rem;     /* 18px */
   --text-2xl: 1.25rem;     /* 20px */
   --text-3xl: 1.5rem;      /* 24px */
-  --text-4xl: 2rem;        /* 32px */
-  --text-5xl: 3rem;        /* 48px */
-
+  --text-4xl: 1.75rem;     /* 28px */
+  --text-5xl: 2.1875rem;   /* 35px */
+  
+  --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-
+  
   --leading-tight: 1.25;
   --leading-snug: 1.375;
   --leading-normal: 1.5;
   --leading-relaxed: 1.6;
-
-  /* Spacing System (4px base) */
+  
+  /* ============================================================
+     8. SPACING SYSTEM - 4px base (GitHub Style)
+     ============================================================ */
+  
   --space-0: 0;
   --space-1: 0.25rem;  /* 4px */
   --space-2: 0.5rem;   /* 8px */
@@ -87,10 +160,11 @@
   --space-10: 2.5rem;  /* 40px */
   --space-12: 3rem;    /* 48px */
   --space-16: 4rem;    /* 64px */
-  --space-20: 5rem;    /* 80px */
-  --space-24: 6rem;    /* 96px */
-
-  /* Border Radius - VS Code uses small radius */
+  
+  /* ============================================================
+     9. BORDER RADIUS - Minimal, GitHub Style
+     ============================================================ */
+  
   --radius-none: 0;
   --radius-sm: 0.1875rem;   /* 3px */
   --radius-md: 0.25rem;     /* 4px */
@@ -98,153 +172,184 @@
   --radius-xl: 0.5rem;      /* 8px */
   --radius-2xl: 0.75rem;    /* 12px */
   --radius-full: 9999px;
-
-  /* Shadows - Subtle, layered */
+  
+  /* ============================================================
+     10. SHADOWS - Subtle, GitHub Style
+     ============================================================ */
+  
   --shadow-xs: 0 1px 1px rgba(0, 0, 0, 0.1);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.25);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 16px 24px rgba(0, 0, 0, 0.35);
-  --shadow-2xl: 0 24px 48px rgba(0, 0, 0, 0.4);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-  --shadow-glow-primary: 0 0 0 1px var(--vscode-border-focus), 0 0 0 3px var(--vscode-primary-light);
-
-  /* Transitions */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 12px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 12px 16px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 16px 24px rgba(0, 0, 0, 0.35);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  /* ============================================================
+     11. TRANSITIONS - GitHub Style
+     ============================================================ */
+  
   --transition-fast: 80ms ease;
   --transition-normal: 120ms ease;
   --transition-slow: 200ms ease;
-
-  /* Z-Index Scale */
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-fixed: 300;
-  --z-modal-backdrop: 400;
-  --z-modal: 500;
-  --z-popover: 600;
-  --z-tooltip: 700;
-  --z-toast: 800;
-
-  /* Layout */
-  --header-height: 35px;   /* VS Code title bar height */
+  
+  /* ============================================================
+     12. Z-INDEX SCALE - GitHub Style
+     ============================================================ */
+  
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-toast: 1080;
+  
+  /* ============================================================
+     13. LAYOUT
+     ============================================================ */
+  
+  --header-height: 35px;
   --activity-bar-width: 48px;
   --side-bar-width: 280px;
   --panel-height: 200px;
-  --container-max: 100%;
   --container-padding: 1rem;
-
-  /* Editor specific */
-  --editor-bg: #1e1e1e;
+  
+  /* ============================================================
+     14. EDITOR SPECIFIC - GitHub Style
+     ============================================================ */
+  
+  --editor-bg: #000000;
   --editor-line-number: #858585;
-  --editor-line-highlight: #2a2d2e;
+  --editor-line-highlight: #1a1a1a;
   --editor-selection: #264f78;
   --editor-cursor: #aeafad;
-
-  /* Focus ring */
-  --focus-ring: 0 0 0 1px var(--vscode-border-focus), 0 0 0 3px var(--vscode-primary-light);
+  
+  /* ============================================================
+     15. FOCUS RING - GitHub Style
+     ============================================================ */
+  
+  --focus-ring: 0 0 0 2px var(--color-border-focus), 0 0 0 4px var(--color-primary-light);
 }
 
-/* Light Theme - VS Code Light */
+/* Light Theme - GitHub Copilot Light */
 [data-theme="light"] {
-  --vscode-bg: #ffffff;
-  --vscode-bg-secondary: #f3f3f3;
-  --vscode-bg-tertiary: #e8e8e8;
-  --vscode-bg-hover: #e8e8e8;
-  --vscode-bg-active: #dcdcdc;
-
-  --vscode-panel-bg: #ffffff;
-  --vscode-panel-border: #e0e0e0;
-  --vscode-side-bar-bg: #f3f3f3;
-  --vscode-side-bar-border: #e0e0e0;
-  --vscode-activity-bar-bg: #f3f3f3;
-  --vscode-activity-bar-border: #e0e0e0;
-  --vscode-status-bar-bg: #007acc;
-  --vscode-title-bar-bg: #e0e0e0;
-
-  --vscode-border: #e0e0e0;
-  --vscode-border-strong: #d0d0d0;
-  --vscode-border-focus: #007acc;
-
-  --vscode-primary: #007acc;
-  --vscode-primary-hover: #005f9e;
-  --vscode-primary-light: #007acc26;
-  --vscode-primary-glow: rgba(0, 122, 204, 0.2);
-
-  --vscode-success: #107c10;
-  --vscode-success-hover: #0e6c0e;
-  --vscode-success-light: #107c1026;
-
-  --vscode-warning: #986801;
-  --vscode-warning-hover: #885801;
-  --vscode-warning-light: #98680126;
-
-  --vscode-danger: #a1260d;
-  --vscode-danger-hover: #91160d;
-  --vscode-danger-light: #a1260d26;
-
-  --vscode-text-primary: #1e1e1e;
-  --vscode-text-secondary: #00188f;
-  --vscode-text-tertiary: #6a6a6a;
-  --vscode-text-muted: #9a9a9a;
-  --vscode-text-inverse: #ffffff;
-  --vscode-text-link: #0060bf;
-
+  --color-bg: #ffffff;
+  --color-bg-surface: #fafafa;
+  --color-bg-muted: #f5f5f5;
+  --color-bg-soft: #eaeaea;
+  --color-bg-accent: #e0e0e0;
+  
+  --color-panel-bg: #ffffff;
+  --color-panel-border: #d0d0d0;
+  --color-sidebar-bg: #fafafa;
+  --color-sidebar-border: #d0d0d0;
+  
+  --color-activity-bar-bg: #fafafa;
+  --color-activity-bar-border: #d0d0d0;
+  
+  --color-status-bar-bg: #007acc;   /* Copilot Blue */
+  --color-title-bar-bg: #fafafa;
+  
+  --color-border: #d0d0d0;
+  --color-border-focus: #007acc;    /* Copilot Blue */
+  --color-border-input: #c0c0c0;
+  
+  --color-primary: #007acc;         /* GitHub Copilot Blue */
+  --color-primary-hover: #005a9e;
+  --color-primary-active: #004c8d;
+  --color-primary-light: rgba(0, 122, 204, 0.1);
+  --color-primary-glow: rgba(0, 122, 204, 0.2);
+  
+  --color-success: #6a9955;         /* GitHub Green */
+  --color-success-hover: #5c8046;
+  --color-success-light: rgba(106, 153, 85, 0.15);
+  
+  --color-warning: #d7ba7d;         /* GitHub Yellow/Orange */
+  --color-warning-hover: #c49a63;
+  --color-warning-light: rgba(215, 186, 125, 0.15);
+  
+  --color-error: #f44747;           /* GitHub Red */
+  --color-error-hover: #d13b3b;
+  --color-error-light: rgba(244, 71, 71, 0.15);
+  
+  --color-info: #4fc1ff;            /* GitHub Blue */
+  --color-info-hover: #3da8e6;
+  --color-info-light: rgba(79, 193, 255, 0.15);
+  
+  --color-text-primary: #24292f;    /* GitHub Dark Text */
+  --color-text-secondary: #6a737d;  /* GitHub Secondary Text */
+  --color-text-tertiary: #959da5;   /* GitHub Tertiary Text */
+  --color-text-muted: #959da5;      /* GitHub Muted Text */
+  --color-text-inverse: #ffffff;    /* Inverse text */
+  --color-text-link: #0366d6;       /* GitHub Link */
+  
+  /* Module accents remain subtle overlays */
+  
   --editor-bg: #ffffff;
-  --editor-line-number: #9a9a9a;
-  --editor-line-highlight: #e8e8e8;
+  --editor-line-number: #959da5;
+  --editor-line-highlight: #f3f2f1;
   --editor-selection: #add6ff;
   --editor-cursor: #000000;
-
-  --focus-ring: 0 0 0 1px var(--vscode-border-focus), 0 0 0 3px var(--vscode-primary-light);
+  
+  --focus-ring: 0 0 0 2px var(--color-border-focus), 0 0 0 4px var(--color-primary-light);
 }
 
-/* Semantic color aliases for backward compatibility */
+/* Semantic aliases for easier consumption */
 :root {
-  --color-bg-primary: var(--vscode-bg);
-  --color-bg-secondary: var(--vscode-bg-secondary);
-  --color-bg-tertiary: var(--vscode-bg-tertiary);
-  --color-bg-elevated: var(--vscode-bg-tertiary);
-  --color-bg-hover: var(--vscode-bg-hover);
-  --color-bg-active: var(--vscode-bg-active);
-
-  --color-surface: var(--vscode-panel-bg);
-  --color-surface-hover: var(--vscode-bg-hover);
-  --color-surface-pressed: var(--vscode-bg-active);
-
-  --color-border: var(--vscode-border);
-  --color-border-strong: var(--vscode-border-strong);
-  --color-border-focus: var(--vscode-border-focus);
-
-  --color-primary: var(--vscode-primary);
-  --color-primary-hover: var(--vscode-primary-hover);
-  --color-primary-light: var(--vscode-primary-light);
-  --color-primary-glow: var(--vscode-primary-glow);
-
-  --color-success: var(--vscode-success);
-  --color-success-hover: var(--vscode-success-hover);
-  --color-success-light: var(--vscode-success-light);
-  --color-success-glow: var(--vscode-success-light);
-
-  --color-warning: var(--vscode-warning);
-  --color-warning-hover: var(--vscode-warning-hover);
-  --color-warning-light: var(--vscode-warning-light);
-
-  --color-danger: var(--vscode-danger);
-  --color-danger-hover: var(--vscode-danger-hover);
-  --color-danger-light: var(--vscode-danger-light);
-
-  --color-text-primary: var(--vscode-text-primary);
-  --color-text-secondary: var(--vscode-text-secondary);
-  --color-text-tertiary: var(--vscode-text-tertiary);
-  --color-text-muted: var(--vscode-text-muted);
-  --color-text-inverse: var(--vscode-text-inverse);
-  --color-text-link: var(--vscode-text-link);
-
-  --color-accent-blue: var(--vscode-accent-blue);
-  --color-accent-green: var(--vscode-accent-green);
-  --color-accent-orange: var(--vscode-accent-orange);
-  --color-accent-purple: var(--vscode-accent-purple);
-
-  --glass-bg: var(--vscode-bg-secondary);
-  --glass-border: var(--vscode-border);
+  /* Backgrounds & Surfaces */
+  --color-bg-primary: var(--color-bg);
+  --color-bg-secondary: var(--color-bg-surface);
+  --color-bg-tertiary: var(--color-bg-muted);
+  --color-bg-elevated: var(--color-bg-soft);
+  
+  --color-surface: var(--color-bg-surface);
+  --color-surface-hover: var(--color-bg-soft);
+  --color-surface-pressed: var(--color-bg-accent);
+  
+  /* Text */
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-inverse: var(--color-text-inverse);
+  
+  /* Borders */
+  --color-border: var(--color-border);
+  --color-border-focus: var(--color-border-focus);
+  
+  /* Primary & Semantic */
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-light: var(--color-primary-light);
+  --color-primary-glow: var(--color-primary-glow);
+  
+  --color-success: var(--color-success);
+  --color-success-hover: var(--color-success-hover);
+  --color-success-light: var(--color-success-light);
+  
+  --color-warning: var(--color-warning);
+  --color-warning-hover: var(--color-warning-hover);
+  --color-warning-light: var(--color-warning-light);
+  
+  --color-error: var(--color-error);
+  --color-error-hover: var(--color-error-hover);
+  --color-error-light: var(--color-error-light);
+  
+  --color-info: var(--color-info);
+  --color-info-hover: var(--color-info-hover);
+  --color-info-light: var(--color-info-light);
+  
+  --color-text-link: var(--color-text-link);
+  
+  --color-accent-blue: var(--color-accent-blue);
+  --color-accent-green: var(--color-accent-green);
+  --color-accent-yellow: var(--color-accent-yellow);
+  --color-accent-orange: var(--color-accent-orange);
+  --color-accent-purple: var(--color-accent-purple);
+  
+  --glass-bg: var(--color-bg-secondary);
+  --glass-border: var(--color-border);
   --glass-blur: blur(8px);
 }

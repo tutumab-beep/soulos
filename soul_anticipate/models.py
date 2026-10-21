@@ -96,3 +96,43 @@ class Milestone(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+
+
+class UserProgress(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="progress_records"
+    )
+    module_name = models.CharField(max_length=100)
+    current_page = models.CharField(blank=True, max_length=200)
+    current_step = models.CharField(blank=True, max_length=200)
+    current_substep = models.CharField(blank=True, max_length=200)
+    current_tab = models.CharField(blank=True, max_length=100)
+    entered_data = models.JSONField(blank=True, default=dict)
+    timestamp = models.DateTimeField(default=timezone.now)
+    completion_status = models.CharField(
+        choices=[
+            ("not_started", "Not Started"),
+            ("in_progress", "In Progress"),
+            ("completed", "Completed"),
+            ("paused", "Paused"),
+        ],
+        default="in_progress",
+        max_length=20,
+    )
+    is_active = models.BooleanField(default=True)
+
+    def save_progress(self, **kwargs):
+        """Update progress fields and save"""
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        self.timestamp = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.module_name} - {self.completion_status}"
+
+    class Meta:
+        ordering = ["-timestamp"]
+        unique_together = [("user", "module_name")]

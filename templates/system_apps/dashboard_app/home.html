@@ -4,14 +4,20 @@
 {% block title %}Dashboard - SoulOS{% endblock %}
 
 {% block content %}
-<div>
-    <h1>Dashboard</h1>
-    <p>Welcome to your SoulOS dashboard.</p>
-    <a href="{% url 'core_healing_path:dashboard' %}" class="btn btn-outline">Core Healing Path</a>
-    <a href="{% url 'soullog:journal' %}" class="btn btn-outline">SoulLog</a>
-    <a href="{% url 'work_alignment:dashboard' %}" class="btn btn-outline">Work Alignment</a>
-    <a href="{% url 'daily_alignment:dashboard' %}" class="btn btn-outline">Daily Alignment</a>
-    <a href="{% url 'soul_anticipate:dashboard' %}" class="btn btn-outline">Soul Anticipate</a>
-    <a href="{% url 'soul_navigation:home' %}" class="btn btn-outline">Soul Navigation</a>
+<div class="dashboard-apps">
+
+    <a href="{% url 'soullog:journal' %}" class="btn btn-outline app-1">SoulLog</a>
+
+    <a href="{% url 'daily_alignment:dashboard' %}" class="btn btn-outline app-2">Daily Alignment</a>
+
+    <a href="{% url 'work_alignment:dashboard' %}" class="btn btn-outline app-3">Work Alignment</a>
+
+    <a href="{% url 'soul_anticipate:dashboard' %}" class="btn btn-outline app-4">Soul Anticipate</a>
+
+    <a href="{% url 'soul_navigation:home' %}" class="btn btn-outline app-5">Soul Navigation</a>
+
+    <a href="{% url 'core_healing_path:dashboard' %}" class="btn btn-outline app-6">Core Healing Path</a>
+
 </div>
+
 {% endblock %}

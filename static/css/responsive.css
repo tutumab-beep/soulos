@@ -502,3 +502,43 @@
     print-color-adjust: exact;
   }
 }
+
+/* SoulOS Themed Core Healing Card */
+
+.core-healing-card{
+    grid-column: 1 / -1;
+
+    background: linear-gradient(
+        135deg,
+        #2F80ED,
+        #4EA5FF
+    );
+
+    color: #ffffff;
+    border-radius: 24px;
+    padding: 24px;
+    min-height: 140px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: 0 10px 30px rgba(47,128,237,.25);
+
+    transition: .3s ease;
+}
+
+.core-healing-card:hover{
+    transform: translateY(-4px);
+}
+
+.core-healing-card h3{
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.core-healing-card p{
+    color: rgba(255,255,255,.85);
+}

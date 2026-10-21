@@ -1,0 +1,93 @@
+{% if show_dialog and progress %}
+<div class="resume-dialog-overlay" id="resume-dialog-overlay">
+    <div class="resume-dialog">
+        <div class="resume-dialog-header">
+            <h3>Continue where you left off?</h3>
+            <button class="btn btn-ghost btn-sm resume-dialog-close" aria-label="Close dialog">
+                <span>×</span>
+            </button>
+        </div>
+        
+        <div class="resume-dialog-body">
+            <p><strong>Module:</strong> {{ module_display_name }}</p>
+            <p><strong>Last step:</strong> 
+                {% if progress.current_step %}
+                    {{ progress.current_step|title }}
+                {% else %}
+                    Beginning
+                {% endif %}
+            </p>
+            <p><strong>Last activity:</strong> 
+                {{ progress.timestamp|timesince }} ago
+                ({% if progress.timestamp|date:"Y-m-d H:i" %}{{ progress.timestamp|date:"Y-m-d H:i" }}{% endif %})
+            </p>
+            
+            {% if progress.entered_data and progress.entered_data|length > 0 %}
+            <p><strong>You have unsaved data:</strong> Yes</p>
+            {% endif %}
+        </div>
+        
+        <div class="resume-dialog-footer">
+            <a href="{% url 'soul_anticipate:dashboard' %}" 
+               class="btn btn-outline resume-dialog-start-over">
+                Start Over
+            </a>
+            <a href="{{ progress.current_page|default:'#' }}" 
+               class="btn btn-primary resume-dialog-continue">
+                Continue
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const overlay = document.getElementById('resume-dialog-overlay');
+    const closeBtn = document.querySelector('.resume-dialog-close');
+    const continueBtn = document.querySelector('.resume-dialog-continue');
+    const startOverBtn = document.querySelector('.resume-dialog-start-over');
+    
+    // Show dialog briefly then auto-hide if user interacts elsewhere
+    setTimeout(function() {
+        if (overlay && !overlay.classList.contains('user-interacted')) {
+            overlay.style.display = 'none';
+        }
+    }, 5000);
+    
+    // Handle close button
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            overlay.style.display = 'none';
+        });
+    }
+    
+    // Handle continue button
+    if (continueBtn) {
+        continueBtn.addEventListener('click', function() {
+            overlay.style.display = 'none';
+        });
+    }
+    
+    // Handle start over button
+    if (startOverBtn) {
+        startOverBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to start over? All progress will be lost.')) {
+                // In a real implementation, this would call a view to reset progress
+                overlay.style.display = 'none';
+            }
+        });
+    }
+    
+    // Detect user interaction to prevent auto-hiding during interaction
+    document.addEventListener('click', function() {
+        if (overlay) {
+            overlay.classList.add('user-interacted');
+        }
+    });
+    document.addEventListener('keypress', function() {
+        if (overlay) {
+            overlay.classList.add('user-interacted');
+        }
+    });
+</script>
+{% endif %}
